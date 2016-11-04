@@ -1,0 +1,33 @@
+hash: ee50065cd171481e260a49e4134dd280e313f721a91423acca2d9a8378b4fc6d
+updated: 2016-11-03T22:40:52.3867878-04:00
+imports:
+- name: github.com/go-gl/gl
+  version: b303bcb3e83b7ef645a5104e1c2db7f8d9e8918a
+  subpackages:
+  - v2.1/gl
+- name: github.com/go-gl/glfw
+  version: 6e7202f2d691ed1d79bcdaed6cce0061006ce565
+  subpackages:
+  - v3.1/glfw
+- name: github.com/gopherjs/gopherjs
+  version: e34a5cd6a1bc7c4fde759f2d3039852fc68b5fcc
+  subpackages:
+  - js
+- name: github.com/gopherjs/webgl
+  version: a2d36020a9b2af0f7aefb23467ab48f3b501beec
+- name: github.com/hajimehoshi/ebiten
+  version: 021b23a5e773c217db10b91796d87fc544cc06dd
+  subpackages:
+  - ebitenutil
+  - ebitenutil/internal/assets
+  - internal/graphics
+  - internal/graphics/opengl
+  - internal/jni
+  - internal/loop
+  - internal/pixels
+  - internal/ui
+- name: golang.org/x/mobile
+  version: b8794a2669da6680501f9ebc6c555553dc46b1ee
+  subpackages:
+  - gl
+testImports: []

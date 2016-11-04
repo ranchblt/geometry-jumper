@@ -1,15 +1,31 @@
 package main
 
 import (
-        "github.com/hajimehoshi/ebiten"
-        "github.com/hajimehoshi/ebiten/ebitenutil"
+	"github.com/hajimehoshi/ebiten"
+	"github.com/hajimehoshi/ebiten/ebitenutil"
+)
+
+const (
+	screenWidth  = 400
+	screenHeight = 400
 )
 
 func update(screen *ebiten.Image) error {
-        ebitenutil.DebugPrint(screen, "Hello world!")
-        return nil
+	p := &personImageParts{image: personImage}
+	screen.DrawImage(personImage, &ebiten.DrawImageOptions{
+		ImageParts: p,
+	})
+
+	ebitenutil.DebugPrint(screen, "Hello world!")
+	return nil
 }
 
 func main() {
-        ebiten.Run(update, 320, 240, 2, "Hello world!")
+	var err error
+	personImage, _, err = ebitenutil.NewImageFromFile("./resource/person.png", ebiten.FilterNearest)
+	if err != nil {
+		panic(err)
+	}
+
+	ebiten.Run(update, screenWidth, screenHeight, 2, "Hello world!")
 }
