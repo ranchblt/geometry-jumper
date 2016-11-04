@@ -1,0 +1,6 @@
+package: geometry-jumper
+import:
+- package: github.com/hajimehoshi/ebiten
+  version: ^1.4.0-rc1
+  subpackages:
+  - ebitenutil
