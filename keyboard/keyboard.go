@@ -1,4 +1,4 @@
-package main
+package keyboard
 
 import "github.com/hajimehoshi/ebiten"
 

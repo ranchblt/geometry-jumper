@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"geometry-jumper/keyboard"
 
 	"github.com/hajimehoshi/ebiten"
 	"github.com/hajimehoshi/ebiten/ebitenutil"
@@ -13,7 +14,7 @@ const (
 )
 
 type PlayerCharacter struct {
-	keyboard *KeyboardWrapper
+	keyboard *keyboard.KeyboardWrapper
 	name     string
 }
 
@@ -52,7 +53,7 @@ func main() {
 	}
 
 	player = &PlayerCharacter{
-		keyboard: NewKeyboardWrapper(),
+		keyboard: keyboard.NewKeyboardWrapper(),
 		name:     "Test",
 	}
 	ebiten.Run(update, screenWidth, screenHeight, 2, "Hello world!")
