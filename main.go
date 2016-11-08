@@ -14,10 +14,6 @@ const (
 	screenHeight = 400
 )
 
-type PlayerCharacter struct {
-	name string
-}
-
 var (
 	player          *PlayerCharacter
 	keyboardWrapper = keyboard.NewKeyboardWrapper()
@@ -31,9 +27,8 @@ func (pc *PlayerCharacter) Update() error {
 }
 
 func update(screen *ebiten.Image) error {
-	p := &personImageParts{image: personImage}
-	screen.DrawImage(personImage, &ebiten.DrawImageOptions{
-		ImageParts: p,
+	screen.DrawImage(player.Image, &ebiten.DrawImageOptions{
+		ImageParts: player,
 	})
 
 	player.Update()
@@ -43,14 +38,14 @@ func update(screen *ebiten.Image) error {
 }
 
 func main() {
-	var err error
-	personImage, _, err = ebitenutil.NewImageFromFile("./resource/person.png", ebiten.FilterNearest)
+	personImage, _, err := ebitenutil.NewImageFromFile("./resource/person.png", ebiten.FilterNearest)
 	if err != nil {
 		panic(err)
 	}
 
 	player = &PlayerCharacter{
-		name: "Test",
+		name:  "Test",
+		Image: personImage,
 	}
 	ebiten.Run(update, screenWidth, screenHeight, 2, "Hello world!")
 }
