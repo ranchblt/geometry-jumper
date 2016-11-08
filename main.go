@@ -1,8 +1,9 @@
 package main
 
 import (
-	"fmt"
 	"geometry-jumper/keyboard"
+
+	"fmt"
 
 	"github.com/hajimehoshi/ebiten"
 	"github.com/hajimehoshi/ebiten/ebitenutil"
@@ -14,23 +15,18 @@ const (
 )
 
 type PlayerCharacter struct {
-	keyboard *keyboard.KeyboardWrapper
-	name     string
+	name string
 }
 
 var (
-	player *PlayerCharacter
-	// this is weird. used primarily to make sure we capture key presses rather than key holds
-	keyState = map[ebiten.Key]int{}
+	player          *PlayerCharacter
+	keyboardWrapper = keyboard.NewKeyboardWrapper()
 )
 
 func (pc *PlayerCharacter) Update() error {
-	pc.keyboard.Update()
-
-	if pc.keyboard.KeyPushed(ebiten.KeySpace) {
-		fmt.Print("you pushed space this cycle")
+	if keyboardWrapper.KeyPushed(ebiten.KeySpace) {
+		fmt.Print("you pushed space")
 	}
-
 	return nil
 }
 
@@ -41,6 +37,7 @@ func update(screen *ebiten.Image) error {
 	})
 
 	player.Update()
+	keyboardWrapper.Update()
 	ebitenutil.DebugPrint(screen, "Hello world!")
 	return nil
 }
@@ -53,8 +50,7 @@ func main() {
 	}
 
 	player = &PlayerCharacter{
-		keyboard: keyboard.NewKeyboardWrapper(),
-		name:     "Test",
+		name: "Test",
 	}
 	ebiten.Run(update, screenWidth, screenHeight, 2, "Hello world!")
 }
