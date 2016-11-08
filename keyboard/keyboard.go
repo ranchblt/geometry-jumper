@@ -80,7 +80,6 @@ func NewKeyboardWrapper() *KeyboardWrapper {
 			ebiten.KeySpace,
 			ebiten.KeyTab,
 			ebiten.KeyUp,
-			ebiten.KeyMax,
 		},
 	}
 	return kw
