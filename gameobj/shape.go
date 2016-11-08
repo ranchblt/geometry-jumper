@@ -12,9 +12,9 @@ func degreesToRadians(degreeValue float64) float64 {
 }
 
 type BaseShape struct {
-	track         int
-	centerX       float64
-	centerY       float64
-	baseSpeed     float64
-	speedModifier float64
+	Track         int
+	CenterX       float64
+	CenterY       float64
+	BaseSpeed     float64
+	SpeedModifier float64
 }

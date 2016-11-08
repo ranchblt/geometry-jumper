@@ -19,5 +19,5 @@ func NewSquare(base *BaseShape, image *ebiten.Image) *Square {
 
 func (s *Square) Update() {
 	// squares dont move vertically, only horizontally.
-	s.centerX = s.centerX - (s.baseSpeed * s.speedModifier)
+	s.CenterX = s.CenterX - (s.BaseSpeed * s.SpeedModifier)
 }
