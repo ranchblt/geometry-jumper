@@ -1,9 +1,8 @@
 package main
 
 import (
+	"geometry-jumper/gameobj"
 	"geometry-jumper/keyboard"
-
-	"fmt"
 
 	"github.com/hajimehoshi/ebiten"
 	"github.com/hajimehoshi/ebiten/ebitenutil"
@@ -17,21 +16,20 @@ const (
 var (
 	player          *PlayerCharacter
 	keyboardWrapper = keyboard.NewKeyboardWrapper()
+	square          *gameobj.Square
 )
-
-func (pc *PlayerCharacter) Update() error {
-	if keyboardWrapper.KeyPushed(ebiten.KeySpace) {
-		fmt.Print("you pushed space")
-	}
-	return nil
-}
 
 func update(screen *ebiten.Image) error {
 	screen.DrawImage(player.Image, &ebiten.DrawImageOptions{
 		ImageParts: player,
 	})
 
+	screen.DrawImage(square.Image, &ebiten.DrawImageOptions{
+		ImageParts: square,
+	})
+
 	player.Update()
+	square.Update()
 	keyboardWrapper.Update()
 	ebitenutil.DebugPrint(screen, "Hello world!")
 	return nil
@@ -42,6 +40,14 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+
+	square = gameobj.NewSquare(&gameobj.BaseShape{
+		Track:         1,
+		CenterX:       30,
+		CenterY:       30,
+		BaseSpeed:     -.05,
+		SpeedModifier: 1,
+	}, personImage)
 
 	player = &PlayerCharacter{
 		name:  "Test",

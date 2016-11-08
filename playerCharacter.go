@@ -1,12 +1,21 @@
 package main
 
 import (
+	"fmt"
+
 	"github.com/hajimehoshi/ebiten"
 )
 
 type PlayerCharacter struct {
 	name  string
 	Image *ebiten.Image
+}
+
+func (pc *PlayerCharacter) Update() error {
+	if keyboardWrapper.KeyPushed(ebiten.KeySpace) {
+		fmt.Print("you pushed space")
+	}
+	return nil
 }
 
 func (p *PlayerCharacter) Len() int {
