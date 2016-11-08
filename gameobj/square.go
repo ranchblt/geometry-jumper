@@ -1,12 +1,18 @@
 package gameobj
 
+import (
+	"github.com/hajimehoshi/ebiten"
+)
+
 type Square struct {
 	*BaseShape
+	image *ebiten.Image
 }
 
-func NewSquare(track int, centerX float64, centerY float64, baseSpeed float64, speedModifier float64) *Square {
+func NewSquare(base *BaseShape, image *ebiten.Image) *Square {
 	var s = &Square{
-		NewBaseShape(track, centerX, centerY, baseSpeed, speedModifier),
+		BaseShape: base,
+		image:     image,
 	}
 	return s
 }

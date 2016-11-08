@@ -18,14 +18,3 @@ type BaseShape struct {
 	baseSpeed     float64
 	speedModifier float64
 }
-
-func NewBaseShape(track int, centerX float64, centerY float64, baseSpeed float64, speedModifier float64) *BaseShape {
-	var s = &BaseShape{
-		track:         track,
-		centerX:       centerX,
-		centerY:       centerY,
-		baseSpeed:     baseSpeed,
-		speedModifier: speedModifier,
-	}
-	return s
-}

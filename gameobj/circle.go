@@ -1,27 +1,34 @@
 package gameobj
 
-import "math"
+import (
+	"math"
+
+	"github.com/hajimehoshi/ebiten"
+)
 
 type Circle struct {
 	*BaseShape
 	// this is expected to be degrees.
 	travelAngle float64
+	image       *ebiten.Image
 }
 
 // default initializer for Circle. this sets travelAngle to a default of 45 degrees
-func NewCircle(track int, centerX float64, centerY float64, baseSpeed float64, speedModifier float64) *Circle {
+func NewCircle(base *BaseShape, image *ebiten.Image) *Circle {
 	var c = &Circle{
-		BaseShape:   NewBaseShape(track, centerX, centerY, baseSpeed, speedModifier),
+		BaseShape:   base,
 		travelAngle: DefaultCircleAngleOfDescent,
+		image:       image,
 	}
 	return c
 }
 
 // if you want a different angle of descent, use this initializer
-func NewCircleNonStandardAngle(track int, centerX float64, centerY float64, baseSpeed float64, speedModifier float64, travelAngle float64) *Circle {
+func NewCircleNonStandardAngle(base *BaseShape, image *ebiten.Image, travelAngle float64) *Circle {
 	var c = &Circle{
 		BaseShape:   NewBaseShape(track, centerX, centerY, baseSpeed, speedModifier),
 		travelAngle: travelAngle,
+		image:       image,
 	}
 	return c
 }
