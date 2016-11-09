@@ -19,7 +19,7 @@ func NewSquare(base *BaseShape, image *ebiten.Image) *Square {
 
 func (s *Square) Update() {
 	// squares dont move vertically, only horizontally.
-	s.CenterX = s.CenterX - (s.BaseSpeed * s.SpeedModifier)
+	s.CenterCoordinate.X = s.CenterCoordinate.X - (s.BaseSpeed * s.SpeedModifier)
 }
 
 func (s *Square) Len() int {
@@ -30,10 +30,10 @@ func (s *Square) Dst(i int) (x0, y0, x1, y1 int) {
 	w, h := s.Image.Size()
 	halfHeight := float64(h / 2)
 	halfWidth := float64(w / 2)
-	return int(s.CenterX - halfHeight),
-		int(s.CenterY - halfWidth),
-		int(s.CenterX + halfHeight),
-		int(s.CenterY + halfWidth)
+	return int(s.CenterCoordinate.X - halfHeight),
+		int(s.CenterCoordinate.Y - halfWidth),
+		int(s.CenterCoordinate.X + halfHeight),
+		int(s.CenterCoordinate.Y + halfWidth)
 }
 
 func (s *Square) Src(i int) (x0, y0, x1, y1 int) {

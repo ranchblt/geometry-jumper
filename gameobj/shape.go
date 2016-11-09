@@ -12,9 +12,21 @@ func degreesToRadians(degreeValue float64) float64 {
 }
 
 type BaseShape struct {
-	Track         int
-	CenterX       float64
-	CenterY       float64
-	BaseSpeed     float64
-	SpeedModifier float64
+	Track            int
+	CenterCoordinate *Coordinate
+	BaseSpeed        float64
+	SpeedModifier    float64
+}
+
+func NewBaseShape(track int, centerX float64, baseSpeed float64, speedModifier float64) *BaseShape {
+	var s = &BaseShape{
+		Track: track,
+		CenterCoordinate: &Coordinate{
+			X: centerX,
+			Y: TrackMappings[track],
+		},
+		BaseSpeed:     baseSpeed,
+		SpeedModifier: speedModifier,
+	}
+	return s
 }

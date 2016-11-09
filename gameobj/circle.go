@@ -9,26 +9,29 @@ import (
 type Circle struct {
 	*BaseShape
 	// this is expected to be degrees.
-	travelAngle float64
-	image       *ebiten.Image
+	TravelAngle      float64
+	DestinationTrack int
+	Image            *ebiten.Image
 }
 
-// default initializer for Circle. this sets travelAngle to a default of 45 degrees
-func NewCircle(base *BaseShape, image *ebiten.Image) *Circle {
+// default initializer for Circle. this sets TravelAngle to a default of 45 degrees
+func NewCircle(base *BaseShape, image *ebiten.Image, destinationTrack int) *Circle {
 	var c = &Circle{
-		BaseShape:   base,
-		travelAngle: DefaultCircleAngleOfDescent,
-		image:       image,
+		BaseShape:        base,
+		TravelAngle:      DefaultCircleAngleOfDescent,
+		DestinationTrack: destinationTrack,
+		Image:            image,
 	}
 	return c
 }
 
 // if you want a different angle of descent, use this initializer
-func NewCircleNonStandardAngle(base *BaseShape, image *ebiten.Image, travelAngle float64) *Circle {
+func NewCircleNonStandardAngle(base *BaseShape, image *ebiten.Image, destinationTrack int, travelAngle float64) *Circle {
 	var c = &Circle{
-		BaseShape:   base,
-		travelAngle: travelAngle,
-		image:       image,
+		BaseShape:        base,
+		TravelAngle:      travelAngle,
+		DestinationTrack: destinationTrack,
+		Image:            image,
 	}
 	return c
 }
@@ -36,34 +39,48 @@ func NewCircleNonStandardAngle(base *BaseShape, image *ebiten.Image, travelAngle
 // I'm sure this method can be streamlined somehow.
 func (c *Circle) Update() {
 	var xVelocity, yVelocity = c.getVelocityComponents()
-	c.CenterX = c.CenterX - xVelocity
 
-	if c.Track == UpperTrack {
-		// upper track means we're moving down (going from upper track to lower)
-		c.CenterY += yVelocity
+	if c.Track < c.DestinationTrack {
+		yVelocity = yVelocity * -1
+	}
+	c.CenterCoordinate.X = c.CenterCoordinate.X - xVelocity
+	c.CenterCoordinate.Y = c.CenterCoordinate.Y - yVelocity
 
-		// if the center of the circle reached the lower Y axis, flip the track to lower so we reverse directions
-		if c.CenterY >= LowerTrackYAxis {
-			c.CenterY = LowerTrackYAxis
-			c.Track = LowerTrack
-		}
-	} else {
-		// otherwise we're moving up (going from lower track to upper)
-		c.CenterY -= yVelocity
-
-		// if the center of the circle reached the upper Y axis, flip the track to upper so we reverse directions
-		if c.CenterY <= UpperTrackYAxis {
-			c.CenterY = UpperTrackYAxis
-			c.Track = UpperTrack
-		}
+	if (c.Track < c.DestinationTrack && c.CenterCoordinate.Y >= TrackMappings[c.DestinationTrack]) ||
+		(c.Track > c.DestinationTrack && c.CenterCoordinate.Y <= TrackMappings[c.DestinationTrack]) {
+		// then set the track to the destination
+		c.Track = c.DestinationTrack
+		// and snap the centerY to the new track
+		c.CenterCoordinate.Y = TrackMappings[c.Track]
+		// and set our new destination to the one "after" our previous destination
+		c.DestinationTrack = SubsequentTracks[c.Track]
 	}
 }
 
 // unpublished methods are sweet!
 func (c *Circle) getVelocityComponents() (xVelocity float64, yVelocity float64) {
-	var travelAngleInRadians = degreesToRadians(c.travelAngle)
+	var travelAngleInRadians = degreesToRadians(c.TravelAngle)
 
 	xVelocity = c.BaseSpeed * c.SpeedModifier * math.Cos(travelAngleInRadians)
 	yVelocity = c.BaseSpeed * c.SpeedModifier * math.Sin(travelAngleInRadians)
 	return xVelocity, yVelocity
+}
+
+func (s *Circle) Len() int {
+	return 1
+}
+
+func (c *Circle) Dst(i int) (x0, y0, x1, y1 int) {
+	w, h := c.Image.Size()
+	halfHeight := float64(h / 2)
+	halfWidth := float64(w / 2)
+	return int(c.CenterCoordinate.X - halfHeight),
+		int(c.CenterCoordinate.Y - halfWidth),
+		int(c.CenterCoordinate.X + halfHeight),
+		int(c.CenterCoordinate.Y + halfWidth)
+}
+
+func (c *Circle) Src(i int) (x0, y0, x1, y1 int) {
+	w, h := c.Image.Size()
+	return 0, 0, w, h
 }

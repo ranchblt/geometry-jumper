@@ -16,6 +16,7 @@ const (
 var (
 	player          *PlayerCharacter
 	keyboardWrapper = keyboard.NewKeyboardWrapper()
+	circle          *gameobj.Circle
 	square          *gameobj.Square
 )
 
@@ -28,8 +29,13 @@ func update(screen *ebiten.Image) error {
 		ImageParts: square,
 	})
 
+	screen.DrawImage(circle.Image, &ebiten.DrawImageOptions{
+		ImageParts: circle,
+	})
+
 	player.Update()
 	square.Update()
+	circle.Update()
 	keyboardWrapper.Update()
 	ebitenutil.DebugPrint(screen, "Hello world!")
 	return nil
@@ -41,14 +47,8 @@ func main() {
 		panic(err)
 	}
 
-	square = gameobj.NewSquare(&gameobj.BaseShape{
-		Track:         1,
-		CenterX:       30,
-		CenterY:       30,
-		BaseSpeed:     -.05,
-		SpeedModifier: 1,
-	}, personImage)
-
+	circle = gameobj.NewCircle(gameobj.NewBaseShape(gameobj.UpperTrack, gameobj.RightSide, .35, 1), personImage, gameobj.SubsequentTracks[gameobj.UpperTrack])
+	square = gameobj.NewSquare(gameobj.NewBaseShape(gameobj.LowerTrack, gameobj.RightSide, .10, 1), personImage)
 	player = &PlayerCharacter{
 		name:  "Test",
 		Image: personImage,
