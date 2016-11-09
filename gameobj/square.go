@@ -6,13 +6,13 @@ import (
 
 type Square struct {
 	*BaseShape
-	Image *ebiten.Image
+	image *ebiten.Image
 }
 
 func NewSquare(base *BaseShape, image *ebiten.Image) *Square {
 	var s = &Square{
 		BaseShape: base,
-		Image:     image,
+		image:     image,
 	}
 	return s
 }
@@ -27,7 +27,7 @@ func (s *Square) Len() int {
 }
 
 func (s *Square) Dst(i int) (x0, y0, x1, y1 int) {
-	w, h := s.Image.Size()
+	w, h := s.image.Size()
 	halfHeight := float64(h / 2)
 	halfWidth := float64(w / 2)
 	return int(s.CenterCoordinate.X - halfHeight),
@@ -37,6 +37,10 @@ func (s *Square) Dst(i int) (x0, y0, x1, y1 int) {
 }
 
 func (s *Square) Src(i int) (x0, y0, x1, y1 int) {
-	w, h := s.Image.Size()
+	w, h := s.image.Size()
 	return 0, 0, w, h
+}
+
+func (s *Square) Image() *ebiten.Image {
+	return s.image
 }

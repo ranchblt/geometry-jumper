@@ -11,7 +11,7 @@ type Circle struct {
 	// this is expected to be degrees.
 	TravelAngle      float64
 	DestinationTrack int
-	Image            *ebiten.Image
+	image            *ebiten.Image
 }
 
 // default initializer for Circle. this sets TravelAngle to a default of 45 degrees
@@ -20,7 +20,7 @@ func NewCircle(base *BaseShape, image *ebiten.Image, destinationTrack int) *Circ
 		BaseShape:        base,
 		TravelAngle:      DefaultCircleAngleOfDescent,
 		DestinationTrack: destinationTrack,
-		Image:            image,
+		image:            image,
 	}
 	return c
 }
@@ -31,7 +31,7 @@ func NewCircleNonStandardAngle(base *BaseShape, image *ebiten.Image, destination
 		BaseShape:        base,
 		TravelAngle:      travelAngle,
 		DestinationTrack: destinationTrack,
-		Image:            image,
+		image:            image,
 	}
 	return c
 }
@@ -71,7 +71,7 @@ func (s *Circle) Len() int {
 }
 
 func (c *Circle) Dst(i int) (x0, y0, x1, y1 int) {
-	w, h := c.Image.Size()
+	w, h := c.image.Size()
 	halfHeight := float64(h / 2)
 	halfWidth := float64(w / 2)
 	return int(c.CenterCoordinate.X - halfHeight),
@@ -81,6 +81,10 @@ func (c *Circle) Dst(i int) (x0, y0, x1, y1 int) {
 }
 
 func (c *Circle) Src(i int) (x0, y0, x1, y1 int) {
-	w, h := c.Image.Size()
+	w, h := c.image.Size()
 	return 0, 0, w, h
+}
+
+func (c *Circle) Image() *ebiten.Image {
+	return c.image
 }

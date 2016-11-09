@@ -1,6 +1,10 @@
 package gameobj
 
-import "math"
+import (
+	"math"
+
+	"github.com/hajimehoshi/ebiten"
+)
 
 // hi there, future Tom or Mike. I'm not sure if this is how ebiten works, but the negatives on centerX calcs is
 // to move left along the screen, and the seemingly inverted calculations for moving up / down are because screens typically
@@ -29,4 +33,12 @@ func NewBaseShape(track int, centerX float64, baseSpeed float64, speedModifier f
 		SpeedModifier: speedModifier,
 	}
 	return s
+}
+
+type Drawable interface {
+	Image() *ebiten.Image
+	Update()
+	Len() int
+	Dst(int) (int, int, int, int)
+	Src(int) (int, int, int, int)
 }
