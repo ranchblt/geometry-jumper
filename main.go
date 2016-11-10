@@ -72,9 +72,24 @@ func main() {
 		panic(err)
 	}
 
-	circle := gameobj.NewCircle(gameobj.NewBaseShape(gameobj.UpperTrack, gameobj.RightSide, 1, 1), personImage)
-	square := gameobj.NewSquare(gameobj.NewBaseShape(gameobj.LowerTrack, gameobj.RightSide, 1, 1), personImage)
-	triangle := gameobj.NewTriangle(gameobj.NewBaseShape(gameobj.LowerTrack, gameobj.RightSide, 2, 1), personImage)
+	squareImage, _, err := ebitenutil.NewImageFromFile("./resource/square.png", ebiten.FilterNearest)
+	if err != nil {
+		panic(err)
+	}
+
+	triangleImage, _, err := ebitenutil.NewImageFromFile("./resource/triangle.png", ebiten.FilterNearest)
+	if err != nil {
+		panic(err)
+	}
+
+	circleImage, _, err := ebitenutil.NewImageFromFile("./resource/circle.png", ebiten.FilterNearest)
+	if err != nil {
+		panic(err)
+	}
+
+	circle := gameobj.NewCircle(gameobj.NewBaseShape(gameobj.UpperTrack, gameobj.RightSide, 1, 1), circleImage)
+	square := gameobj.NewSquare(gameobj.NewBaseShape(gameobj.LowerTrack, gameobj.RightSide, 1, 1), squareImage)
+	triangle := gameobj.NewTriangle(gameobj.NewBaseShape(gameobj.LowerTrack, gameobj.RightSide, 2, 1), triangleImage)
 	shapes.Add(circle)
 	shapes.Add(square)
 	shapes.Add(triangle)
