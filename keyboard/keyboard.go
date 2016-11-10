@@ -90,7 +90,7 @@ func (kw *KeyboardWrapper) IsKeyPressed(key ebiten.Key) bool {
 }
 
 func (kw *KeyboardWrapper) KeyPushed(key ebiten.Key) bool {
-	return kw.keyState[ebiten.KeySpace] == 1
+	return kw.keyState[key] == 1
 }
 
 func (kw *KeyboardWrapper) Update() {
