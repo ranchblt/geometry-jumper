@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"geometry-jumper/gameobj"
 	"geometry-jumper/keyboard"
 
@@ -43,6 +44,7 @@ func (s *Shape) Draw(screen *ebiten.Image) {
 }
 
 func update(screen *ebiten.Image) error {
+	keyboardWrapper.Update()
 	shapes.Update()
 	shapes.Draw(screen)
 
@@ -51,8 +53,13 @@ func update(screen *ebiten.Image) error {
 	})
 
 	player.Update()
-	keyboardWrapper.Update()
+
 	ebitenutil.DebugPrint(screen, "Hello world!")
+
+	if keyboardWrapper.KeyPushed(ebiten.KeyEscape) {
+		return errors.New("User wanted to quit") //Best way to do this?
+	}
+
 	return nil
 }
 
