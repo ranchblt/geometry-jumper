@@ -16,16 +16,35 @@ const (
 var (
 	player          *PlayerCharacter
 	keyboardWrapper = keyboard.NewKeyboardWrapper()
-	drawables       []gameobj.Drawable
+	shapes          *Shape
 )
 
-func update(screen *ebiten.Image) error {
-	for _, d := range drawables {
+type Shape struct {
+	shapes []gameobj.Drawable
+	num    int
+}
+
+func (s *Shape) Update() {
+	for _, d := range s.shapes {
+		d.Update()
+	}
+}
+
+func (s *Shape) Add(g gameobj.Drawable) {
+	s.shapes = append(s.shapes, g)
+}
+
+func (s *Shape) Draw(screen *ebiten.Image) {
+	for _, d := range s.shapes {
 		screen.DrawImage(d.Image(), &ebiten.DrawImageOptions{
 			ImageParts: d,
 		})
-		d.Update()
 	}
+}
+
+func update(screen *ebiten.Image) error {
+	shapes.Update()
+	shapes.Draw(screen)
 
 	screen.DrawImage(player.Image, &ebiten.DrawImageOptions{
 		ImageParts: player,
@@ -38,6 +57,9 @@ func update(screen *ebiten.Image) error {
 }
 
 func main() {
+	shapes = &Shape{
+		shapes: []gameobj.Drawable{},
+	}
 	personImage, _, err := ebitenutil.NewImageFromFile("./resource/person.png", ebiten.FilterNearest)
 	if err != nil {
 		panic(err)
@@ -45,10 +67,10 @@ func main() {
 
 	circle := gameobj.NewCircle(gameobj.NewBaseShape(gameobj.UpperTrack, gameobj.RightSide, 1, 1), personImage)
 	square := gameobj.NewSquare(gameobj.NewBaseShape(gameobj.LowerTrack, gameobj.RightSide, 1, 1), personImage)
-	triangle := gameobj.NewTriangle(gameobj.NewBaseShape(gameobj.LowerTrack, gameobj.RightSide, 1, 1), personImage)
-	drawables = append(drawables, circle)
-	drawables = append(drawables, square)
-	drawables = append(drawables, triangle)
+	triangle := gameobj.NewTriangle(gameobj.NewBaseShape(gameobj.LowerTrack, gameobj.RightSide, 2, 1), personImage)
+	shapes.Add(circle)
+	shapes.Add(square)
+	shapes.Add(triangle)
 
 	player = &PlayerCharacter{
 		name:  "Test",
