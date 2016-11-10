@@ -12,11 +12,23 @@ type Triangle struct {
 	image            *ebiten.Image
 }
 
-func NewTriangle(base *BaseShape, image *ebiten.Image, destinationTrack int) *Triangle {
+func NewTriangle(base *BaseShape, image *ebiten.Image) *Triangle {
 	var t = &Triangle{
 		BaseShape:        base,
 		TravelAngle:      DefaultCircleAngleOfDescent,
-		DestinationTrack: destinationTrack,
+		DestinationTrack: SubsequentTracks[base.Track],
+		swapState:        TriangleBeforeSwap,
+		midwayPoint:      int(base.CenterCoordinate.X / 2),
+		image:            image,
+	}
+	return t
+}
+
+func NewTriangleNonStandardAngle(base *BaseShape, image *ebiten.Image, travelAngle float64) *Triangle {
+	var t = &Triangle{
+		BaseShape:        base,
+		TravelAngle:      DefaultCircleAngleOfDescent,
+		DestinationTrack: SubsequentTracks[base.Track],
 		swapState:        TriangleBeforeSwap,
 		midwayPoint:      int(base.CenterCoordinate.X / 2),
 		image:            image,

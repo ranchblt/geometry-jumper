@@ -11,22 +11,22 @@ type Circle struct {
 }
 
 // default initializer for Circle. this sets TravelAngle to a default of 45 degrees
-func NewCircle(base *BaseShape, image *ebiten.Image, destinationTrack int) *Circle {
+func NewCircle(base *BaseShape, image *ebiten.Image) *Circle {
 	var c = &Circle{
 		BaseShape:        base,
 		TravelAngle:      DefaultCircleAngleOfDescent,
-		DestinationTrack: destinationTrack,
+		DestinationTrack: SubsequentTracks[base.Track],
 		image:            image,
 	}
 	return c
 }
 
 // if you want a different angle of descent, use this initializer
-func NewCircleNonStandardAngle(base *BaseShape, image *ebiten.Image, destinationTrack int, travelAngle float64) *Circle {
+func NewCircleNonStandardAngle(base *BaseShape, image *ebiten.Image, travelAngle float64) *Circle {
 	var c = &Circle{
 		BaseShape:        base,
 		TravelAngle:      travelAngle,
-		DestinationTrack: destinationTrack,
+		DestinationTrack: SubsequentTracks[base.Track],
 		image:            image,
 	}
 	return c

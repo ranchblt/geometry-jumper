@@ -43,9 +43,9 @@ func main() {
 		panic(err)
 	}
 
-	circle := gameobj.NewCircle(gameobj.NewBaseShape(gameobj.UpperTrack, gameobj.RightSide, .35, 1), personImage, gameobj.SubsequentTracks[gameobj.UpperTrack])
+	circle := gameobj.NewCircle(gameobj.NewBaseShape(gameobj.UpperTrack, gameobj.RightSide, .35, 1), personImage)
 	square := gameobj.NewSquare(gameobj.NewBaseShape(gameobj.LowerTrack, gameobj.RightSide, .10, 1), personImage)
-	triangle := gameobj.NewTriangle(gameobj.NewBaseShape(gameobj.LowerTrack, gameobj.RightSide-100, .50, 1), personImage, gameobj.UpperTrack)
+	triangle := gameobj.NewTriangle(gameobj.NewBaseShape(gameobj.LowerTrack, gameobj.RightSide, 1, 1), personImage)
 	drawables = append(drawables, circle)
 	drawables = append(drawables, square)
 	drawables = append(drawables, triangle)
