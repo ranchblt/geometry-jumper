@@ -58,12 +58,12 @@ func (s *Circle) Len() int {
 
 func (c *Circle) Dst(i int) (x0, y0, x1, y1 int) {
 	w, h := c.image.Size()
-	halfHeight := float64(h / 2)
-	halfWidth := float64(w / 2)
-	return int(c.CenterCoordinate.X - halfHeight),
-		int(c.CenterCoordinate.Y - halfWidth),
-		int(c.CenterCoordinate.X + halfHeight),
-		int(c.CenterCoordinate.Y + halfWidth)
+	halfHeight := h / 2
+	halfWidth := w / 2
+	return c.CenterCoordinate.X - halfHeight,
+		c.CenterCoordinate.Y - halfWidth,
+		c.CenterCoordinate.X + halfHeight,
+		c.CenterCoordinate.Y + halfWidth
 }
 
 func (c *Circle) Src(i int) (x0, y0, x1, y1 int) {

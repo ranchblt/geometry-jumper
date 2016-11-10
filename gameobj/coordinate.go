@@ -1,6 +1,6 @@
 package gameobj
 
 type Coordinate struct {
-	X float64
-	Y float64
+	X int
+	Y int
 }

@@ -25,7 +25,7 @@ const (
 
 var (
 	// track mappings so you can use the track ID to get the track's position on the y axis
-	TrackMappings = map[int]float64{
+	TrackMappings = map[int]int{
 		UpperTrack: UpperTrackYAxis,
 		LowerTrack: LowerTrackYAxis,
 	}

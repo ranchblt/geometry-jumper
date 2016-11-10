@@ -28,12 +28,12 @@ func (s *Square) Len() int {
 
 func (s *Square) Dst(i int) (x0, y0, x1, y1 int) {
 	w, h := s.image.Size()
-	halfHeight := float64(h / 2)
-	halfWidth := float64(w / 2)
-	return int(s.CenterCoordinate.X - halfHeight),
-		int(s.CenterCoordinate.Y - halfWidth),
-		int(s.CenterCoordinate.X + halfHeight),
-		int(s.CenterCoordinate.Y + halfWidth)
+	halfHeight := h / 2
+	halfWidth := w / 2
+	return s.CenterCoordinate.X - halfHeight,
+		s.CenterCoordinate.Y - halfWidth,
+		s.CenterCoordinate.X + halfHeight,
+		s.CenterCoordinate.Y + halfWidth
 }
 
 func (s *Square) Src(i int) (x0, y0, x1, y1 int) {

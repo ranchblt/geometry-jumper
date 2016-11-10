@@ -75,12 +75,12 @@ func (t *Triangle) Len() int {
 
 func (t *Triangle) Dst(i int) (x0, y0, x1, y1 int) {
 	w, h := t.image.Size()
-	halfHeight := float64(h / 2)
-	halfWidth := float64(w / 2)
-	return int(t.CenterCoordinate.X - halfHeight),
-		int(t.CenterCoordinate.Y - halfWidth),
-		int(t.CenterCoordinate.X + halfHeight),
-		int(t.CenterCoordinate.Y + halfWidth)
+	halfHeight := h / 2
+	halfWidth := w / 2
+	return t.CenterCoordinate.X - halfHeight,
+		t.CenterCoordinate.Y - halfWidth,
+		t.CenterCoordinate.X + halfHeight,
+		t.CenterCoordinate.Y + halfWidth
 }
 
 func (t *Triangle) Src(i int) (x0, y0, x1, y1 int) {
