@@ -15,6 +15,15 @@ func degreesToRadians(degreeValue float64) float64 {
 	return degreeValue * math.Pi / 180
 }
 
+// unpublished methods are sweet!
+func getVelocityComponents(baseSpeed float64, speedModifier float64, travelAngle float64) (xVelocity float64, yVelocity float64) {
+	var travelAngleInRadians = degreesToRadians(travelAngle)
+
+	xVelocity = baseSpeed * speedModifier * math.Cos(travelAngleInRadians)
+	yVelocity = baseSpeed * speedModifier * math.Sin(travelAngleInRadians)
+	return xVelocity, yVelocity
+}
+
 type BaseShape struct {
 	Track            int
 	CenterCoordinate *Coordinate

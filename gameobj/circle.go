@@ -1,10 +1,6 @@
 package gameobj
 
-import (
-	"math"
-
-	"github.com/hajimehoshi/ebiten"
-)
+import "github.com/hajimehoshi/ebiten"
 
 type Circle struct {
 	*BaseShape
@@ -36,9 +32,8 @@ func NewCircleNonStandardAngle(base *BaseShape, image *ebiten.Image, destination
 	return c
 }
 
-// I'm sure this method can be streamlined somehow.
 func (c *Circle) Update() {
-	var xVelocity, yVelocity = c.getVelocityComponents()
+	var xVelocity, yVelocity = getVelocityComponents(c.BaseSpeed, c.SpeedModifier, c.TravelAngle)
 
 	if c.Track < c.DestinationTrack {
 		yVelocity = yVelocity * -1
@@ -55,15 +50,6 @@ func (c *Circle) Update() {
 		// and set our new destination to the one "after" our previous destination
 		c.DestinationTrack = SubsequentTracks[c.Track]
 	}
-}
-
-// unpublished methods are sweet!
-func (c *Circle) getVelocityComponents() (xVelocity float64, yVelocity float64) {
-	var travelAngleInRadians = degreesToRadians(c.TravelAngle)
-
-	xVelocity = c.BaseSpeed * c.SpeedModifier * math.Cos(travelAngleInRadians)
-	yVelocity = c.BaseSpeed * c.SpeedModifier * math.Sin(travelAngleInRadians)
-	return xVelocity, yVelocity
 }
 
 func (s *Circle) Len() int {

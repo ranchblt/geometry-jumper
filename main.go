@@ -45,8 +45,10 @@ func main() {
 
 	circle := gameobj.NewCircle(gameobj.NewBaseShape(gameobj.UpperTrack, gameobj.RightSide, .35, 1), personImage, gameobj.SubsequentTracks[gameobj.UpperTrack])
 	square := gameobj.NewSquare(gameobj.NewBaseShape(gameobj.LowerTrack, gameobj.RightSide, .10, 1), personImage)
+	triangle := gameobj.NewTriangle(gameobj.NewBaseShape(gameobj.LowerTrack, gameobj.RightSide-100, .50, 1), personImage, gameobj.UpperTrack)
 	drawables = append(drawables, circle)
 	drawables = append(drawables, square)
+	drawables = append(drawables, triangle)
 
 	player = &PlayerCharacter{
 		name:  "Test",
