@@ -22,7 +22,7 @@ const (
 var (
 	player          *PlayerCharacter
 	keyboardWrapper = keyboard.NewKeyboardWrapper()
-	shapes          *Shape
+	shapeCollection *gameobj.ShapeCollection
 )
 
 // Version is autoset from the build script
@@ -31,33 +31,10 @@ var Version string
 // Build is autoset from the build script
 var Build string
 
-type Shape struct {
-	shapes []gameobj.Drawable
-	num    int
-}
-
-func (s *Shape) Update() {
-	for _, d := range s.shapes {
-		d.Update()
-	}
-}
-
-func (s *Shape) Add(g gameobj.Drawable) {
-	s.shapes = append(s.shapes, g)
-}
-
-func (s *Shape) Draw(screen *ebiten.Image) {
-	for _, d := range s.shapes {
-		screen.DrawImage(d.Image(), &ebiten.DrawImageOptions{
-			ImageParts: d,
-		})
-	}
-}
-
 func update(screen *ebiten.Image) error {
 	keyboardWrapper.Update()
-	shapes.Update()
-	shapes.Draw(screen)
+	shapeCollection.Update()
+	shapeCollection.Draw(screen)
 
 	screen.DrawImage(player.Image, &ebiten.DrawImageOptions{
 		ImageParts: player,
@@ -75,9 +52,7 @@ func update(screen *ebiten.Image) error {
 }
 
 func main() {
-	shapes = &Shape{
-		shapes: []gameobj.Drawable{},
-	}
+	shapeCollection = gameobj.NewShapeCollection()
 
 	pImage, err := openImage("person.png")
 	handleErr(err)
@@ -106,9 +81,9 @@ func main() {
 	circle := gameobj.NewCircle(gameobj.NewBaseShape(gameobj.UpperTrack, gameobj.RightSide, 1, 1), circleImage)
 	square := gameobj.NewSquare(gameobj.NewBaseShape(gameobj.LowerTrack, gameobj.RightSide, 1, 1), squareImage)
 	triangle := gameobj.NewTriangle(gameobj.NewBaseShape(gameobj.LowerTrack, gameobj.RightSide, 2, 1), triangleImage)
-	shapes.Add(circle)
-	shapes.Add(square)
-	shapes.Add(triangle)
+	shapeCollection.Add(circle)
+	shapeCollection.Add(square)
+	shapeCollection.Add(triangle)
 
 	player = &PlayerCharacter{
 		name:  "Test",
