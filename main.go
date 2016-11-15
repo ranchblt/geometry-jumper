@@ -20,7 +20,7 @@ const (
 )
 
 var (
-	player          *PlayerCharacter
+	player          *gameobj.PlayerCharacter
 	keyboardWrapper = keyboard.NewKeyboardWrapper()
 	shapeCollection *gameobj.ShapeCollection
 )
@@ -78,17 +78,14 @@ func main() {
 	circleImage, err := ebiten.NewImageFromImage(cImage, ebiten.FilterNearest)
 	handleErr(err)
 
-	circle := gameobj.NewCircle(gameobj.NewBaseShape(gameobj.UpperTrack, gameobj.RightSide, 1, 1), circleImage)
-	square := gameobj.NewSquare(gameobj.NewBaseShape(gameobj.LowerTrack, gameobj.RightSide, 1, 1), squareImage)
-	triangle := gameobj.NewTriangle(gameobj.NewBaseShape(gameobj.LowerTrack, gameobj.RightSide, 2, 1), triangleImage)
+	circle := gameobj.NewCircle(gameobj.NewBaseShape(gameobj.UpperTrack, gameobj.RightSide, 1, 1, circleImage))
+	square := gameobj.NewSquare(gameobj.NewBaseShape(gameobj.LowerTrack, gameobj.RightSide, 1, 1, squareImage))
+	triangle := gameobj.NewTriangle(gameobj.NewBaseShape(gameobj.LowerTrack, gameobj.RightSide, 2, 1, triangleImage))
 	shapeCollection.Add(circle)
 	shapeCollection.Add(square)
 	shapeCollection.Add(triangle)
 
-	player = &PlayerCharacter{
-		name:  "Test",
-		Image: personImage,
-	}
+	player = gameobj.NewPlayerCharacter("Test", personImage, keyboardWrapper)
 
 	fmt.Printf("Starting up game. Version %s, Build %s", Version, Build)
 

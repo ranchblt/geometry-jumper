@@ -1,7 +1,5 @@
 package gameobj
 
-import "github.com/hajimehoshi/ebiten"
-
 type Triangle struct {
 	*BaseShape
 	// this is expected to be degrees.
@@ -9,29 +7,26 @@ type Triangle struct {
 	DestinationTrack int
 	swapState        int
 	midwayPoint      int
-	image            *ebiten.Image
 }
 
-func NewTriangle(base *BaseShape, image *ebiten.Image) *Triangle {
+func NewTriangle(base *BaseShape) *Triangle {
 	var t = &Triangle{
 		BaseShape:        base,
 		TravelAngle:      DefaultCircleAngleOfDescent,
 		DestinationTrack: SubsequentTracks[base.Track],
 		swapState:        TriangleBeforeSwap,
 		midwayPoint:      int(base.CenterCoordinate.X / 2),
-		image:            image,
 	}
 	return t
 }
 
-func NewTriangleNonStandardAngle(base *BaseShape, image *ebiten.Image, travelAngle float64) *Triangle {
+func NewTriangleNonStandardAngle(base *BaseShape, travelAngle float64) *Triangle {
 	var t = &Triangle{
 		BaseShape:        base,
 		TravelAngle:      DefaultCircleAngleOfDescent,
 		DestinationTrack: SubsequentTracks[base.Track],
 		swapState:        TriangleBeforeSwap,
 		midwayPoint:      int(base.CenterCoordinate.X / 2),
-		image:            image,
 	}
 	return t
 }
@@ -67,27 +62,4 @@ func (t *Triangle) updateWithTrackSwitchingMovement() {
 		t.CenterCoordinate.Y = TrackMappings[t.Track]
 		t.swapState = TriangleAfterSwap
 	}
-}
-
-func (t *Triangle) Len() int {
-	return 1
-}
-
-func (t *Triangle) Dst(i int) (x0, y0, x1, y1 int) {
-	w, h := t.image.Size()
-	halfHeight := h / 2
-	halfWidth := w / 2
-	return t.CenterCoordinate.X - halfHeight,
-		t.CenterCoordinate.Y - halfWidth,
-		t.CenterCoordinate.X + halfHeight,
-		t.CenterCoordinate.Y + halfWidth
-}
-
-func (t *Triangle) Src(i int) (x0, y0, x1, y1 int) {
-	w, h := t.image.Size()
-	return 0, 0, w, h
-}
-
-func (t *Triangle) Image() *ebiten.Image {
-	return t.image
 }

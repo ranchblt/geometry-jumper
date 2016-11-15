@@ -15,7 +15,7 @@ func degreesToRadians(degreeValue float64) float64 {
 	return degreeValue * math.Pi / 180
 }
 
-// unpublished methods are sweet!
+// helper function to get the velocity components for a given velocity and travelAngle
 func getVelocityComponents(baseSpeed int, speedModifier int, travelAngle float64) (xVelocity int, yVelocity int) {
 	var travelAngleInRadians = degreesToRadians(travelAngle)
 
@@ -29,9 +29,10 @@ type BaseShape struct {
 	CenterCoordinate *Coordinate
 	BaseSpeed        int
 	SpeedModifier    int
+	image            *ebiten.Image
 }
 
-func NewBaseShape(track int, centerX int, baseSpeed int, speedModifier int) *BaseShape {
+func NewBaseShape(track int, centerX int, baseSpeed int, speedModifier int, image *ebiten.Image) *BaseShape {
 	var s = &BaseShape{
 		Track: track,
 		CenterCoordinate: &Coordinate{
@@ -40,8 +41,32 @@ func NewBaseShape(track int, centerX int, baseSpeed int, speedModifier int) *Bas
 		},
 		BaseSpeed:     baseSpeed,
 		SpeedModifier: speedModifier,
+		image:         image,
 	}
 	return s
+}
+
+func (s *BaseShape) Len() int {
+	return 1
+}
+
+func (s *BaseShape) Dst(i int) (x0, y0, x1, y1 int) {
+	w, h := s.image.Size()
+	halfHeight := h / 2
+	halfWidth := w / 2
+	return s.CenterCoordinate.X - halfHeight,
+		s.CenterCoordinate.Y - halfWidth,
+		s.CenterCoordinate.X + halfHeight,
+		s.CenterCoordinate.Y + halfWidth
+}
+
+func (s *BaseShape) Src(i int) (x0, y0, x1, y1 int) {
+	w, h := s.image.Size()
+	return 0, 0, w, h
+}
+
+func (s *BaseShape) Image() *ebiten.Image {
+	return s.image
 }
 
 type Drawable interface {

@@ -1,33 +1,28 @@
 package gameobj
 
-import "github.com/hajimehoshi/ebiten"
-
 type Circle struct {
 	*BaseShape
 	// this is expected to be degrees.
 	TravelAngle      float64
 	DestinationTrack int
-	image            *ebiten.Image
 }
 
 // default initializer for Circle. this sets TravelAngle to a default of 45 degrees
-func NewCircle(base *BaseShape, image *ebiten.Image) *Circle {
+func NewCircle(base *BaseShape) *Circle {
 	var c = &Circle{
 		BaseShape:        base,
 		TravelAngle:      DefaultCircleAngleOfDescent,
 		DestinationTrack: SubsequentTracks[base.Track],
-		image:            image,
 	}
 	return c
 }
 
 // if you want a different angle of descent, use this initializer
-func NewCircleNonStandardAngle(base *BaseShape, image *ebiten.Image, travelAngle float64) *Circle {
+func NewCircleNonStandardAngle(base *BaseShape, travelAngle float64) *Circle {
 	var c = &Circle{
 		BaseShape:        base,
 		TravelAngle:      travelAngle,
 		DestinationTrack: SubsequentTracks[base.Track],
-		image:            image,
 	}
 	return c
 }
@@ -50,27 +45,4 @@ func (c *Circle) Update() {
 		// and set our new destination to the one "after" our previous destination
 		c.DestinationTrack = SubsequentTracks[c.Track]
 	}
-}
-
-func (s *Circle) Len() int {
-	return 1
-}
-
-func (c *Circle) Dst(i int) (x0, y0, x1, y1 int) {
-	w, h := c.image.Size()
-	halfHeight := h / 2
-	halfWidth := w / 2
-	return c.CenterCoordinate.X - halfHeight,
-		c.CenterCoordinate.Y - halfWidth,
-		c.CenterCoordinate.X + halfHeight,
-		c.CenterCoordinate.Y + halfWidth
-}
-
-func (c *Circle) Src(i int) (x0, y0, x1, y1 int) {
-	w, h := c.image.Size()
-	return 0, 0, w, h
-}
-
-func (c *Circle) Image() *ebiten.Image {
-	return c.image
 }
