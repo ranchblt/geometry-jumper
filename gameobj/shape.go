@@ -69,7 +69,14 @@ func (s *BaseShape) Image() *ebiten.Image {
 	return s.image
 }
 
+func (s *BaseShape) Draw(screen *ebiten.Image) {
+	screen.DrawImage(s.image, &ebiten.DrawImageOptions{
+		ImageParts: s,
+	})
+}
+
 type Drawable interface {
+	Draw(screen *ebiten.Image)
 	Image() *ebiten.Image
 	Update()
 	Len() int

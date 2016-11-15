@@ -14,6 +14,8 @@ const (
 	UpperTrackYAxis = 150
 	LowerTrackYAxis = 250
 
+	// x constants for sides
+	LeftSide  = 75
 	RightSide = 375
 	// this should be screen width probably, not a constant 400
 	TrackLength = 400

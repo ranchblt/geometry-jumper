@@ -8,16 +8,21 @@ import (
 )
 
 type PlayerCharacter struct {
-	name            string
-	Image           *ebiten.Image
-	keyboardWrapper *keyboard.KeyboardWrapper
+	name             string
+	image            *ebiten.Image
+	keyboardWrapper  *keyboard.KeyboardWrapper
+	CenterCoordinate *Coordinate
 }
 
 func NewPlayerCharacter(name string, image *ebiten.Image, keyboardWrapper *keyboard.KeyboardWrapper) *PlayerCharacter {
 	var player = &PlayerCharacter{
 		name:            "Test",
-		Image:           image,
+		image:           image,
 		keyboardWrapper: keyboardWrapper,
+		CenterCoordinate: &Coordinate{
+			X: LeftSide,
+			Y: TrackMappings[LowerTrack],
+		},
 	}
 	return player
 }
@@ -34,10 +39,26 @@ func (pc *PlayerCharacter) Len() int {
 }
 
 func (pc *PlayerCharacter) Dst(i int) (x0, y0, x1, y1 int) {
-	return 20, 20, 60, 60
+	w, h := pc.image.Size()
+	halfHeight := h / 2
+	halfWidth := w / 2
+	return pc.CenterCoordinate.X - halfHeight,
+		pc.CenterCoordinate.Y - halfWidth,
+		pc.CenterCoordinate.X + halfHeight,
+		pc.CenterCoordinate.Y + halfWidth
 }
 
 func (pc *PlayerCharacter) Src(i int) (x0, y0, x1, y1 int) {
-	w, h := pc.Image.Size()
+	w, h := pc.image.Size()
 	return 0, 0, w, h
+}
+
+func (pc *PlayerCharacter) Image() *ebiten.Image {
+	return pc.image
+}
+
+func (pc *PlayerCharacter) Draw(screen *ebiten.Image) {
+	screen.DrawImage(pc.image, &ebiten.DrawImageOptions{
+		ImageParts: pc,
+	})
 }

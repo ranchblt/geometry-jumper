@@ -26,8 +26,6 @@ func (s *ShapeCollection) Add(g Drawable) {
 
 func (s *ShapeCollection) Draw(screen *ebiten.Image) {
 	for _, d := range s.shapes {
-		screen.DrawImage(d.Image(), &ebiten.DrawImageOptions{
-			ImageParts: d,
-		})
+		d.Draw(screen)
 	}
 }

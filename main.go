@@ -36,11 +36,8 @@ func update(screen *ebiten.Image) error {
 	shapeCollection.Update()
 	shapeCollection.Draw(screen)
 
-	screen.DrawImage(player.Image, &ebiten.DrawImageOptions{
-		ImageParts: player,
-	})
-
 	player.Update()
+	player.Draw(screen)
 
 	ebitenutil.DebugPrint(screen, "Hello world!")
 
