@@ -34,6 +34,16 @@ func (pc *PlayerCharacter) Update() error {
 	return nil
 }
 
+func (pc *PlayerCharacter) Draw(screen *ebiten.Image) {
+	screen.DrawImage(pc.image, &ebiten.DrawImageOptions{
+		ImageParts: pc,
+	})
+}
+
+func (pc *PlayerCharacter) Image() *ebiten.Image {
+	return pc.image
+}
+
 func (pc *PlayerCharacter) Len() int {
 	return 1
 }
@@ -51,14 +61,4 @@ func (pc *PlayerCharacter) Dst(i int) (x0, y0, x1, y1 int) {
 func (pc *PlayerCharacter) Src(i int) (x0, y0, x1, y1 int) {
 	w, h := pc.image.Size()
 	return 0, 0, w, h
-}
-
-func (pc *PlayerCharacter) Image() *ebiten.Image {
-	return pc.image
-}
-
-func (pc *PlayerCharacter) Draw(screen *ebiten.Image) {
-	screen.DrawImage(pc.image, &ebiten.DrawImageOptions{
-		ImageParts: pc,
-	})
 }

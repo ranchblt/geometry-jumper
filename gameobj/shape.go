@@ -46,6 +46,16 @@ func NewBaseShape(track int, centerX int, baseSpeed int, speedModifier int, imag
 	return s
 }
 
+func (s *BaseShape) Draw(screen *ebiten.Image) {
+	screen.DrawImage(s.image, &ebiten.DrawImageOptions{
+		ImageParts: s,
+	})
+}
+
+func (s *BaseShape) Image() *ebiten.Image {
+	return s.image
+}
+
 func (s *BaseShape) Len() int {
 	return 1
 }
@@ -63,16 +73,6 @@ func (s *BaseShape) Dst(i int) (x0, y0, x1, y1 int) {
 func (s *BaseShape) Src(i int) (x0, y0, x1, y1 int) {
 	w, h := s.image.Size()
 	return 0, 0, w, h
-}
-
-func (s *BaseShape) Image() *ebiten.Image {
-	return s.image
-}
-
-func (s *BaseShape) Draw(screen *ebiten.Image) {
-	screen.DrawImage(s.image, &ebiten.DrawImageOptions{
-		ImageParts: s,
-	})
 }
 
 type Drawable interface {
