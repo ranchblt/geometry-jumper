@@ -23,6 +23,9 @@ const (
 	// default angle values IN DEGREES!!!! (go math requires radians but degrees make more sense...)
 	DefaultCircleAngleOfDescent   float64 = 45
 	DefaultTriangleAngleOfDescent float64 = 45
+
+	JumpHeight = 50
+	JumpSpeed  = 5
 )
 
 var (

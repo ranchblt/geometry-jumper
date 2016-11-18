@@ -1,7 +1,6 @@
 package gameobj
 
 import (
-	"fmt"
 	"geometry-jumper/keyboard"
 
 	"github.com/hajimehoshi/ebiten"
@@ -12,6 +11,9 @@ type PlayerCharacter struct {
 	image            *ebiten.Image
 	keyboardWrapper  *keyboard.KeyboardWrapper
 	CenterCoordinate *Coordinate
+	jumping          bool
+	maxHeightReached bool
+	originalY        int
 }
 
 func NewPlayerCharacter(name string, image *ebiten.Image, keyboardWrapper *keyboard.KeyboardWrapper) *PlayerCharacter {
@@ -23,14 +25,35 @@ func NewPlayerCharacter(name string, image *ebiten.Image, keyboardWrapper *keybo
 			X: LeftSide,
 			Y: TrackMappings[LowerTrack],
 		},
+		jumping:   false,
+		originalY: 0,
 	}
 	return player
 }
 
 func (pc *PlayerCharacter) Update() error {
 	if pc.keyboardWrapper.KeyPushed(ebiten.KeySpace) {
-		fmt.Print("you pushed space")
+		if !pc.jumping {
+			pc.jumping = true
+			pc.maxHeightReached = false
+			pc.originalY = pc.CenterCoordinate.Y
+		}
 	}
+
+	if pc.jumping {
+		if pc.CenterCoordinate.Y >= pc.originalY-JumpHeight && !pc.maxHeightReached {
+			pc.CenterCoordinate.Y -= JumpSpeed
+		} else {
+			pc.maxHeightReached = true
+			pc.CenterCoordinate.Y += JumpSpeed
+
+			if pc.CenterCoordinate.Y >= pc.originalY {
+				pc.CenterCoordinate.Y = pc.originalY
+				pc.jumping = false
+			}
+		}
+	}
+
 	return nil
 }
 
