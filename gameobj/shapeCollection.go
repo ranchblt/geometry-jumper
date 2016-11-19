@@ -18,6 +18,18 @@ func (s *ShapeCollection) Update() {
 	for _, d := range s.shapes {
 		d.Update()
 	}
+
+	// now that we're done updating, let's figure out what shapes
+	// expired and remove them
+	var unexpiredShapes = []Drawable{}
+
+	for _, d := range s.shapes {
+		if !d.IsExpired() {
+			unexpiredShapes = append(unexpiredShapes, d)
+		}
+	}
+	// boy I hope this doesn't cause a leak somehow
+	s.shapes = unexpiredShapes
 }
 
 func (s *ShapeCollection) Add(g Drawable) {

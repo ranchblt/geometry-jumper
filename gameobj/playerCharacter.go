@@ -22,7 +22,7 @@ func NewPlayerCharacter(name string, image *ebiten.Image, keyboardWrapper *keybo
 		image:           image,
 		keyboardWrapper: keyboardWrapper,
 		CenterCoordinate: &Coordinate{
-			X: LeftSide,
+			X: PlayerX,
 			Y: TrackMappings[LowerTrack],
 		},
 		jumping:   false,

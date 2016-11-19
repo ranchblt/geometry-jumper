@@ -42,6 +42,10 @@ func (t *Triangle) Update() {
 	} else {
 		t.updateWithTrackSwitchingMovement()
 	}
+
+	if t.crossedLeftEdge() {
+		t.expired = true
+	}
 }
 
 // this is the circle's up / down logic! wooo!

@@ -45,4 +45,8 @@ func (c *Circle) Update() {
 		// and set our new destination to the one "after" our previous destination
 		c.DestinationTrack = SubsequentTracks[c.Track]
 	}
+
+	if c.crossedLeftEdge() {
+		c.expired = true
+	}
 }

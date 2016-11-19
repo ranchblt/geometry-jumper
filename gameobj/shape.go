@@ -30,6 +30,7 @@ type BaseShape struct {
 	BaseSpeed        int
 	SpeedModifier    int
 	image            *ebiten.Image
+	expired          bool
 }
 
 func NewBaseShape(track int, centerX int, baseSpeed int, speedModifier int, image *ebiten.Image) *BaseShape {
@@ -42,8 +43,19 @@ func NewBaseShape(track int, centerX int, baseSpeed int, speedModifier int, imag
 		BaseSpeed:     baseSpeed,
 		SpeedModifier: speedModifier,
 		image:         image,
+		expired:       false,
 	}
 	return s
+}
+
+func (s *BaseShape) crossedLeftEdge() bool {
+	var crossed bool
+	if s.CenterCoordinate.X <= LeftSide {
+		crossed = true
+	} else {
+		crossed = false
+	}
+	return crossed
 }
 
 func (s *BaseShape) Draw(screen *ebiten.Image) {
@@ -75,6 +87,10 @@ func (s *BaseShape) Src(i int) (x0, y0, x1, y1 int) {
 	return 0, 0, w, h
 }
 
+func (s *BaseShape) IsExpired() bool {
+	return s.expired
+}
+
 type Drawable interface {
 	Draw(screen *ebiten.Image)
 	Image() *ebiten.Image
@@ -82,4 +98,5 @@ type Drawable interface {
 	Len() int
 	Dst(int) (int, int, int, int)
 	Src(int) (int, int, int, int)
+	IsExpired() bool
 }
