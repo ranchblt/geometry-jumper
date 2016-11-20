@@ -16,11 +16,11 @@ func degreesToRadians(degreeValue float64) float64 {
 }
 
 // helper function to get the velocity components for a given velocity and travelAngle
-func getVelocityComponents(baseSpeed int, speedModifier int, travelAngle float64) (xVelocity int, yVelocity int) {
+func getVelocityComponents(baseSpeed int, travelAngle float64) (xVelocity int, yVelocity int) {
 	var travelAngleInRadians = degreesToRadians(travelAngle)
 
-	xVelocity = int(float64(baseSpeed)*float64(speedModifier) + math.Cos(travelAngleInRadians))
-	yVelocity = int(float64(baseSpeed)*float64(speedModifier) + math.Sin(travelAngleInRadians))
+	xVelocity = int(float64(baseSpeed) + math.Cos(travelAngleInRadians))
+	yVelocity = int(float64(baseSpeed) + math.Sin(travelAngleInRadians))
 	return xVelocity, yVelocity
 }
 
@@ -28,29 +28,28 @@ type BaseShape struct {
 	Track            int
 	CenterCoordinate *Coordinate
 	BaseSpeed        int
-	SpeedModifier    int
 	image            *ebiten.Image
 	expired          bool
 }
 
-func NewBaseShape(track int, centerX int, baseSpeed int, speedModifier int, image *ebiten.Image) *BaseShape {
+func NewBaseShape(track int, centerX int, baseSpeed int, image *ebiten.Image) *BaseShape {
 	var s = &BaseShape{
 		Track: track,
 		CenterCoordinate: &Coordinate{
 			X: centerX,
 			Y: TrackMappings[track],
 		},
-		BaseSpeed:     baseSpeed,
-		SpeedModifier: speedModifier,
-		image:         image,
-		expired:       false,
+		BaseSpeed: baseSpeed,
+		image:     image,
+		expired:   false,
 	}
 	return s
 }
 
 func (s *BaseShape) crossedLeftEdge() bool {
 	var crossed bool
-	if s.CenterCoordinate.X <= LeftSide {
+	w, _ := s.image.Size()
+	if s.CenterCoordinate.X <= -(w / 2) {
 		crossed = true
 	} else {
 		crossed = false

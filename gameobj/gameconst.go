@@ -5,6 +5,11 @@ const (
 	UpperTrack = 1
 	LowerTrack = 2
 
+	// shape constants
+	TriangleType = 1
+	CircleType   = 2
+	SquareType   = 3
+
 	// triangle movement state constants
 	TriangleBeforeSwap = 1
 	TriangleDuringSwap = 2
@@ -27,9 +32,14 @@ const (
 
 	JumpHeight = 50
 	JumpSpeed  = 5
+
+	DefaultSpeedModifier = 1
 )
 
 var (
+	// slice of all shape types
+	ShapeTypes = [...]int{TriangleType, CircleType, SquareType}
+
 	// track mappings so you can use the track ID to get the track's position on the y axis
 	TrackMappings = map[int]int{
 		UpperTrack: UpperTrackYAxis,

@@ -28,7 +28,7 @@ func NewCircleNonStandardAngle(base *BaseShape, travelAngle float64) *Circle {
 }
 
 func (c *Circle) Update() {
-	var xVelocity, yVelocity = getVelocityComponents(c.BaseSpeed, c.SpeedModifier, c.TravelAngle)
+	var xVelocity, yVelocity = getVelocityComponents(c.BaseSpeed, c.TravelAngle)
 
 	if c.Track < c.DestinationTrack {
 		yVelocity = yVelocity * -1

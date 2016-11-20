@@ -34,7 +34,7 @@ func NewTriangleNonStandardAngle(base *BaseShape, travelAngle float64) *Triangle
 func (t *Triangle) Update() {
 	if t.swapState == TriangleBeforeSwap || t.swapState == TriangleAfterSwap {
 		// before and after swap, just slide along the track
-		t.CenterCoordinate.X = t.CenterCoordinate.X - (t.BaseSpeed * t.SpeedModifier)
+		t.CenterCoordinate.X = t.CenterCoordinate.X - t.BaseSpeed
 
 		if t.swapState == TriangleBeforeSwap && int(t.CenterCoordinate.X) <= t.midwayPoint {
 			t.swapState = TriangleDuringSwap
@@ -50,7 +50,7 @@ func (t *Triangle) Update() {
 
 // this is the circle's up / down logic! wooo!
 func (t *Triangle) updateWithTrackSwitchingMovement() {
-	var xVelocity, yVelocity = getVelocityComponents(t.BaseSpeed, t.SpeedModifier, t.TravelAngle)
+	var xVelocity, yVelocity = getVelocityComponents(t.BaseSpeed, t.TravelAngle)
 
 	if t.Track < t.DestinationTrack {
 		yVelocity = yVelocity * -1

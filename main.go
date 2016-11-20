@@ -49,8 +49,6 @@ func update(screen *ebiten.Image) error {
 }
 
 func main() {
-	shapeCollection = gameobj.NewShapeCollection()
-
 	pImage, err := openImage("person.png")
 	handleErr(err)
 
@@ -75,12 +73,26 @@ func main() {
 	circleImage, err := ebiten.NewImageFromImage(cImage, ebiten.FilterNearest)
 	handleErr(err)
 
-	circle := gameobj.NewCircle(gameobj.NewBaseShape(gameobj.UpperTrack, gameobj.RightSide, 1, 1, circleImage))
-	square := gameobj.NewSquare(gameobj.NewBaseShape(gameobj.LowerTrack, gameobj.RightSide, 1, 1, squareImage))
-	triangle := gameobj.NewTriangle(gameobj.NewBaseShape(gameobj.LowerTrack, gameobj.RightSide, 2, 1, triangleImage))
-	shapeCollection.Add(circle)
-	shapeCollection.Add(square)
-	shapeCollection.Add(triangle)
+	shapeImageMap := map[int]*ebiten.Image{
+		gameobj.TriangleType: triangleImage,
+		gameobj.SquareType:   squareImage,
+		gameobj.CircleType:   circleImage,
+	}
+
+	shapeCollection = gameobj.NewShapeCollection(shapeImageMap)
+
+	//circle := gameobj.NewCircle(gameobj.NewBaseShape(gameobj.UpperTrack, gameobj.RightSide, 1, circleImage))
+	//square := gameobj.NewSquare(gameobj.NewBaseShape(gameobj.LowerTrack, gameobj.RightSide, 1, squareImage))
+	//triangle := gameobj.NewTriangle(gameobj.NewBaseShape(gameobj.LowerTrack, gameobj.RightSide, 2, triangleImage))
+	//shapeCollection.Add(circle)
+	//shapeCollection.Add(square)
+	//shapeCollection.Add(triangle)
+	shapeCollection.SpawnRandomShape()
+	shapeCollection.IncreaseSpeedModifier()
+	shapeCollection.IncreaseSpeedModifier()
+	shapeCollection.IncreaseSpeedModifier()
+	shapeCollection.IncreaseSpeedModifier()
+	shapeCollection.SpawnRandomShape()
 
 	player = gameobj.NewPlayerCharacter("Test", personImage, keyboardWrapper)
 
