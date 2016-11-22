@@ -1,5 +1,14 @@
 package gameobj
 
+import (
+	"bytes"
+	"image"
+
+	"geometry-jumper/resource"
+
+	"github.com/hajimehoshi/ebiten"
+)
+
 const (
 	// Track constants
 	UpperTrack = 1
@@ -51,4 +60,55 @@ var (
 		UpperTrack: LowerTrack,
 		LowerTrack: UpperTrack,
 	}
+	PersonImage   *ebiten.Image
+	SquareImage   *ebiten.Image
+	TriangleImage *ebiten.Image
+	CircleImage   *ebiten.Image
 )
+
+func InitImages() {
+	pImage, err := openImage("person.png")
+	handleErr(err)
+
+	PersonImage, err = ebiten.NewImageFromImage(pImage, ebiten.FilterNearest)
+	handleErr(err)
+
+	sImage, err := openImage("square.png")
+	handleErr(err)
+
+	SquareImage, err = ebiten.NewImageFromImage(sImage, ebiten.FilterNearest)
+	handleErr(err)
+
+	tImage, err := openImage("triangle.png")
+	handleErr(err)
+
+	TriangleImage, err = ebiten.NewImageFromImage(tImage, ebiten.FilterNearest)
+	handleErr(err)
+
+	cImage, err := openImage("circle.png")
+	handleErr(err)
+
+	CircleImage, err = ebiten.NewImageFromImage(cImage, ebiten.FilterNearest)
+	handleErr(err)
+}
+
+func openImage(path string) (image.Image, error) {
+	b, err := resource.Asset(path)
+	if err != nil {
+		return nil, err
+	}
+
+	image, _, err := image.Decode(bytes.NewReader(b))
+
+	if err != nil {
+		return nil, err
+	}
+
+	return image, nil
+}
+
+func handleErr(err error) {
+	if err != nil {
+		panic(err)
+	}
+}

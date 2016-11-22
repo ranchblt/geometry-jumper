@@ -1,14 +1,11 @@
 package main
 
 import (
-	"bytes"
 	"errors"
 	"geometry-jumper/gameobj"
 	"geometry-jumper/keyboard"
-	"geometry-jumper/resource"
 
 	"fmt"
-	"image"
 
 	"github.com/hajimehoshi/ebiten"
 	"github.com/hajimehoshi/ebiten/ebitenutil"
@@ -49,34 +46,12 @@ func update(screen *ebiten.Image) error {
 }
 
 func main() {
-	pImage, err := openImage("person.png")
-	handleErr(err)
-
-	personImage, err := ebiten.NewImageFromImage(pImage, ebiten.FilterNearest)
-	handleErr(err)
-
-	sImage, err := openImage("square.png")
-	handleErr(err)
-
-	squareImage, err := ebiten.NewImageFromImage(sImage, ebiten.FilterNearest)
-	handleErr(err)
-
-	tImage, err := openImage("triangle.png")
-	handleErr(err)
-
-	triangleImage, err := ebiten.NewImageFromImage(tImage, ebiten.FilterNearest)
-	handleErr(err)
-
-	cImage, err := openImage("circle.png")
-	handleErr(err)
-
-	circleImage, err := ebiten.NewImageFromImage(cImage, ebiten.FilterNearest)
-	handleErr(err)
+	gameobj.InitImages()
 
 	shapeImageMap := map[int]*ebiten.Image{
-		gameobj.TriangleType: triangleImage,
-		gameobj.SquareType:   squareImage,
-		gameobj.CircleType:   circleImage,
+		gameobj.TriangleType: gameobj.TriangleImage,
+		gameobj.SquareType:   gameobj.SquareImage,
+		gameobj.CircleType:   gameobj.CircleImage,
 	}
 
 	shapeCollection = gameobj.NewShapeCollection(shapeImageMap)
@@ -94,30 +69,9 @@ func main() {
 	shapeCollection.IncreaseSpeedModifier()
 	shapeCollection.SpawnRandomShape()
 
-	player = gameobj.NewPlayerCharacter("Test", personImage, keyboardWrapper)
+	player = gameobj.NewPlayerCharacter("Test", gameobj.PersonImage, keyboardWrapper)
 
 	fmt.Printf("Starting up game. Version %s, Build %s", Version, Build)
 
 	ebiten.Run(update, screenWidth, screenHeight, 2, "Hello world!")
-}
-
-func openImage(path string) (image.Image, error) {
-	b, err := resource.Asset(path)
-	if err != nil {
-		return nil, err
-	}
-
-	image, _, err := image.Decode(bytes.NewReader(b))
-
-	if err != nil {
-		return nil, err
-	}
-
-	return image, nil
-}
-
-func handleErr(err error) {
-	if err != nil {
-		panic(err)
-	}
 }
