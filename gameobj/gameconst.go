@@ -39,8 +39,9 @@ const (
 	DefaultCircleAngleOfDescent   float64 = 45
 	DefaultTriangleAngleOfDescent float64 = 45
 
-	JumpHeight = 50
-	JumpSpeed  = 5
+	JumpHeight    = 70
+	JumpUpSpeed   = 5
+	JumpDownSpeed = 3
 
 	DefaultSpeedModifier = 1
 )

@@ -44,10 +44,10 @@ func (pc *PlayerCharacter) Update() error {
 
 	if pc.jumping {
 		if pc.CenterCoordinate.Y >= pc.originalY-JumpHeight && !pc.maxHeightReached {
-			pc.CenterCoordinate.Y -= JumpSpeed
+			pc.CenterCoordinate.Y -= JumpUpSpeed
 		} else {
 			pc.maxHeightReached = true
-			pc.CenterCoordinate.Y += JumpSpeed
+			pc.CenterCoordinate.Y += JumpDownSpeed
 
 			if pc.CenterCoordinate.Y >= pc.originalY {
 				pc.CenterCoordinate.Y = pc.originalY
