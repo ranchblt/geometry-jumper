@@ -69,7 +69,7 @@ func main() {
 	shapeCollection.IncreaseSpeedModifier()
 	shapeCollection.SpawnRandomShape()
 
-	player = gameobj.NewPlayerCharacter("Test", gameobj.PersonImage, keyboardWrapper)
+	player = gameobj.NewPlayerCharacter("Test", gameobj.PersonStandingImage, gameobj.PersonJumpingImage, keyboardWrapper)
 
 	fmt.Printf("Starting up game. Version %s, Build %s", Version, Build)
 

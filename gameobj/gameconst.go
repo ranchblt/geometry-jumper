@@ -60,17 +60,24 @@ var (
 		UpperTrack: LowerTrack,
 		LowerTrack: UpperTrack,
 	}
-	PersonImage   *ebiten.Image
-	SquareImage   *ebiten.Image
-	TriangleImage *ebiten.Image
-	CircleImage   *ebiten.Image
+	PersonStandingImage *ebiten.Image
+	PersonJumpingImage  *ebiten.Image
+	SquareImage         *ebiten.Image
+	TriangleImage       *ebiten.Image
+	CircleImage         *ebiten.Image
 )
 
 func InitImages() {
-	pImage, err := openImage("person.png")
+	pImage, err := openImage("person-standing.png")
 	handleErr(err)
 
-	PersonImage, err = ebiten.NewImageFromImage(pImage, ebiten.FilterNearest)
+	PersonStandingImage, err = ebiten.NewImageFromImage(pImage, ebiten.FilterNearest)
+	handleErr(err)
+
+	pImage2, err := openImage("person-jumping.png")
+	handleErr(err)
+
+	PersonJumpingImage, err = ebiten.NewImageFromImage(pImage2, ebiten.FilterNearest)
 	handleErr(err)
 
 	sImage, err := openImage("square.png")

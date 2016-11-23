@@ -9,6 +9,7 @@ import (
 type PlayerCharacter struct {
 	name             string
 	image            *ebiten.Image
+	imageJumping     *ebiten.Image
 	keyboardWrapper  *keyboard.KeyboardWrapper
 	CenterCoordinate *Coordinate
 	jumping          bool
@@ -16,10 +17,11 @@ type PlayerCharacter struct {
 	originalY        int
 }
 
-func NewPlayerCharacter(name string, image *ebiten.Image, keyboardWrapper *keyboard.KeyboardWrapper) *PlayerCharacter {
+func NewPlayerCharacter(name string, image *ebiten.Image, jimage *ebiten.Image, keyboardWrapper *keyboard.KeyboardWrapper) *PlayerCharacter {
 	var player = &PlayerCharacter{
 		name:            "Test",
 		image:           image,
+		imageJumping:    jimage,
 		keyboardWrapper: keyboardWrapper,
 		CenterCoordinate: &Coordinate{
 			X: PlayerX,
@@ -58,9 +60,15 @@ func (pc *PlayerCharacter) Update() error {
 }
 
 func (pc *PlayerCharacter) Draw(screen *ebiten.Image) {
-	screen.DrawImage(pc.image, &ebiten.DrawImageOptions{
-		ImageParts: pc,
-	})
+	if pc.jumping {
+		screen.DrawImage(pc.imageJumping, &ebiten.DrawImageOptions{
+			ImageParts: pc,
+		})
+	} else {
+		screen.DrawImage(pc.image, &ebiten.DrawImageOptions{
+			ImageParts: pc,
+		})
+	}
 }
 
 func (pc *PlayerCharacter) Image() *ebiten.Image {
