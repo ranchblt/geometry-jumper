@@ -29,6 +29,11 @@ var Version string
 var Build string
 
 func update(screen *ebiten.Image) error {
+	if gameobj.Debug {
+		screen.DrawImage(gameobj.UpperTrackLine, gameobj.UpperTrackOpts)
+		screen.DrawImage(gameobj.LowerTrackLine, gameobj.LowerTrackOpts)
+	}
+
 	keyboardWrapper.Update()
 	shapeCollection.Update()
 	shapeCollection.Draw(screen)
@@ -47,26 +52,11 @@ func update(screen *ebiten.Image) error {
 
 func main() {
 	gameobj.InitImages()
+	gameobj.InitImageMaps()
 
-	shapeImageMap := map[int]*ebiten.Image{
-		gameobj.TriangleType: gameobj.TriangleImage,
-		gameobj.SquareType:   gameobj.SquareImage,
-		gameobj.CircleType:   gameobj.CircleImage,
-	}
+	shapeCollection = gameobj.NewShapeCollection()
 
-	shapeCollection = gameobj.NewShapeCollection(shapeImageMap)
-
-	//circle := gameobj.NewCircle(gameobj.NewBaseShape(gameobj.UpperTrack, gameobj.RightSide, 1, circleImage))
-	//square := gameobj.NewSquare(gameobj.NewBaseShape(gameobj.LowerTrack, gameobj.RightSide, 1, squareImage))
-	//triangle := gameobj.NewTriangle(gameobj.NewBaseShape(gameobj.LowerTrack, gameobj.RightSide, 2, triangleImage))
-	//shapeCollection.Add(circle)
-	//shapeCollection.Add(square)
-	//shapeCollection.Add(triangle)
 	shapeCollection.SpawnRandomShape()
-	shapeCollection.IncreaseSpeedModifier()
-	shapeCollection.IncreaseSpeedModifier()
-	shapeCollection.IncreaseSpeedModifier()
-	shapeCollection.IncreaseSpeedModifier()
 	shapeCollection.SpawnRandomShape()
 
 	player = gameobj.NewPlayerCharacter("Test", gameobj.PersonStandingImage, gameobj.PersonJumpingImage, keyboardWrapper)

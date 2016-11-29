@@ -3,6 +3,7 @@ package gameobj
 import (
 	"bytes"
 	"image"
+	"image/color"
 
 	"geometry-jumper/resource"
 
@@ -10,6 +11,9 @@ import (
 )
 
 const (
+	// can we specify this via a property? mike pls.
+	Debug = true
+
 	// Track constants
 	UpperTrack = 1
 	LowerTrack = 2
@@ -39,11 +43,12 @@ const (
 	DefaultCircleAngleOfDescent   float64 = 45
 	DefaultTriangleAngleOfDescent float64 = 45
 
-	JumpHeight    = 70
+	JumpHeight    = LowerTrackYAxis - UpperTrackYAxis
 	JumpUpSpeed   = 5
 	JumpDownSpeed = 3
 
-	DefaultSpeedModifier = 1
+	StartingUpperSpeedLimit = 3
+	MinimumSpeed            = 3
 )
 
 var (
@@ -64,8 +69,17 @@ var (
 	PersonStandingImage *ebiten.Image
 	PersonJumpingImage  *ebiten.Image
 	SquareImage         *ebiten.Image
+	SquareBorder        *ebiten.Image
 	TriangleImage       *ebiten.Image
 	CircleImage         *ebiten.Image
+	UpperTrackLine      *ebiten.Image
+	LowerTrackLine      *ebiten.Image
+
+	UpperTrackOpts *ebiten.DrawImageOptions
+	LowerTrackOpts *ebiten.DrawImageOptions
+
+	ShapeImageMap  map[int][]*ebiten.Image
+	HitboxImageMap map[int]*ebiten.Image
 )
 
 func InitImages() {
@@ -87,6 +101,11 @@ func InitImages() {
 	SquareImage, err = ebiten.NewImageFromImage(sImage, ebiten.FilterNearest)
 	handleErr(err)
 
+	squareWidth, squareHeight := SquareImage.Size()
+	// this is wrong. need to figure out how to do hollow shapes
+	SquareBorder, err = ebiten.NewImage(squareWidth, squareHeight, ebiten.FilterNearest)
+	SquareBorder.Fill(color.White)
+
 	tImage, err := openImage("triangle.png")
 	handleErr(err)
 
@@ -98,6 +117,35 @@ func InitImages() {
 
 	CircleImage, err = ebiten.NewImageFromImage(cImage, ebiten.FilterNearest)
 	handleErr(err)
+
+	UpperTrackLine, err = ebiten.NewImage(TrackLength, 1, ebiten.FilterNearest)
+	UpperTrackLine.Fill(color.White)
+	handleErr(err)
+
+	LowerTrackLine, err = ebiten.NewImage(TrackLength, 1, ebiten.FilterNearest)
+	LowerTrackLine.Fill(color.White)
+	handleErr(err)
+
+	UpperTrackOpts = &ebiten.DrawImageOptions{}
+	UpperTrackOpts.GeoM.Translate(0, UpperTrackYAxis)
+
+	LowerTrackOpts = &ebiten.DrawImageOptions{}
+	LowerTrackOpts.GeoM.Translate(0, LowerTrackYAxis)
+}
+
+func InitImageMaps() {
+	ShapeImageMap = map[int][]*ebiten.Image{
+		TriangleType: []*ebiten.Image{TriangleImage},
+		SquareType:   []*ebiten.Image{SquareImage},
+		CircleType:   []*ebiten.Image{CircleImage},
+	}
+
+	HitboxImageMap = map[int]*ebiten.Image{
+		// todo: real values
+		TriangleType: SquareBorder,
+		SquareType:   SquareBorder,
+		CircleType:   SquareBorder,
+	}
 }
 
 func openImage(path string) (image.Image, error) {

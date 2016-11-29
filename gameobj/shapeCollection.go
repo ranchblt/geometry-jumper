@@ -8,41 +8,48 @@ import (
 )
 
 type ShapeCollection struct {
-	shapeImageMap map[int]*ebiten.Image
-	shapes        []Drawable
-	speedModifier int
-	shapeRandom   *rand.Rand
+	shapeImageMap   map[int][]*ebiten.Image
+	hitboxImageMap  map[int]*ebiten.Image
+	shapes          []Drawable
+	upperSpeedLimit int
+	minimumSpeed    int
+	shapeRandom     *rand.Rand
+	colorSwap       bool
 }
 
-func NewShapeCollection(shapeImageMap map[int]*ebiten.Image) *ShapeCollection {
+func NewShapeCollection() *ShapeCollection {
 	shapeSource := rand.NewSource(time.Now().UnixNano())
 	var s = &ShapeCollection{
-		shapeImageMap: shapeImageMap,
-		shapes:        []Drawable{},
-		speedModifier: DefaultSpeedModifier,
-		shapeRandom:   rand.New(shapeSource),
+		shapeImageMap:   ShapeImageMap,
+		hitboxImageMap:  HitboxImageMap,
+		shapes:          []Drawable{},
+		upperSpeedLimit: StartingUpperSpeedLimit,
+		minimumSpeed:    MinimumSpeed,
+		shapeRandom:     rand.New(shapeSource),
+		colorSwap:       false,
 	}
 	return s
 }
 
-func (s *ShapeCollection) IncreaseSpeedModifier() {
-	s.speedModifier++
+func (s *ShapeCollection) IncreaseUpperSpeedLimit() {
+	s.upperSpeedLimit++
 }
 
 func (s *ShapeCollection) SpawnShape(shapeType int) {
 	track := s.shapeRandom.Intn(len(TrackMappings)) + 1
-	speed := s.shapeRandom.Intn(s.speedModifier) + 1
-	image := s.shapeImageMap[shapeType]
+	speed := s.shapeRandom.Intn(s.upperSpeedLimit) + s.minimumSpeed
+	image := s.shapeImageMap[shapeType][0]
+	hitboxImage := s.hitboxImageMap[shapeType]
 
 	switch shapeType {
 	case TriangleType:
-		triangle := NewTriangle(NewBaseShape(track, RightSide, speed, image))
+		triangle := NewTriangle(NewBaseShape(track, RightSide, speed, image, hitboxImage))
 		s.Add(triangle)
 	case CircleType:
-		circle := NewCircle(NewBaseShape(track, RightSide, speed, image))
+		circle := NewCircle(NewBaseShape(track, RightSide, speed, image, hitboxImage))
 		s.Add(circle)
 	case SquareType:
-		square := NewSquare(NewBaseShape(track, RightSide, speed, image))
+		square := NewSquare(NewBaseShape(track, RightSide, speed, image, hitboxImage))
 		s.Add(square)
 	}
 }
