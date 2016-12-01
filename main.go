@@ -36,6 +36,8 @@ func update(screen *ebiten.Image) error {
 	player.Update()
 	player.Draw(screen)
 
+	player.CheckCollision(shapeCollection)
+
 	ebitenutil.DebugPrint(screen, "Hello world!")
 
 	if keyboardWrapper.KeyPushed(ebiten.KeyEscape) {

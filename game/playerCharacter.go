@@ -1,7 +1,10 @@
 package game
 
 import (
+	"fmt"
 	"geometry-jumper/keyboard"
+
+	"geometry-jumper/collision"
 
 	"github.com/hajimehoshi/ebiten"
 )
@@ -68,6 +71,23 @@ func (pc *PlayerCharacter) Draw(screen *ebiten.Image) {
 		screen.DrawImage(pc.image, &ebiten.DrawImageOptions{
 			ImageParts: pc,
 		})
+	}
+}
+
+func (pc *PlayerCharacter) CheckCollision(sc *ShapeCollection) {
+	pcHitbox := collision.Hitbox{
+		Image:  pc.Image(),
+		Center: pc.Center,
+	}
+
+	for _, s := range sc.shapes {
+		sHitBox := collision.Hitbox{
+			Image:  s.Image(),
+			Center: s.CenterCoord(),
+		}
+		if collision.IsColliding(&pcHitbox, &sHitBox) {
+			fmt.Println("collision")
+		}
 	}
 }
 

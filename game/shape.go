@@ -99,9 +99,14 @@ func (s *BaseShape) IsExpired() bool {
 	return s.expired
 }
 
+func (s *BaseShape) CenterCoord() *coord {
+	return s.Center
+}
+
 type Drawable interface {
 	Draw(screen *ebiten.Image)
 	Image() *ebiten.Image
+	CenterCoord() *coord
 	Update()
 	Len() int
 	Dst(int) (int, int, int, int)
