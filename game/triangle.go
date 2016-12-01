@@ -15,7 +15,7 @@ func NewTriangle(base *BaseShape) *Triangle {
 		TravelAngle:      DefaultCircleAngleOfDescent,
 		DestinationTrack: SubsequentTracks[base.Track],
 		swapState:        TriangleBeforeSwap,
-		midwayPoint:      int(base.CenterCoordinate.X / 2),
+		midwayPoint:      int(base.Center.X / 2),
 	}
 	return t
 }
@@ -26,7 +26,7 @@ func NewTriangleNonStandardAngle(base *BaseShape, travelAngle float64) *Triangle
 		TravelAngle:      DefaultCircleAngleOfDescent,
 		DestinationTrack: SubsequentTracks[base.Track],
 		swapState:        TriangleBeforeSwap,
-		midwayPoint:      int(base.CenterCoordinate.X / 2),
+		midwayPoint:      int(base.Center.X / 2),
 	}
 	return t
 }
@@ -34,9 +34,9 @@ func NewTriangleNonStandardAngle(base *BaseShape, travelAngle float64) *Triangle
 func (t *Triangle) Update() {
 	if t.swapState == TriangleBeforeSwap || t.swapState == TriangleAfterSwap {
 		// before and after swap, just slide along the track
-		t.CenterCoordinate.X = t.CenterCoordinate.X - t.BaseSpeed
+		t.Center.X = t.Center.X - t.BaseSpeed
 
-		if t.swapState == TriangleBeforeSwap && int(t.CenterCoordinate.X) <= t.midwayPoint {
+		if t.swapState == TriangleBeforeSwap && int(t.Center.X) <= t.midwayPoint {
 			t.swapState = TriangleDuringSwap
 		}
 	} else {
@@ -55,15 +55,15 @@ func (t *Triangle) updateWithTrackSwitchingMovement() {
 	if t.Track < t.DestinationTrack {
 		yVelocity = yVelocity * -1
 	}
-	t.CenterCoordinate.X = t.CenterCoordinate.X - xVelocity
-	t.CenterCoordinate.Y = t.CenterCoordinate.Y - yVelocity
+	t.Center.X = t.Center.X - xVelocity
+	t.Center.Y = t.Center.Y - yVelocity
 
-	if (t.Track < t.DestinationTrack && t.CenterCoordinate.Y >= TrackMappings[t.DestinationTrack]) ||
-		(t.Track > t.DestinationTrack && t.CenterCoordinate.Y <= TrackMappings[t.DestinationTrack]) {
+	if (t.Track < t.DestinationTrack && t.Center.Y >= TrackMappings[t.DestinationTrack]) ||
+		(t.Track > t.DestinationTrack && t.Center.Y <= TrackMappings[t.DestinationTrack]) {
 		// then set the track to the destination
 		t.Track = t.DestinationTrack
 		// and snap the centerY to the new track
-		t.CenterCoordinate.Y = TrackMappings[t.Track]
+		t.Center.Y = TrackMappings[t.Track]
 		t.swapState = TriangleAfterSwap
 	}
 }

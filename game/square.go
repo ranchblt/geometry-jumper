@@ -13,7 +13,7 @@ func NewSquare(base *BaseShape) *Square {
 
 func (s *Square) Update() {
 	// squares dont move vertically, only horizontally.
-	s.CenterCoordinate.X = s.CenterCoordinate.X - (s.BaseSpeed)
+	s.Center.X = s.Center.X - (s.BaseSpeed)
 	if s.crossedLeftEdge() {
 		s.expired = true
 	}

@@ -25,18 +25,18 @@ func getVelocityComponents(baseSpeed int, travelAngle float64) (xVelocity int, y
 }
 
 type BaseShape struct {
-	Track            int
-	CenterCoordinate *Coordinate
-	BaseSpeed        int
-	image            *ebiten.Image
-	hitboxImage      *ebiten.Image
-	expired          bool
+	Track       int
+	Center      *coord
+	BaseSpeed   int
+	image       *ebiten.Image
+	hitboxImage *ebiten.Image
+	expired     bool
 }
 
 func NewBaseShape(track int, centerX int, baseSpeed int, image *ebiten.Image, hitboxImage *ebiten.Image) *BaseShape {
 	var s = &BaseShape{
 		Track: track,
-		CenterCoordinate: &Coordinate{
+		Center: &coord{
 			X: centerX,
 			Y: TrackMappings[track],
 		},
@@ -51,7 +51,7 @@ func NewBaseShape(track int, centerX int, baseSpeed int, image *ebiten.Image, hi
 func (s *BaseShape) crossedLeftEdge() bool {
 	var crossed bool
 	w, _ := s.image.Size()
-	if s.CenterCoordinate.X <= -(w / 2) {
+	if s.Center.X <= -(w / 2) {
 		crossed = true
 	} else {
 		crossed = false
@@ -84,10 +84,10 @@ func (s *BaseShape) Dst(i int) (x0, y0, x1, y1 int) {
 	w, h := s.image.Size()
 	halfHeight := h / 2
 	halfWidth := w / 2
-	return s.CenterCoordinate.X - halfHeight,
-		s.CenterCoordinate.Y - halfWidth,
-		s.CenterCoordinate.X + halfHeight,
-		s.CenterCoordinate.Y + halfWidth
+	return s.Center.X - halfHeight,
+		s.Center.Y - halfWidth,
+		s.Center.X + halfHeight,
+		s.Center.Y + halfWidth
 }
 
 func (s *BaseShape) Src(i int) (x0, y0, x1, y1 int) {

@@ -33,15 +33,15 @@ func (c *Circle) Update() {
 	if c.Track < c.DestinationTrack {
 		yVelocity = yVelocity * -1
 	}
-	c.CenterCoordinate.X = c.CenterCoordinate.X - xVelocity
-	c.CenterCoordinate.Y = c.CenterCoordinate.Y - yVelocity
+	c.Center.X = c.Center.X - xVelocity
+	c.Center.Y = c.Center.Y - yVelocity
 
-	if (c.Track < c.DestinationTrack && c.CenterCoordinate.Y >= TrackMappings[c.DestinationTrack]) ||
-		(c.Track > c.DestinationTrack && c.CenterCoordinate.Y <= TrackMappings[c.DestinationTrack]) {
+	if (c.Track < c.DestinationTrack && c.Center.Y >= TrackMappings[c.DestinationTrack]) ||
+		(c.Track > c.DestinationTrack && c.Center.Y <= TrackMappings[c.DestinationTrack]) {
 		// then set the track to the destination
 		c.Track = c.DestinationTrack
 		// and snap the centerY to the new track
-		c.CenterCoordinate.Y = TrackMappings[c.Track]
+		c.Center.Y = TrackMappings[c.Track]
 		// and set our new destination to the one "after" our previous destination
 		c.DestinationTrack = SubsequentTracks[c.Track]
 	}

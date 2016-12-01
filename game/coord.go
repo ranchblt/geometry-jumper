@@ -1,6 +1,6 @@
 package game
 
-type Coordinate struct {
+type coord struct {
 	X int
 	Y int
 }
