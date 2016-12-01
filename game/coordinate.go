@@ -1,4 +1,4 @@
-package gameobj
+package game
 
 type Coordinate struct {
 	X int

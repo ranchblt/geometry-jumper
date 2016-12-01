@@ -1,4 +1,4 @@
-package gameobj
+package game
 
 import (
 	"math"
@@ -63,7 +63,11 @@ func (s *BaseShape) Draw(screen *ebiten.Image) {
 	screen.DrawImage(s.hitboxImage, &ebiten.DrawImageOptions{
 		ImageParts: s,
 	})
+
+	cm := ebiten.ColorM{}
+	cm.Scale(0, 100, 0, 100)
 	screen.DrawImage(s.image, &ebiten.DrawImageOptions{
+		ColorM:     cm,
 		ImageParts: s,
 	})
 }

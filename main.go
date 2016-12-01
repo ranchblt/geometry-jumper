@@ -2,7 +2,7 @@ package main
 
 import (
 	"errors"
-	"geometry-jumper/gameobj"
+	"geometry-jumper/game"
 	"geometry-jumper/keyboard"
 
 	"fmt"
@@ -17,9 +17,9 @@ const (
 )
 
 var (
-	player          *gameobj.PlayerCharacter
+	player          *game.PlayerCharacter
 	keyboardWrapper = keyboard.NewKeyboardWrapper()
-	shapeCollection *gameobj.ShapeCollection
+	shapeCollection *game.ShapeCollection
 )
 
 // Version is autoset from the build script
@@ -29,9 +29,9 @@ var Version string
 var Build string
 
 func update(screen *ebiten.Image) error {
-	if gameobj.Debug {
-		screen.DrawImage(gameobj.UpperTrackLine, gameobj.UpperTrackOpts)
-		screen.DrawImage(gameobj.LowerTrackLine, gameobj.LowerTrackOpts)
+	if game.Debug {
+		screen.DrawImage(game.UpperTrackLine, game.UpperTrackOpts)
+		screen.DrawImage(game.LowerTrackLine, game.LowerTrackOpts)
 	}
 
 	keyboardWrapper.Update()
@@ -51,22 +51,21 @@ func update(screen *ebiten.Image) error {
 }
 
 func main() {
-	gameobj.InitImages()
-	gameobj.InitImageMaps()
+	game.Load()
 
-	square := gameobj.NewSpawnDefaultSpeed(gameobj.SquareType, gameobj.LowerTrack, 5)
-	triangle := gameobj.NewSpawnDefaultSpeed(gameobj.TriangleType, gameobj.UpperTrack, 5)
+	square := game.NewSpawnDefaultSpeed(game.SquareType, game.LowerTrack, 5)
+	triangle := game.NewSpawnDefaultSpeed(game.TriangleType, game.UpperTrack, 5)
 
-	pattern := gameobj.NewPattern([]*gameobj.Spawn{square, triangle})
-	patternCollection := &gameobj.PatternCollection{
-		Patterns: map[int][]*gameobj.Pattern{
-			gameobj.LowDifficulty: []*gameobj.Pattern{pattern},
+	pattern := game.NewPattern([]*game.Spawn{square, triangle})
+	patternCollection := &game.PatternCollection{
+		Patterns: map[int][]*game.Pattern{
+			game.LowDifficulty: []*game.Pattern{pattern},
 		},
 	}
 
-	shapeCollection = gameobj.NewShapeCollection(patternCollection)
+	shapeCollection = game.NewShapeCollection(patternCollection)
 
-	player = gameobj.NewPlayerCharacter("Test", gameobj.PersonStandingImage, gameobj.PersonJumpingImage, keyboardWrapper)
+	player = game.NewPlayerCharacter("Test", game.PersonStandingImage, game.PersonJumpingImage, keyboardWrapper)
 
 	fmt.Printf("Starting up game. Version %s, Build %s", Version, Build)
 

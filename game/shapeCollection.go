@@ -1,4 +1,4 @@
-package gameobj
+package game
 
 import (
 	"fmt"

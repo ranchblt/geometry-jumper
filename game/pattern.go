@@ -1,4 +1,4 @@
-package gameobj
+package game
 
 type PatternCollection struct {
 	Patterns map[int][]*Pattern
