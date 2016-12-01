@@ -7,8 +7,9 @@ import (
 )
 
 func Load() {
-	initImageMaps()
+	// This is very fragile. initImages must come first!
 	initImages()
+	initImageMaps()
 }
 
 func initImages() {
