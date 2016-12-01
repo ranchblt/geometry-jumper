@@ -54,10 +54,17 @@ func main() {
 	gameobj.InitImages()
 	gameobj.InitImageMaps()
 
-	shapeCollection = gameobj.NewShapeCollection()
+	square := gameobj.NewSpawnDefaultSpeed(gameobj.SquareType, gameobj.LowerTrack, 5)
+	triangle := gameobj.NewSpawnDefaultSpeed(gameobj.TriangleType, gameobj.UpperTrack, 5)
 
-	shapeCollection.SpawnRandomShape()
-	shapeCollection.SpawnRandomShape()
+	pattern := gameobj.NewPattern([]*gameobj.Spawn{square, triangle})
+	patternCollection := &gameobj.PatternCollection{
+		Patterns: map[int][]*gameobj.Pattern{
+			gameobj.LowDifficulty: []*gameobj.Pattern{pattern},
+		},
+	}
+
+	shapeCollection = gameobj.NewShapeCollection(patternCollection)
 
 	player = gameobj.NewPlayerCharacter("Test", gameobj.PersonStandingImage, gameobj.PersonJumpingImage, keyboardWrapper)
 

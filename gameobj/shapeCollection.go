@@ -1,6 +1,7 @@
 package gameobj
 
 import (
+	"fmt"
 	"math/rand"
 	"time"
 
@@ -8,37 +9,52 @@ import (
 )
 
 type ShapeCollection struct {
-	shapeImageMap   map[int][]*ebiten.Image
-	hitboxImageMap  map[int]*ebiten.Image
-	shapes          []Drawable
-	upperSpeedLimit int
-	minimumSpeed    int
-	shapeRandom     *rand.Rand
-	colorSwap       bool
+	shapeImageMap     map[int][]*ebiten.Image
+	hitboxImageMap    map[int]*ebiten.Image
+	shapes            []Drawable
+	upperSpeedLimit   int
+	minimumSpeed      int
+	shapeRandom       *rand.Rand
+	allowColorSwap    bool
+	patternCollection *PatternCollection
+	currentPattern    *Pattern
+	currentSpawn      int
+	// mike I don't know how to get split seconds, pls halp?
+	spawnTimer     int64
+	previousUpdate int64
 }
 
-func NewShapeCollection() *ShapeCollection {
+func NewShapeCollection(patternCollection *PatternCollection) *ShapeCollection {
 	shapeSource := rand.NewSource(time.Now().UnixNano())
 	var s = &ShapeCollection{
-		shapeImageMap:   ShapeImageMap,
-		hitboxImageMap:  HitboxImageMap,
-		shapes:          []Drawable{},
-		upperSpeedLimit: StartingUpperSpeedLimit,
-		minimumSpeed:    MinimumSpeed,
-		shapeRandom:     rand.New(shapeSource),
-		colorSwap:       false,
+		shapeImageMap:     ShapeImageMap,
+		hitboxImageMap:    HitboxImageMap,
+		shapes:            []Drawable{},
+		upperSpeedLimit:   StartingUpperSpeedLimit,
+		minimumSpeed:      MinimumSpeed,
+		shapeRandom:       rand.New(shapeSource),
+		allowColorSwap:    false,
+		patternCollection: patternCollection,
+		// TODO change me to choose at random
+		currentPattern: patternCollection.Patterns[LowDifficulty][0],
+		spawnTimer:     0,
+		previousUpdate: time.Now().Unix(),
 	}
 	return s
 }
 
-func (s *ShapeCollection) IncreaseUpperSpeedLimit() {
-	s.upperSpeedLimit++
-}
-
-func (s *ShapeCollection) SpawnShape(shapeType int) {
-	track := s.shapeRandom.Intn(len(TrackMappings)) + 1
-	speed := s.shapeRandom.Intn(s.upperSpeedLimit) + s.minimumSpeed
-	image := s.shapeImageMap[shapeType][0]
+func (s *ShapeCollection) shapeFromSpawn(spawn *Spawn) {
+	shapeType := spawn.ShapeType
+	track := spawn.Track
+	speed := spawn.Speed
+	shapeImages := s.shapeImageMap[shapeType]
+	var image *ebiten.Image
+	if s.allowColorSwap {
+		imageIndex := s.shapeRandom.Intn(len(shapeImages))
+		image = shapeImages[imageIndex]
+	} else {
+		image = shapeImages[0]
+	}
 	hitboxImage := s.hitboxImageMap[shapeType]
 
 	switch shapeType {
@@ -54,13 +70,31 @@ func (s *ShapeCollection) SpawnShape(shapeType int) {
 	}
 }
 
-func (s *ShapeCollection) SpawnRandomShape() {
-	// this should hopefully give us 1 to len(ShapeTypes)
-	shapeType := s.shapeRandom.Intn(len(ShapeTypes)) + 1
-	s.SpawnShape(shapeType)
+func (s *ShapeCollection) UnlockColorSwap() {
+	s.allowColorSwap = true
 }
 
 func (s *ShapeCollection) Update() {
+	// this should all be in its own method
+	currentUpdate := time.Now().Unix()
+	s.spawnTimer += currentUpdate - s.previousUpdate
+	s.previousUpdate = currentUpdate
+
+	if s.currentPattern.SpawnReady(s.currentSpawn, s.spawnTimer) {
+		spawn := s.currentPattern.GetCurrentSpawn(s.currentSpawn)
+		s.shapeFromSpawn(spawn)
+		s.currentSpawn++
+		s.spawnTimer = 0
+	}
+
+	if s.currentPattern.OnLastSpawn(s.currentSpawn) {
+		fmt.Println("we are done with this pattern")
+		// todo: real randomizing for the spawns
+		s.currentPattern = s.patternCollection.Patterns[LowDifficulty][0]
+		s.currentSpawn = 0
+	}
+	// end this should all be in its own method
+
 	for _, d := range s.shapes {
 		d.Update()
 	}

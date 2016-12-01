@@ -14,6 +14,16 @@ const (
 	// can we specify this via a property? mike pls.
 	Debug = true
 
+	// when we're on the last shape in a pattern, use this constant to flag the end.
+	EndOfPatternSpawnDelay = -1
+
+	DefaultSpeed = 4
+
+	// 'difficulty' constants for patterns?
+	LowDifficulty    = 1
+	MediumDifficulty = 2
+	HighDifficulty   = 3
+
 	// Track constants
 	UpperTrack = 1
 	LowerTrack = 2
@@ -47,8 +57,8 @@ const (
 	JumpUpSpeed   = 5
 	JumpDownSpeed = 3
 
-	StartingUpperSpeedLimit = 3
-	MinimumSpeed            = 3
+	StartingUpperSpeedLimit = 4
+	MinimumSpeed            = 4
 )
 
 var (
