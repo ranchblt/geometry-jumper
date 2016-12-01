@@ -53,6 +53,9 @@ const (
 
 	StartingUpperSpeedLimit = 4
 	MinimumSpeed            = 4
+
+	ScreenWidth  = 400
+	ScreenHeight = 400
 )
 
 var (

@@ -11,11 +11,6 @@ import (
 	"github.com/hajimehoshi/ebiten/ebitenutil"
 )
 
-const (
-	screenWidth  = 400
-	screenHeight = 400
-)
-
 var (
 	player          *game.PlayerCharacter
 	keyboardWrapper = keyboard.NewKeyboardWrapper()
@@ -69,5 +64,5 @@ func main() {
 
 	fmt.Printf("Starting up game. Version %s, Build %s", Version, Build)
 
-	ebiten.Run(update, screenWidth, screenHeight, 2, "Hello world!")
+	ebiten.Run(update, game.ScreenWidth, game.ScreenHeight, 2, "Hello world!")
 }
