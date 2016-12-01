@@ -24,8 +24,8 @@ func NewPlayerCharacter(name string, image *ebiten.Image, jimage *ebiten.Image, 
 		imageJumping:    jimage,
 		keyboardWrapper: keyboardWrapper,
 		Center: &coord{
-			X: PlayerX,
-			Y: TrackMappings[LowerTrack],
+			x: PlayerX,
+			y: TrackMappings[LowerTrack],
 		},
 		jumping:   false,
 		originalY: 0,
@@ -38,19 +38,19 @@ func (pc *PlayerCharacter) Update() error {
 		if !pc.jumping {
 			pc.jumping = true
 			pc.maxHeightReached = false
-			pc.originalY = pc.Center.Y
+			pc.originalY = pc.Center.y
 		}
 	}
 
 	if pc.jumping {
-		if pc.Center.Y >= pc.originalY-JumpHeight && !pc.maxHeightReached {
-			pc.Center.Y -= JumpUpSpeed
+		if pc.Center.y >= pc.originalY-JumpHeight && !pc.maxHeightReached {
+			pc.Center.y -= JumpUpSpeed
 		} else {
 			pc.maxHeightReached = true
-			pc.Center.Y += JumpDownSpeed
+			pc.Center.y += JumpDownSpeed
 
-			if pc.Center.Y >= pc.originalY {
-				pc.Center.Y = pc.originalY
+			if pc.Center.y >= pc.originalY {
+				pc.Center.y = pc.originalY
 				pc.jumping = false
 			}
 		}
@@ -83,10 +83,10 @@ func (pc *PlayerCharacter) Dst(i int) (x0, y0, x1, y1 int) {
 	w, h := pc.image.Size()
 	halfHeight := h / 2
 	halfWidth := w / 2
-	return pc.Center.X - halfHeight,
-		pc.Center.Y - halfWidth,
-		pc.Center.X + halfHeight,
-		pc.Center.Y + halfWidth
+	return pc.Center.x - halfHeight,
+		pc.Center.y - halfWidth,
+		pc.Center.x + halfHeight,
+		pc.Center.y + halfWidth
 }
 
 func (pc *PlayerCharacter) Src(i int) (x0, y0, x1, y1 int) {

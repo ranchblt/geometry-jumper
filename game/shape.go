@@ -37,8 +37,8 @@ func NewBaseShape(track int, centerX int, baseSpeed int, image *ebiten.Image, hi
 	var s = &BaseShape{
 		Track: track,
 		Center: &coord{
-			X: centerX,
-			Y: TrackMappings[track],
+			x: centerX,
+			y: TrackMappings[track],
 		},
 		BaseSpeed:   baseSpeed,
 		image:       image,
@@ -51,7 +51,7 @@ func NewBaseShape(track int, centerX int, baseSpeed int, image *ebiten.Image, hi
 func (s *BaseShape) crossedLeftEdge() bool {
 	var crossed bool
 	w, _ := s.image.Size()
-	if s.Center.X <= -(w / 2) {
+	if s.Center.x <= -(w / 2) {
 		crossed = true
 	} else {
 		crossed = false
@@ -84,10 +84,10 @@ func (s *BaseShape) Dst(i int) (x0, y0, x1, y1 int) {
 	w, h := s.image.Size()
 	halfHeight := h / 2
 	halfWidth := w / 2
-	return s.Center.X - halfHeight,
-		s.Center.Y - halfWidth,
-		s.Center.X + halfHeight,
-		s.Center.Y + halfWidth
+	return s.Center.x - halfHeight,
+		s.Center.y - halfWidth,
+		s.Center.x + halfHeight,
+		s.Center.y + halfWidth
 }
 
 func (s *BaseShape) Src(i int) (x0, y0, x1, y1 int) {
