@@ -2,14 +2,23 @@ package game
 
 import (
 	"image/color"
+	"io/ioutil"
+	"log"
+
+	"geometry-jumper/resource"
 
 	"github.com/hajimehoshi/ebiten"
+	"github.com/hajimehoshi/ebiten/audio"
+	"github.com/hajimehoshi/ebiten/audio/wav"
+	"github.com/mattetti/filebuffer"
 )
 
 func Load() {
 	// This is very fragile. initImages must come first!
 	initImages()
 	initImageMaps()
+
+	initAudio()
 }
 
 func initImages() {
@@ -76,4 +85,33 @@ func initImageMaps() {
 		SquareType:   SquareBorder,
 		CircleType:   SquareBorder,
 	}
+}
+
+func initAudio() {
+	asset, err := resource.Asset("jump.wav")
+	handleErr(err)
+
+	buffer := filebuffer.New(asset)
+	handleErr(err)
+
+	const sampleRate = 44100
+	const bytesPerSample = 4
+
+	JumpSound, err = audio.NewContext(sampleRate)
+	handleErr(err)
+
+	go func() {
+		s, err := wav.Decode(JumpSound, buffer)
+		if err != nil {
+			log.Fatal(err)
+			return
+		}
+		b, err := ioutil.ReadAll(s)
+		if err != nil {
+			log.Fatal(err)
+			return
+		}
+		jumpCh <- b
+		close(jumpCh)
+	}()
 }

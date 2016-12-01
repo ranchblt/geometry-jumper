@@ -2,6 +2,7 @@ package game
 
 import (
 	"github.com/hajimehoshi/ebiten"
+	"github.com/hajimehoshi/ebiten/audio"
 )
 
 const (
@@ -87,4 +88,8 @@ var (
 
 	ShapeImageMap  map[int][]*ebiten.Image
 	HitboxImageMap map[int]*ebiten.Image
+
+	JumpSound *audio.Context
+	jumpCh    = make(chan []byte)
+	jumpBytes []byte
 )

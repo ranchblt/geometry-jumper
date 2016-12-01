@@ -7,6 +7,7 @@ import (
 	"geometry-jumper/collision"
 
 	"github.com/hajimehoshi/ebiten"
+	"github.com/hajimehoshi/ebiten/audio"
 )
 
 type PlayerCharacter struct {
@@ -37,9 +38,25 @@ func NewPlayerCharacter(name string, image *ebiten.Image, jimage *ebiten.Image, 
 }
 
 func (pc *PlayerCharacter) Update() error {
+	if jumpBytes == nil {
+		select {
+		case jumpBytes = <-jumpCh:
+		default:
+		}
+	}
+
+	if err := JumpSound.Update(); err != nil {
+		return err
+	}
+
 	if pc.keyboardWrapper.KeyPushed(ebiten.KeySpace) {
 		if !pc.jumping {
 			pc.jumping = true
+			jumpSoundPlayer, err := audio.NewPlayerFromBytes(JumpSound, jumpBytes)
+			if err != nil {
+				return err
+			}
+			jumpSoundPlayer.Play()
 			pc.maxHeightReached = false
 			pc.originalY = pc.Center.y
 		}

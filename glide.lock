@@ -1,5 +1,5 @@
-hash: ee50065cd171481e260a49e4134dd280e313f721a91423acca2d9a8378b4fc6d
-updated: 2016-11-03T22:40:52.3867878-04:00
+hash: 1d7b17bbad1c52576063cf288accd9d57751e093ca32ee854105df631e8a24e6
+updated: 2016-12-01T01:53:40.734417-05:00
 imports:
 - name: github.com/go-gl/gl
   version: b303bcb3e83b7ef645a5104e1c2db7f8d9e8918a
@@ -18,6 +18,9 @@ imports:
 - name: github.com/hajimehoshi/ebiten
   version: 021b23a5e773c217db10b91796d87fc544cc06dd
   subpackages:
+  - audio
+  - audio/internal/driver
+  - audio/wav
   - ebitenutil
   - ebitenutil/internal/assets
   - internal/graphics
@@ -26,6 +29,12 @@ imports:
   - internal/loop
   - internal/pixels
   - internal/ui
+- name: github.com/hajimehoshi/go-openal
+  version: 3acd7913018876a2389304540fdf2cce7ede5f1c
+  subpackages:
+  - openal
+- name: github.com/mattetti/filebuffer
+  version: 80f2c1c4dcf558a0cee1e4303225d17c6238e00a
 - name: golang.org/x/mobile
   version: b8794a2669da6680501f9ebc6c555553dc46b1ee
   subpackages:

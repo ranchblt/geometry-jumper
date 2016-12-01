@@ -4,3 +4,4 @@ import:
   version: ^1.4.0-rc1
   subpackages:
   - ebitenutil
+- package: github.com/mattetti/filebuffer
