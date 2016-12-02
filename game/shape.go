@@ -48,15 +48,13 @@ func NewBaseShape(track int, centerX int, baseSpeed int, image *ebiten.Image, hi
 	return s
 }
 
-func (s *BaseShape) crossedLeftEdge() bool {
-	var crossed bool
+func (s *BaseShape) crossedLeftEdge() {
 	w, _ := s.image.Size()
 	if s.Center.x <= -(w / 2) {
-		crossed = true
+		s.expired = true
 	} else {
-		crossed = false
+		s.expired = false
 	}
-	return crossed
 }
 
 func (s *BaseShape) Draw(screen *ebiten.Image) {
