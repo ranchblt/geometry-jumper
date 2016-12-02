@@ -4,6 +4,8 @@ import (
 	"image/color"
 	"io/ioutil"
 	"log"
+	"sync"
+	"time"
 
 	"geometry-jumper/resource"
 
@@ -14,11 +16,24 @@ import (
 )
 
 func Load() {
-	// This is very fragile. initImages must come first!
-	initImages()
-	initImageMaps()
+	defer timeTrack(time.Now(), "Game.Load")
+	var wg sync.WaitGroup
 
-	initAudio()
+	wg.Add(2)
+
+	go func() {
+		defer wg.Done()
+		// This is very fragile. initImages must come first!
+		initImages()
+		initImageMaps()
+	}()
+
+	go func() {
+		defer wg.Done()
+		initAudio()
+	}()
+
+	wg.Wait()
 }
 
 func initImages() {
