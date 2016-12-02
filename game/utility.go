@@ -4,6 +4,8 @@ import (
 	"bytes"
 	"geometry-jumper/resource"
 	"image"
+	"log"
+	"time"
 )
 
 func openImage(path string) (image.Image, error) {
@@ -25,4 +27,9 @@ func handleErr(err error) {
 	if err != nil {
 		panic(err)
 	}
+}
+
+func timeTrack(start time.Time, name string) {
+	elapsed := time.Since(start)
+	log.Printf("%s took %s", name, elapsed)
 }
