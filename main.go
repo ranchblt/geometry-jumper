@@ -25,6 +25,14 @@ var Build string
 
 func update(screen *ebiten.Image) error {
 	if game.Debug {
+		// Might want to consider having this all the time actually
+		if ebiten.IsRunningSlowly() {
+			fmt.Println("slow")
+			return nil
+		}
+	}
+
+	if game.Debug {
 		screen.DrawImage(game.UpperTrackLine, game.UpperTrackOpts)
 		screen.DrawImage(game.LowerTrackLine, game.LowerTrackOpts)
 	}
