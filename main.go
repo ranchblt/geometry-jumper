@@ -2,8 +2,11 @@ package main
 
 import (
 	"errors"
+	"flag"
 	"geometry-jumper/game"
 	"geometry-jumper/keyboard"
+	"os"
+	"runtime/pprof"
 
 	"fmt"
 
@@ -22,6 +25,8 @@ var Version string
 
 // Build is autoset from the build script
 var Build string
+
+var cpuprofile = flag.String("cpuprofile", "", "write cpu profile to file")
 
 func update(screen *ebiten.Image) error {
 	if game.Debug {
@@ -56,6 +61,21 @@ func update(screen *ebiten.Image) error {
 }
 
 func main() {
+	flag.Parse()
+
+	if *cpuprofile != "" {
+		f, err := os.Create(*cpuprofile)
+
+		if err != nil {
+			panic(err)
+		}
+
+		pprof.StartCPUProfile(f)
+
+		defer pprof.StopCPUProfile()
+
+	}
+
 	game.Load()
 
 	square := game.NewSpawnDefaultSpeed(game.SquareType, game.LowerTrack, 2000)
