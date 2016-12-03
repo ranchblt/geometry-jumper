@@ -109,6 +109,9 @@ func (pc *PlayerCharacter) CheckCollision(sc *ShapeCollection) {
 }
 
 func (pc *PlayerCharacter) Image() *ebiten.Image {
+	if pc.jumping {
+		return pc.imageJumping
+	}
 	return pc.image
 }
 
