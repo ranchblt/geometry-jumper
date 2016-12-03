@@ -19,11 +19,12 @@ func Load() {
 	defer timeTrack(time.Now(), "Game.Load")
 	var wg sync.WaitGroup
 
-	wg.Add(2)
+	wg.Add(3)
 
 	go func() {
 		defer wg.Done()
 		// This is very fragile. initImages must come first!
+		// I guess we could just call initImageMaps inside of initImages...?
 		initImages()
 		initImageMaps()
 	}()
@@ -31,6 +32,11 @@ func Load() {
 	go func() {
 		defer wg.Done()
 		initAudio()
+	}()
+
+	go func() {
+		defer wg.Done()
+		initColorMaps()
 	}()
 
 	wg.Wait()
@@ -54,11 +60,6 @@ func initImages() {
 
 	SquareImage, err = ebiten.NewImageFromImage(sImage, ebiten.FilterNearest)
 	handleErr(err)
-
-	squareWidth, squareHeight := SquareImage.Size()
-	// this is wrong. need to figure out how to do hollow shapes
-	SquareBorder, err = ebiten.NewImage(squareWidth, squareHeight, ebiten.FilterNearest)
-	SquareBorder.Fill(color.White)
 
 	tImage, err := openImage("triangle.png")
 	handleErr(err)
@@ -93,13 +94,6 @@ func initImageMaps() {
 		SquareType:   []*ebiten.Image{SquareImage},
 		CircleType:   []*ebiten.Image{CircleImage},
 	}
-
-	HitboxImageMap = map[int]*ebiten.Image{
-		// todo: real values
-		TriangleType: SquareBorder,
-		SquareType:   SquareBorder,
-		CircleType:   SquareBorder,
-	}
 }
 
 func initAudio() {
@@ -129,4 +123,21 @@ func initAudio() {
 		jumpCh <- b
 		close(jumpCh)
 	}()
+}
+
+func initColorMaps() {
+	DefaultSquareColorMap = ebiten.ColorM{}
+	DefaultSquareColorMap.Scale(255, 0, 0, 100)
+
+	DefaultCircleColorMap = ebiten.ColorM{}
+	DefaultCircleColorMap.Scale(0, 255, 0, 100)
+
+	DefaultTriangleColorMap = ebiten.ColorM{}
+	DefaultTriangleColorMap.Scale(0, 0, 255, 100)
+
+	ColorMappings = map[int]ebiten.ColorM{
+		SquareType:   DefaultSquareColorMap,
+		CircleType:   DefaultCircleColorMap,
+		TriangleType: DefaultTriangleColorMap,
+	}
 }

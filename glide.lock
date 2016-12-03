@@ -1,5 +1,5 @@
 hash: 1d7b17bbad1c52576063cf288accd9d57751e093ca32ee854105df631e8a24e6
-updated: 2016-12-01T01:53:40.734417-05:00
+updated: 2016-12-01T22:37:00.2537303-05:00
 imports:
 - name: github.com/go-gl/gl
   version: b303bcb3e83b7ef645a5104e1c2db7f8d9e8918a
@@ -16,7 +16,7 @@ imports:
 - name: github.com/gopherjs/webgl
   version: a2d36020a9b2af0f7aefb23467ab48f3b501beec
 - name: github.com/hajimehoshi/ebiten
-  version: 021b23a5e773c217db10b91796d87fc544cc06dd
+  version: 96284a564f3b14d0507670bf9268bb0970768e5f
   subpackages:
   - audio
   - audio/internal/driver
@@ -35,8 +35,15 @@ imports:
   - openal
 - name: github.com/mattetti/filebuffer
   version: 80f2c1c4dcf558a0cee1e4303225d17c6238e00a
+- name: golang.org/x/image
+  version: 5286ed5c2aec7fc7d08323e7e4423b171caf84cb
+  subpackages:
+  - draw
+  - math/f64
 - name: golang.org/x/mobile
   version: b8794a2669da6680501f9ebc6c555553dc46b1ee
   subpackages:
+  - exp/audio/al
   - gl
+  - internal/mobileinit
 testImports: []

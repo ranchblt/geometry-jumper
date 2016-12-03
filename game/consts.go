@@ -63,6 +63,9 @@ var (
 	// slice of all shape types
 	ShapeTypes = [...]int{TriangleType, CircleType, SquareType}
 
+	// slice of all difficulties
+	DifficultyTypes = [...]int{LowDifficulty, MediumDifficulty, HighDifficulty}
+
 	// track mappings so you can use the track ID to get the track's position on the y axis
 	TrackMappings = map[int]int{
 		UpperTrack: UpperTrackYAxis,
@@ -77,7 +80,6 @@ var (
 	PersonStandingImage *ebiten.Image
 	PersonJumpingImage  *ebiten.Image
 	SquareImage         *ebiten.Image
-	SquareBorder        *ebiten.Image
 	TriangleImage       *ebiten.Image
 	CircleImage         *ebiten.Image
 	UpperTrackLine      *ebiten.Image
@@ -92,4 +94,12 @@ var (
 	JumpSound *audio.Context
 	jumpCh    = make(chan []byte)
 	jumpBytes []byte
+
+	// color mapping constants
+	DefaultSquareColorMap   ebiten.ColorM
+	DefaultCircleColorMap   ebiten.ColorM
+	DefaultTriangleColorMap ebiten.ColorM
+
+	// shape to default color map
+	ColorMappings map[int]ebiten.ColorM
 )

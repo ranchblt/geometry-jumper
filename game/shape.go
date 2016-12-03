@@ -31,19 +31,20 @@ type BaseShape struct {
 	image       *ebiten.Image
 	hitboxImage *ebiten.Image
 	expired     bool
+	colorMap    ebiten.ColorM
 }
 
-func NewBaseShape(track int, centerX int, baseSpeed int, image *ebiten.Image, hitboxImage *ebiten.Image) *BaseShape {
+func NewBaseShape(track int, centerX int, baseSpeed int, image *ebiten.Image, colorMap ebiten.ColorM) *BaseShape {
 	var s = &BaseShape{
 		Track: track,
 		Center: &coord{
 			x: centerX,
 			y: TrackMappings[track],
 		},
-		BaseSpeed:   baseSpeed,
-		image:       image,
-		hitboxImage: hitboxImage,
-		expired:     false,
+		BaseSpeed: baseSpeed,
+		image:     image,
+		expired:   false,
+		colorMap:  colorMap,
 	}
 	return s
 }
@@ -58,14 +59,8 @@ func (s *BaseShape) crossedLeftEdge() {
 }
 
 func (s *BaseShape) Draw(screen *ebiten.Image) {
-	screen.DrawImage(s.hitboxImage, &ebiten.DrawImageOptions{
-		ImageParts: s,
-	})
-
-	cm := ebiten.ColorM{}
-	cm.Scale(0, 100, 0, 100)
 	screen.DrawImage(s.image, &ebiten.DrawImageOptions{
-		ColorM:     cm,
+		ColorM:     s.colorMap,
 		ImageParts: s,
 	})
 }

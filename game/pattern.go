@@ -5,73 +5,79 @@ type PatternCollection struct {
 }
 
 type Pattern struct {
-	spawns []*Spawn
+	spawns       []*Spawn
+	currentSpawn int
 }
 
 func NewPattern(spawns []*Spawn) *Pattern {
 	var pattern = &Pattern{
-		spawns: spawns,
+		spawns:       spawns,
+		currentSpawn: 0,
 	}
 	return pattern
 }
 
-func (p *Pattern) GetCurrentSpawn(currentSpawn int) *Spawn {
-	return p.spawns[currentSpawn]
+func (p *Pattern) GetCurrentSpawn() *Spawn {
+	return p.spawns[p.currentSpawn]
 }
 
-func (p *Pattern) SpawnReady(currentSpawn int, timer int64) bool {
-	return p.spawns[currentSpawn].NextSpawnDelay <= timer
+func (p *Pattern) OnLastSpawn() bool {
+	return p.currentSpawn == len(p.spawns)-1
 }
 
-func (p *Pattern) OnLastSpawn(currentSpawn int) bool {
-	return currentSpawn == len(p.spawns)
+func (p *Pattern) ResetPattern() {
+	p.currentSpawn = 0
+
+}
+
+func (p *Pattern) AdvancePattern() {
+	p.currentSpawn++
 }
 
 type Spawn struct {
 	ShapeType int
 	Track     int
 	Speed     int
-	// how long before the next spawn should be added to the collection
-	// TODO this is in seconds right now, but we should probably be able to spawn in split seconds of some measurement
-	NextSpawnDelay int64
+	// how long before this spawn should be added to the collection (milliseconds)
+	SpawnDelayMillis int
 }
 
-func NewSpawn(shapeType int, track int, speed int, nextSpawnDelay int64) *Spawn {
+func NewSpawn(shapeType int, track int, speed int, spawnDelayMillis int) *Spawn {
 	var spawn = &Spawn{
-		ShapeType:      shapeType,
-		Track:          track,
-		Speed:          speed,
-		NextSpawnDelay: nextSpawnDelay,
+		ShapeType:        shapeType,
+		Track:            track,
+		Speed:            speed,
+		SpawnDelayMillis: spawnDelayMillis,
 	}
 	return spawn
 }
 
 func NewEndcapSpawn(shapeType int, track int, speed int) *Spawn {
 	var spawn = &Spawn{
-		ShapeType:      shapeType,
-		Track:          track,
-		Speed:          speed,
-		NextSpawnDelay: EndOfPatternSpawnDelay,
+		ShapeType:        shapeType,
+		Track:            track,
+		Speed:            speed,
+		SpawnDelayMillis: EndOfPatternSpawnDelay,
 	}
 	return spawn
 }
 
-func NewSpawnDefaultSpeed(shapeType int, track int, nextSpawnDelay int64) *Spawn {
+func NewSpawnDefaultSpeed(shapeType int, track int, spawnDelayMillis int) *Spawn {
 	var spawn = &Spawn{
-		ShapeType:      shapeType,
-		Track:          track,
-		Speed:          DefaultSpeed,
-		NextSpawnDelay: nextSpawnDelay,
+		ShapeType:        shapeType,
+		Track:            track,
+		Speed:            DefaultSpeed,
+		SpawnDelayMillis: spawnDelayMillis,
 	}
 	return spawn
 }
 
 func NewEndcapSpawnDefaultSpeed(shapeType int, track int) *Spawn {
 	var spawn = &Spawn{
-		ShapeType:      shapeType,
-		Track:          track,
-		Speed:          DefaultSpeed,
-		NextSpawnDelay: EndOfPatternSpawnDelay,
+		ShapeType:        shapeType,
+		Track:            track,
+		Speed:            DefaultSpeed,
+		SpawnDelayMillis: EndOfPatternSpawnDelay,
 	}
 	return spawn
 }

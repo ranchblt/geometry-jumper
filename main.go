@@ -50,8 +50,8 @@ func update(screen *ebiten.Image) error {
 func main() {
 	game.Load()
 
-	square := game.NewSpawnDefaultSpeed(game.SquareType, game.LowerTrack, 5)
-	triangle := game.NewSpawnDefaultSpeed(game.TriangleType, game.UpperTrack, 5)
+	square := game.NewSpawnDefaultSpeed(game.SquareType, game.LowerTrack, 2000)
+	triangle := game.NewSpawnDefaultSpeed(game.TriangleType, game.UpperTrack, 2000)
 
 	pattern := game.NewPattern([]*game.Spawn{square, triangle})
 	patternCollection := &game.PatternCollection{
@@ -61,7 +61,7 @@ func main() {
 	}
 
 	shapeCollection = game.NewShapeCollection(patternCollection)
-
+	shapeCollection.UnlockColorSwap()
 	player = game.NewPlayerCharacter("Test", game.PersonStandingImage, game.PersonJumpingImage, keyboardWrapper)
 
 	fmt.Printf("Starting up game. Version %s, Build %s", Version, Build)
