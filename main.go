@@ -28,7 +28,7 @@ var Build string
 
 var cpuprofile = flag.String("cpuprofile", "", "write cpu profile to file")
 
-func update(screen *ebiten.Image) error {
+func gameLoop(screen *ebiten.Image) error {
 	if ebiten.IsRunningSlowly() {
 		if game.Debug {
 			go fmt.Println("slow")
@@ -93,5 +93,5 @@ func main() {
 
 	fmt.Printf("Starting up game. Version %s, Build %s", Version, Build)
 
-	ebiten.Run(update, game.ScreenWidth, game.ScreenHeight, 2, "Hello world!")
+	ebiten.Run(gameLoop, game.ScreenWidth, game.ScreenHeight, 2, "Hello world!")
 }
