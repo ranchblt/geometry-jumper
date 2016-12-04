@@ -18,6 +18,7 @@ type ShapeCollection struct {
 	patternCollection      *PatternCollection
 	currentPattern         *Pattern
 	currentSpawnTimeTarget time.Time
+	nextPatternTimeTarget  time.Time
 	unlockedDifficulties   []int
 }
 
@@ -48,7 +49,8 @@ func (s *ShapeCollection) assignPattern() {
 
 	spawnDelay := s.currentPattern.GetCurrentSpawn().SpawnDelayMillis
 	s.currentSpawnTimeTarget = time.Now().Add(time.Duration(spawnDelay) * time.Millisecond)
-
+	// TODO have this be scaleable somehow
+	s.nextPatternTimeTarget = time.Now().Add(time.Duration(PatternDelayMillis) * time.Millisecond)
 }
 
 func (s *ShapeCollection) shapeFromSpawn(spawn *Spawn) {
@@ -103,9 +105,31 @@ func (s *ShapeCollection) UnlockNextDifficulty() {
 	}
 }
 
-func (s *ShapeCollection) updatePattern() {
+func (s *ShapeCollection) Update() {
 	now := time.Now()
-	if now.After(s.currentSpawnTimeTarget) {
+	if now.After(s.nextPatternTimeTarget) || now.Equal(s.nextPatternTimeTarget) {
+		s.updatePattern(now)
+	}
+
+	for _, d := range s.shapes {
+		d.Update()
+	}
+
+	// now that we're done updating, let's figure out what shapes
+	// expired and remove them
+	var unexpiredShapes = []Drawable{}
+
+	for _, d := range s.shapes {
+		if !d.IsExpired() {
+			unexpiredShapes = append(unexpiredShapes, d)
+		}
+	}
+	// boy I hope this doesn't cause a leak somehow
+	s.shapes = unexpiredShapes
+}
+
+func (s *ShapeCollection) updatePattern(now time.Time) {
+	if now.After(s.currentSpawnTimeTarget) || now.Equal(s.currentSpawnTimeTarget) {
 		// spawn the new shape
 		spawn := s.currentPattern.GetCurrentSpawn()
 		s.shapeFromSpawn(spawn)
@@ -123,26 +147,6 @@ func (s *ShapeCollection) updatePattern() {
 		// then no matter what happened, we need to move the spawn time target up
 		s.currentSpawnTimeTarget = now.Add(time.Duration(spawnDelay) * time.Millisecond)
 	}
-}
-
-func (s *ShapeCollection) Update() {
-	s.updatePattern()
-
-	for _, d := range s.shapes {
-		d.Update()
-	}
-
-	// now that we're done updating, let's figure out what shapes
-	// expired and remove them
-	var unexpiredShapes = []Drawable{}
-
-	for _, d := range s.shapes {
-		if !d.IsExpired() {
-			unexpiredShapes = append(unexpiredShapes, d)
-		}
-	}
-	// boy I hope this doesn't cause a leak somehow
-	s.shapes = unexpiredShapes
 }
 
 func (s *ShapeCollection) Add(g Drawable) {

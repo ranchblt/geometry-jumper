@@ -9,10 +9,10 @@ const (
 	// can we specify this via a property? mike pls.
 	Debug = true
 
-	// when we're on the last shape in a pattern, use this constant to flag the end.
-	EndOfPatternSpawnDelay = -1
-
 	DefaultSpeed = 4
+
+	// delay between pattern spawning (milliseconds)
+	PatternDelayMillis = 4000
 
 	// 'difficulty' constants for patterns?
 	LowDifficulty    = 1

@@ -13,7 +13,7 @@ import (
 
 // helper function for gameobj for shapes to convert from degrees to radians
 func degreesToRadians(degreeValue float64) float64 {
-	return degreeValue * math.Pi / 180
+	return (degreeValue * math.Pi) / 180
 }
 
 // helper function to get the velocity components for a given velocity and travelAngle

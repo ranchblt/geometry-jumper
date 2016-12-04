@@ -89,10 +89,11 @@ func main() {
 
 	game.Load()
 
-	square := game.NewSpawnDefaultSpeed(game.SquareType, game.LowerTrack, 2000)
-	triangle := game.NewSpawnDefaultSpeed(game.TriangleType, game.UpperTrack, 2000)
+	square := game.NewSpawnDefaultSpeed(game.SquareType, game.LowerTrack, 500)
+	triangle := game.NewSpawnDefaultSpeed(game.TriangleType, game.UpperTrack, 1000)
+	circle := game.NewSpawnDefaultSpeed(game.CircleType, game.UpperTrack, 1500)
 
-	pattern := game.NewPattern([]*game.Spawn{square, triangle})
+	pattern := game.NewPattern([]*game.Spawn{square, triangle, circle})
 	patternCollection := &game.PatternCollection{
 		Patterns: map[int][]*game.Pattern{
 			game.LowDifficulty: []*game.Pattern{pattern},
@@ -100,7 +101,7 @@ func main() {
 	}
 
 	shapeCollection = game.NewShapeCollection(patternCollection)
-	shapeCollection.UnlockColorSwap()
+
 	player = game.NewPlayerCharacter("Test", game.PersonStandingImage, game.PersonJumpingImage, keyboardWrapper)
 
 	logoScreen = ranchblt.NewLogoScreen(game.ScreenWidth, game.ScreenHeight)

@@ -52,32 +52,12 @@ func NewSpawn(shapeType int, track int, speed int, spawnDelayMillis int) *Spawn 
 	return spawn
 }
 
-func NewEndcapSpawn(shapeType int, track int, speed int) *Spawn {
-	var spawn = &Spawn{
-		ShapeType:        shapeType,
-		Track:            track,
-		Speed:            speed,
-		SpawnDelayMillis: EndOfPatternSpawnDelay,
-	}
-	return spawn
-}
-
 func NewSpawnDefaultSpeed(shapeType int, track int, spawnDelayMillis int) *Spawn {
 	var spawn = &Spawn{
 		ShapeType:        shapeType,
 		Track:            track,
 		Speed:            DefaultSpeed,
 		SpawnDelayMillis: spawnDelayMillis,
-	}
-	return spawn
-}
-
-func NewEndcapSpawnDefaultSpeed(shapeType int, track int) *Spawn {
-	var spawn = &Spawn{
-		ShapeType:        shapeType,
-		Track:            track,
-		Speed:            DefaultSpeed,
-		SpawnDelayMillis: EndOfPatternSpawnDelay,
 	}
 	return spawn
 }
