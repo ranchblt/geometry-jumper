@@ -3,12 +3,15 @@ package main
 import (
 	"errors"
 	"flag"
-	"geometry-jumper/game"
-	"geometry-jumper/keyboard"
+	"fmt"
 	"os"
 	"runtime/pprof"
 
-	"fmt"
+	"geometry-jumper/game"
+	"geometry-jumper/keyboard"
+	"geometry-jumper/ranchblt"
+
+	"time"
 
 	"github.com/hajimehoshi/ebiten"
 )
@@ -17,6 +20,8 @@ var (
 	player          *game.PlayerCharacter
 	keyboardWrapper = keyboard.NewKeyboardWrapper()
 	shapeCollection *game.ShapeCollection
+	logoScreen      *ranchblt.Logo
+	showLogo        = true
 )
 
 // Version is autoset from the build script
@@ -32,6 +37,13 @@ func gameLoop(screen *ebiten.Image) error {
 		if game.Debug {
 			go fmt.Println("slow")
 		}
+		return nil
+	}
+
+	go logoTimer()
+
+	if showLogo && !game.Debug {
+		logoScreen.Draw(screen)
 		return nil
 	}
 
@@ -91,7 +103,15 @@ func main() {
 	shapeCollection.UnlockColorSwap()
 	player = game.NewPlayerCharacter("Test", game.PersonStandingImage, game.PersonJumpingImage, keyboardWrapper)
 
-	fmt.Printf("Starting up game. Version %s, Build %s", Version, Build)
+	logoScreen = ranchblt.NewLogoScreen(game.ScreenWidth, game.ScreenHeight)
+
+	go fmt.Printf("Starting up game. Version %s, Build %s", Version, Build)
 
 	ebiten.Run(gameLoop, game.ScreenWidth, game.ScreenHeight, 2, "Hello world!")
+}
+
+func logoTimer() {
+	timer := time.NewTimer(time.Second * 2)
+	<-timer.C
+	showLogo = false
 }
