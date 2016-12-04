@@ -41,14 +41,16 @@ func gameLoop(screen *ebiten.Image) error {
 		screen.DrawImage(game.LowerTrackLine, game.LowerTrackOpts)
 	}
 
-	keyboardWrapper.Update()
-	shapeCollection.Update()
-	shapeCollection.Draw(screen)
+	if !player.Collided {
+		keyboardWrapper.Update()
+		shapeCollection.Update()
+		player.Update()
+	}
 
-	player.Update()
+	shapeCollection.Draw(screen)
 	player.Draw(screen)
 
-	player.CheckCollision(shapeCollection)
+	go player.CheckCollision(shapeCollection)
 
 	ebitenutil.DebugPrint(screen, "Hello world!")
 
@@ -72,7 +74,6 @@ func main() {
 		pprof.StartCPUProfile(f)
 
 		defer pprof.StopCPUProfile()
-
 	}
 
 	game.Load()

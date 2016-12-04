@@ -16,6 +16,7 @@ type PlayerCharacter struct {
 	imageJumping     *ebiten.Image
 	keyboardWrapper  *keyboard.KeyboardWrapper
 	Center           *coord
+	Collided         bool
 	jumping          bool
 	maxHeightReached bool
 	originalY        int
@@ -103,7 +104,10 @@ func (pc *PlayerCharacter) CheckCollision(sc *ShapeCollection) {
 			Center: s.CenterCoord(),
 		}
 		if collision.IsColliding(&pcHitbox, &sHitBox) {
-			fmt.Println("collision")
+			if Debug {
+				go fmt.Println("collision")
+			}
+			pc.Collided = true
 		}
 	}
 }
