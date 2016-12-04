@@ -2,6 +2,7 @@ package game
 
 import (
 	"image/color"
+	_ "image/png"
 	"io/ioutil"
 	"log"
 	"sync"
