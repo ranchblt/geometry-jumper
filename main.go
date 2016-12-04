@@ -29,12 +29,11 @@ var Build string
 var cpuprofile = flag.String("cpuprofile", "", "write cpu profile to file")
 
 func update(screen *ebiten.Image) error {
-	if game.Debug {
-		// Might want to consider having this all the time actually
-		if ebiten.IsRunningSlowly() {
-			fmt.Println("slow")
-			return nil
+	if ebiten.IsRunningSlowly() {
+		if game.Debug {
+			go fmt.Println("slow")
 		}
+		return nil
 	}
 
 	if game.Debug {
