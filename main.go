@@ -11,7 +11,6 @@ import (
 	"fmt"
 
 	"github.com/hajimehoshi/ebiten"
-	"github.com/hajimehoshi/ebiten/ebitenutil"
 )
 
 var (
@@ -41,8 +40,8 @@ func gameLoop(screen *ebiten.Image) error {
 		screen.DrawImage(game.LowerTrackLine, game.LowerTrackOpts)
 	}
 
+	keyboardWrapper.Update()
 	if !player.Collided {
-		keyboardWrapper.Update()
 		shapeCollection.Update()
 		player.Update()
 	}
@@ -52,7 +51,7 @@ func gameLoop(screen *ebiten.Image) error {
 
 	go player.CheckCollision(shapeCollection)
 
-	ebitenutil.DebugPrint(screen, "Hello world!")
+	//ebitenutil.DebugPrint(screen, "Hello world!")
 
 	if keyboardWrapper.KeyPushed(ebiten.KeyEscape) {
 		return errors.New("User wanted to quit") //Best way to do this?
