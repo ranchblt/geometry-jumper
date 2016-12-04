@@ -2,10 +2,13 @@ package game
 
 import (
 	"bytes"
-	"geometry-jumper/resource"
 	"image"
 	"log"
 	"time"
+
+	"geometry-jumper/resource"
+
+	"golang.org/x/image/draw"
 )
 
 func openImage(path string) (image.Image, error) {
@@ -32,4 +35,14 @@ func handleErr(err error) {
 func timeTrack(start time.Time, name string) {
 	elapsed := time.Since(start)
 	log.Printf("%s took %s", name, elapsed)
+}
+
+func toRGBA(img image.Image) *image.RGBA {
+	switch img.(type) {
+	case *image.RGBA:
+		return img.(*image.RGBA)
+	}
+	out := image.NewRGBA(img.Bounds())
+	draw.Copy(out, image.Pt(0, 0), img, img.Bounds(), draw.Src, nil)
+	return out
 }

@@ -1,6 +1,7 @@
 package game
 
 import (
+	"image"
 	"math"
 
 	"github.com/hajimehoshi/ebiten"
@@ -29,6 +30,7 @@ type BaseShape struct {
 	Center      *coord
 	BaseSpeed   int
 	image       *ebiten.Image
+	rgbaImage   *image.RGBA
 	hitboxImage *ebiten.Image
 	expired     bool
 	colorMap    ebiten.ColorM
@@ -69,6 +71,13 @@ func (s *BaseShape) Image() *ebiten.Image {
 	return s.image
 }
 
+func (s *BaseShape) RgbaImage() *image.RGBA {
+	if s.rgbaImage == nil {
+		s.rgbaImage = toRGBA(s.image)
+	}
+	return s.rgbaImage
+}
+
 func (s *BaseShape) Len() int {
 	return 1
 }
@@ -99,6 +108,7 @@ func (s *BaseShape) CenterCoord() *coord {
 type Drawable interface {
 	Draw(screen *ebiten.Image)
 	Image() *ebiten.Image
+	RgbaImage() *image.RGBA
 	CenterCoord() *coord
 	Update()
 	Len() int

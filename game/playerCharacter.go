@@ -3,6 +3,7 @@ package game
 import (
 	"fmt"
 	"geometry-jumper/keyboard"
+	"image"
 
 	"geometry-jumper/collision"
 
@@ -14,6 +15,8 @@ type PlayerCharacter struct {
 	name             string
 	image            *ebiten.Image
 	imageJumping     *ebiten.Image
+	rgbaImage        *image.RGBA
+	rgbaJumpImage    *image.RGBA
 	keyboardWrapper  *keyboard.KeyboardWrapper
 	Center           *coord
 	Collided         bool
@@ -94,13 +97,13 @@ func (pc *PlayerCharacter) Draw(screen *ebiten.Image) {
 
 func (pc *PlayerCharacter) CheckCollision(sc *ShapeCollection) {
 	pcHitbox := collision.Hitbox{
-		Image:  pc.Image(),
+		Image:  pc.RgbaImage(),
 		Center: pc.Center,
 	}
 
 	for _, s := range sc.shapes {
 		sHitBox := collision.Hitbox{
-			Image:  s.Image(),
+			Image:  s.RgbaImage(),
 			Center: s.CenterCoord(),
 		}
 		if collision.IsColliding(&pcHitbox, &sHitBox) {
@@ -117,6 +120,19 @@ func (pc *PlayerCharacter) Image() *ebiten.Image {
 		return pc.imageJumping
 	}
 	return pc.image
+}
+
+func (pc *PlayerCharacter) RgbaImage() *image.RGBA {
+	if pc.jumping {
+		if pc.rgbaJumpImage == nil {
+			pc.rgbaJumpImage = toRGBA(pc.imageJumping)
+		}
+		return pc.rgbaJumpImage
+	}
+	if pc.rgbaImage == nil {
+		pc.rgbaImage = toRGBA(pc.image)
+	}
+	return pc.rgbaImage
 }
 
 func (pc *PlayerCharacter) Len() int {
