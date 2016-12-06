@@ -56,11 +56,7 @@ func (pc *PlayerCharacter) Update() error {
 	if pc.keyboardWrapper.KeyPushed(ebiten.KeySpace) {
 		if !pc.jumping {
 			pc.jumping = true
-			jumpSoundPlayer, err := audio.NewPlayerFromBytes(JumpSound, jumpBytes)
-			if err != nil {
-				return err
-			}
-			jumpSoundPlayer.Play()
+			go playJumpSound()
 			pc.maxHeightReached = false
 			pc.originalY = pc.Center.y
 		}
@@ -152,4 +148,10 @@ func (pc *PlayerCharacter) Dst(i int) (x0, y0, x1, y1 int) {
 func (pc *PlayerCharacter) Src(i int) (x0, y0, x1, y1 int) {
 	w, h := pc.image.Size()
 	return 0, 0, w, h
+}
+
+// made into function so can goroutine
+func playJumpSound() {
+	jumpSoundPlayer, _ := audio.NewPlayerFromBytes(JumpSound, jumpBytes)
+	jumpSoundPlayer.Play()
 }
