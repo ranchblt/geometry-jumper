@@ -45,7 +45,7 @@ const (
 	TrackLength = 400
 
 	// default angle values IN DEGREES!!!! (go math requires radians but degrees make more sense...)
-	DefaultCircleAngleOfDescent   float64 = 45
+	DefaultCircleAngleOfDescent   float64 = 35
 	DefaultTriangleAngleOfDescent float64 = 45
 
 	JumpHeight    = LowerTrackYAxis - UpperTrackYAxis
