@@ -10,6 +10,7 @@ import (
 
 	"geometry-jumper/resource"
 
+	"github.com/golang/freetype/truetype"
 	"github.com/hajimehoshi/ebiten"
 	"github.com/hajimehoshi/ebiten/audio"
 	"github.com/hajimehoshi/ebiten/audio/wav"
@@ -20,7 +21,7 @@ func Load() {
 	defer timeTrack(time.Now(), "Game.Load")
 	var wg sync.WaitGroup
 
-	wg.Add(3)
+	wg.Add(4)
 
 	go func() {
 		defer wg.Done()
@@ -38,6 +39,11 @@ func Load() {
 	go func() {
 		defer wg.Done()
 		initColorMaps()
+	}()
+
+	go func() {
+		defer wg.Done()
+		initFont()
 	}()
 
 	wg.Wait()
@@ -87,6 +93,12 @@ func initImages() {
 
 	LowerTrackOpts = &ebiten.DrawImageOptions{}
 	LowerTrackOpts.GeoM.Translate(0, LowerTrackYAxis)
+
+	titleImage, err := openImage("title.png")
+	handleErr(err)
+
+	TitleImage, err = ebiten.NewImageFromImage(titleImage, ebiten.FilterNearest)
+	handleErr(err)
 }
 
 func initImageMaps() {
@@ -102,7 +114,6 @@ func initAudio() {
 	handleErr(err)
 
 	buffer := filebuffer.New(asset)
-	handleErr(err)
 
 	const sampleRate = 44100
 	const bytesPerSample = 4
@@ -141,4 +152,12 @@ func initColorMaps() {
 		CircleType:   DefaultCircleColorMap,
 		TriangleType: DefaultTriangleColorMap,
 	}
+}
+
+func initFont() {
+	fontAsset, err := resource.Asset("3Dventure.ttf")
+	handleErr(err)
+
+	Font, err = truetype.Parse(fontAsset)
+	handleErr(err)
 }

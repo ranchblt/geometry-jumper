@@ -9,9 +9,12 @@ import (
 
 	"geometry-jumper/game"
 	"geometry-jumper/keyboard"
+	"geometry-jumper/menu"
 	"geometry-jumper/ranchblt"
 
 	"time"
+
+	"strings"
 
 	"github.com/hajimehoshi/ebiten"
 )
@@ -22,6 +25,8 @@ var (
 	shapeCollection *game.ShapeCollection
 	logoScreen      *ranchblt.Logo
 	showLogo        = true
+	showMenu        = true
+	mainMenu        menu.Menu
 )
 
 // Version is autoset from the build script
@@ -40,10 +45,25 @@ func gameLoop(screen *ebiten.Image) error {
 		return nil
 	}
 
+	keyboardWrapper.Update()
+
 	go logoTimer()
 
 	if showLogo && !game.Debug {
 		logoScreen.Draw(screen)
+		return nil
+	}
+
+	if showMenu {
+		mainMenu.Update()
+		mainMenu.Draw(screen)
+		if keyboardWrapper.IsKeyPressed(ebiten.KeyEnter) {
+			if strings.ToLower(mainMenu.Selected()) == "start" {
+				showMenu = false
+			} else if strings.ToLower(mainMenu.Selected()) == "exit" {
+				return errors.New("User wanted to quit")
+			}
+		}
 		return nil
 	}
 
@@ -52,7 +72,6 @@ func gameLoop(screen *ebiten.Image) error {
 		screen.DrawImage(game.LowerTrackLine, game.LowerTrackOpts)
 	}
 
-	keyboardWrapper.Update()
 	if !player.Collided {
 		shapeCollection.Update()
 		player.Update()
@@ -88,6 +107,23 @@ func main() {
 	}
 
 	game.Load()
+
+	options := []*menu.Option{}
+	options = append(options, &menu.Option{
+		Text: "Start",
+	})
+	options = append(options, &menu.Option{
+		Text: "Exit",
+	})
+
+	mainMenu = &menu.Regular{
+		BackgroundImage: game.TitleImage,
+		Height:          game.ScreenHeight,
+		Width:           game.ScreenWidth,
+		KeyboardWrapper: keyboardWrapper,
+		Options:         options,
+		Font:            game.Font,
+	}
 
 	square := game.NewSpawnDefaultSpeed(game.SquareType, game.LowerTrack, 500)
 	triangle := game.NewSpawnDefaultSpeed(game.TriangleType, game.UpperTrack, 1000)

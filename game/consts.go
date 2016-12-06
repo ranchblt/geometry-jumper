@@ -1,6 +1,7 @@
 package game
 
 import (
+	"github.com/golang/freetype/truetype"
 	"github.com/hajimehoshi/ebiten"
 	"github.com/hajimehoshi/ebiten/audio"
 )
@@ -84,6 +85,7 @@ var (
 	CircleImage         *ebiten.Image
 	UpperTrackLine      *ebiten.Image
 	LowerTrackLine      *ebiten.Image
+	TitleImage          *ebiten.Image
 
 	UpperTrackOpts *ebiten.DrawImageOptions
 	LowerTrackOpts *ebiten.DrawImageOptions
@@ -102,4 +104,5 @@ var (
 
 	// shape to default color map
 	ColorMappings map[int]ebiten.ColorM
+	Font          *truetype.Font
 )

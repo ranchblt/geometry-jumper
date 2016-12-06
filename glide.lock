@@ -1,5 +1,5 @@
-hash: 1d7b17bbad1c52576063cf288accd9d57751e093ca32ee854105df631e8a24e6
-updated: 2016-12-01T22:37:00.2537303-05:00
+hash: 639a8fee3c5f4cafe1379161e373fb4360028edc8269cc1494253a8c9e0ff4dc
+updated: 2016-12-05T23:37:32.1410788-05:00
 imports:
 - name: github.com/go-gl/gl
   version: b303bcb3e83b7ef645a5104e1c2db7f8d9e8918a
@@ -9,6 +9,10 @@ imports:
   version: 6e7202f2d691ed1d79bcdaed6cce0061006ce565
   subpackages:
   - v3.1/glfw
+- name: github.com/golang/freetype
+  version: 38b4c392adc5eed94207994c4848fff99f4ac234
+  subpackages:
+  - truetype
 - name: github.com/gopherjs/gopherjs
   version: e34a5cd6a1bc7c4fde759f2d3039852fc68b5fcc
   subpackages:
@@ -16,7 +20,7 @@ imports:
 - name: github.com/gopherjs/webgl
   version: a2d36020a9b2af0f7aefb23467ab48f3b501beec
 - name: github.com/hajimehoshi/ebiten
-  version: 96284a564f3b14d0507670bf9268bb0970768e5f
+  version: 021b23a5e773c217db10b91796d87fc544cc06dd
   subpackages:
   - audio
   - audio/internal/driver
