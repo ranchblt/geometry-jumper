@@ -20,8 +20,8 @@ func degreesToRadians(degreeValue float64) float64 {
 func getVelocityComponents(baseSpeed int, travelAngle float64) (xVelocity int, yVelocity int) {
 	var travelAngleInRadians = degreesToRadians(travelAngle)
 
-	xVelocity = int(float64(baseSpeed) + math.Cos(travelAngleInRadians))
-	yVelocity = int(float64(baseSpeed) + math.Sin(travelAngleInRadians))
+	xVelocity = int(float64(baseSpeed) * math.Cos(travelAngleInRadians))
+	yVelocity = int(float64(baseSpeed) * math.Sin(travelAngleInRadians))
 	return xVelocity, yVelocity
 }
 
