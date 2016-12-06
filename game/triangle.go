@@ -12,7 +12,7 @@ type Triangle struct {
 func NewTriangle(base *BaseShape) *Triangle {
 	var t = &Triangle{
 		BaseShape:        base,
-		TravelAngle:      DefaultCircleAngleOfDescent,
+		TravelAngle:      DefaultTriangleAngleOfDescent,
 		DestinationTrack: SubsequentTracks[base.Track],
 		swapState:        TriangleBeforeSwap,
 		midwayPoint:      int(base.Center.x / 2),
@@ -23,7 +23,7 @@ func NewTriangle(base *BaseShape) *Triangle {
 func NewTriangleNonStandardAngle(base *BaseShape, travelAngle float64) *Triangle {
 	var t = &Triangle{
 		BaseShape:        base,
-		TravelAngle:      DefaultCircleAngleOfDescent,
+		TravelAngle:      DefaultTriangleAngleOfDescent,
 		DestinationTrack: SubsequentTracks[base.Track],
 		swapState:        TriangleBeforeSwap,
 		midwayPoint:      int(base.Center.x / 2),
