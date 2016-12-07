@@ -137,12 +137,12 @@ func (pc *PlayerCharacter) Len() int {
 
 func (pc *PlayerCharacter) Dst(i int) (x0, y0, x1, y1 int) {
 	w, h := pc.image.Size()
-	halfHeight := h / 2
-	halfWidth := w / 2
-	return pc.Center.x - halfHeight,
-		pc.Center.y - halfWidth,
-		pc.Center.x + halfHeight,
-		pc.Center.y + halfWidth
+	h = h / 3
+	w = w / 3
+	return pc.Center.x - h,
+		pc.Center.y - w,
+		pc.Center.x + h,
+		pc.Center.y + w
 }
 
 func (pc *PlayerCharacter) Src(i int) (x0, y0, x1, y1 int) {
