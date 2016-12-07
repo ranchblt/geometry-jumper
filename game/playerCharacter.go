@@ -137,8 +137,8 @@ func (pc *PlayerCharacter) Len() int {
 
 func (pc *PlayerCharacter) Dst(i int) (x0, y0, x1, y1 int) {
 	w, h := pc.image.Size()
-	h = h / 3
-	w = w / 3
+	h = h / 2
+	w = w / 2
 	return pc.Center.x - h,
 		pc.Center.y - w,
 		pc.Center.x + h,

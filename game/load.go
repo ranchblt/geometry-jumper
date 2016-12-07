@@ -50,13 +50,13 @@ func Load() {
 }
 
 func initImages() {
-	pImage, err := openImage("Robot2_80x80.png")
+	pImage, err := openImage("Robot2.png")
 	handleErr(err)
 
 	PersonStandingImage, err = ebiten.NewImageFromImage(pImage, ebiten.FilterNearest)
 	handleErr(err)
 
-	pImage2, err := openImage("Robot2_80x80_jump.png")
+	pImage2, err := openImage("Robot2_jump.png")
 	handleErr(err)
 
 	PersonJumpingImage, err = ebiten.NewImageFromImage(pImage2, ebiten.FilterNearest)
