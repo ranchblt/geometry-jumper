@@ -5,59 +5,50 @@ type PatternCollection struct {
 }
 
 type Pattern struct {
-	spawns       []*Spawn
-	currentSpawn int
+	SpawnGroups []*SpawnGroup
 }
 
-func NewPattern(spawns []*Spawn) *Pattern {
+func NewPattern(spawnGroups []*SpawnGroup) *Pattern {
 	var pattern = &Pattern{
-		spawns:       spawns,
-		currentSpawn: 0,
+		SpawnGroups: spawnGroups,
 	}
 	return pattern
 }
 
-func (p *Pattern) GetCurrentSpawn() *Spawn {
-	return p.spawns[p.currentSpawn]
+type SpawnGroup struct {
+	Spawns []*Spawn
+	// how long since the start of the pattern to spawn this group of shapes
+	SpawnTimeMillis int
 }
 
-func (p *Pattern) OnLastSpawn() bool {
-	return p.currentSpawn == len(p.spawns)-1
-}
-
-func (p *Pattern) ResetPattern() {
-	p.currentSpawn = 0
-
-}
-
-func (p *Pattern) AdvancePattern() {
-	p.currentSpawn++
+func NewSpawnGroup(spawns []*Spawn, spawnTimeMillis int) *SpawnGroup {
+	var spawnGroup = &SpawnGroup{
+		Spawns:          spawns,
+		SpawnTimeMillis: spawnTimeMillis,
+	}
+	return spawnGroup
 }
 
 type Spawn struct {
 	ShapeType int
 	Track     int
 	Speed     int
-	// how long before this spawn should be added to the collection (milliseconds)
-	SpawnDelayMillis int
 }
 
-func NewSpawn(shapeType int, track int, speed int, spawnDelayMillis int) *Spawn {
+func NewSpawn(shapeType int, track int, speed int) *Spawn {
 	var spawn = &Spawn{
-		ShapeType:        shapeType,
-		Track:            track,
-		Speed:            speed,
-		SpawnDelayMillis: spawnDelayMillis,
+		ShapeType: shapeType,
+		Track:     track,
+		Speed:     speed,
 	}
 	return spawn
 }
 
-func NewSpawnDefaultSpeed(shapeType int, track int, spawnDelayMillis int) *Spawn {
+func NewSpawnDefaultSpeed(shapeType int, track int) *Spawn {
 	var spawn = &Spawn{
-		ShapeType:        shapeType,
-		Track:            track,
-		Speed:            DefaultSpeed,
-		SpawnDelayMillis: spawnDelayMillis,
+		ShapeType: shapeType,
+		Track:     track,
+		Speed:     DefaultSpeed,
 	}
 	return spawn
 }

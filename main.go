@@ -125,11 +125,15 @@ func main() {
 		Font:            game.Font,
 	}
 
-	square := game.NewSpawnDefaultSpeed(game.SquareType, game.LowerTrack, 500)
-	triangle := game.NewSpawnDefaultSpeed(game.TriangleType, game.UpperTrack, 1000)
-	circle := game.NewSpawnDefaultSpeed(game.CircleType, game.UpperTrack, 1500)
+	square := game.NewSpawnDefaultSpeed(game.SquareType, game.LowerTrack)
+	squareTwo := game.NewSpawnDefaultSpeed(game.SquareType, game.LowerTrack)
+	triangle := game.NewSpawnDefaultSpeed(game.TriangleType, game.UpperTrack)
+	circle := game.NewSpawnDefaultSpeed(game.CircleType, game.UpperTrack)
 
-	pattern := game.NewPattern([]*game.Spawn{square, triangle, circle})
+	firstGroup := game.NewSpawnGroup([]*game.Spawn{square}, 2500)
+	secondGroup := game.NewSpawnGroup([]*game.Spawn{triangle, squareTwo}, 5000)
+	thirdGroup := game.NewSpawnGroup([]*game.Spawn{circle}, 7500)
+	pattern := game.NewPattern([]*game.SpawnGroup{firstGroup, secondGroup, thirdGroup})
 	patternCollection := &game.PatternCollection{
 		Patterns: map[int][]*game.Pattern{
 			game.LowDifficulty: []*game.Pattern{pattern},

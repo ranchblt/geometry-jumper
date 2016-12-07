@@ -9,17 +9,16 @@ import (
 )
 
 type ShapeCollection struct {
-	shapeImageMap          map[int][]*ebiten.Image
-	shapes                 []Drawable
-	upperSpeedLimit        int
-	minimumSpeed           int
-	shapeRandom            *rand.Rand
-	allowColorSwap         bool
-	patternCollection      *PatternCollection
-	currentPattern         *Pattern
-	currentSpawnTimeTarget time.Time
-	nextPatternTimeTarget  time.Time
-	unlockedDifficulties   []int
+	shapeImageMap        map[int][]*ebiten.Image
+	shapes               []Drawable
+	upperSpeedLimit      int
+	minimumSpeed         int
+	shapeRandom          *rand.Rand
+	allowColorSwap       bool
+	patternCollection    *PatternCollection
+	currentPattern       *Pattern
+	duringPattern        bool
+	unlockedDifficulties []int
 }
 
 func NewShapeCollection(patternCollection *PatternCollection) *ShapeCollection {
@@ -34,8 +33,16 @@ func NewShapeCollection(patternCollection *PatternCollection) *ShapeCollection {
 		patternCollection:    patternCollection,
 		unlockedDifficulties: []int{DifficultyTypes[0]},
 	}
-	s.assignPattern()
 	return s
+}
+
+func (s *ShapeCollection) assignPatternOnDelay(delayMillis int64) {
+	// need to assign this prior to the timer finishing, otherwise we'll stack up patterns
+	// and cause a hilariously unavoidable line of death.
+	s.duringPattern = true
+	timer := time.NewTimer(time.Millisecond * time.Duration(delayMillis))
+	<-timer.C
+	s.assignPattern()
 }
 
 // assigns a pattern randomly using the currently unlocked difficulties
@@ -47,10 +54,22 @@ func (s *ShapeCollection) assignPattern() {
 	patternIndex := s.shapeRandom.Intn(len(patterns))
 	s.currentPattern = patterns[patternIndex]
 
-	spawnDelay := s.currentPattern.GetCurrentSpawn().SpawnDelayMillis
-	s.currentSpawnTimeTarget = time.Now().Add(time.Duration(spawnDelay) * time.Millisecond)
-	// TODO have this be scaleable somehow
-	s.nextPatternTimeTarget = time.Now().Add(time.Duration(PatternDelayMillis) * time.Millisecond)
+	spawnGroups := s.currentPattern.SpawnGroups
+	for index, spawnGroup := range spawnGroups {
+		go s.spawnOnDelay(spawnGroup, index == len(spawnGroups)-1)
+	}
+}
+
+func (s *ShapeCollection) spawnOnDelay(spawnGroup *SpawnGroup, lastSpawn bool) {
+	fmt.Println(spawnGroup.SpawnTimeMillis)
+	timer := time.NewTimer(time.Millisecond * time.Duration(spawnGroup.SpawnTimeMillis))
+	<-timer.C
+	fmt.Println("done waiting")
+	for _, spawn := range spawnGroup.Spawns {
+		s.shapeFromSpawn(spawn)
+	}
+	// if it's the last spawn group, we're not on the pattern anymore
+	s.duringPattern = !lastSpawn
 }
 
 func (s *ShapeCollection) shapeFromSpawn(spawn *Spawn) {
@@ -106,11 +125,6 @@ func (s *ShapeCollection) UnlockNextDifficulty() {
 }
 
 func (s *ShapeCollection) Update() {
-	now := time.Now()
-	if now.After(s.nextPatternTimeTarget) || now.Equal(s.nextPatternTimeTarget) {
-		s.updatePattern(now)
-	}
-
 	for _, d := range s.shapes {
 		d.Update()
 	}
@@ -124,29 +138,14 @@ func (s *ShapeCollection) Update() {
 			unexpiredShapes = append(unexpiredShapes, d)
 		}
 	}
+
+	if len(s.shapes) == 0 && !s.duringPattern {
+		fmt.Println("assigning new pattern")
+		go s.assignPatternOnDelay(PatternDelayMillis)
+	}
+
 	// boy I hope this doesn't cause a leak somehow
 	s.shapes = unexpiredShapes
-}
-
-func (s *ShapeCollection) updatePattern(now time.Time) {
-	if now.After(s.currentSpawnTimeTarget) || now.Equal(s.currentSpawnTimeTarget) {
-		// spawn the new shape
-		spawn := s.currentPattern.GetCurrentSpawn()
-		s.shapeFromSpawn(spawn)
-		if s.currentPattern.OnLastSpawn() {
-			// then if the pattern is finished, reset the old one, get a new one
-			s.currentPattern.ResetPattern()
-			s.assignPattern()
-
-		} else {
-			// otherwise advance the current pattern
-			s.currentPattern.AdvancePattern()
-
-		}
-		spawnDelay := s.currentPattern.GetCurrentSpawn().SpawnDelayMillis
-		// then no matter what happened, we need to move the spawn time target up
-		s.currentSpawnTimeTarget = now.Add(time.Duration(spawnDelay) * time.Millisecond)
-	}
 }
 
 func (s *ShapeCollection) Add(g Drawable) {
