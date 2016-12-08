@@ -75,6 +75,8 @@ func gameLoop(screen *ebiten.Image) error {
 	if !player.Collided {
 		shapeCollection.Update()
 		player.Update()
+	} else {
+		shapeCollection.Stop = true
 	}
 
 	shapeCollection.Draw(screen)

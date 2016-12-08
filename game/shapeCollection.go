@@ -19,6 +19,7 @@ type ShapeCollection struct {
 	currentPattern       *Pattern
 	duringPattern        bool
 	unlockedDifficulties []int
+	Stop                 bool
 }
 
 func NewShapeCollection(patternCollection *PatternCollection) *ShapeCollection {
@@ -64,6 +65,9 @@ func (s *ShapeCollection) spawnOnDelay(spawnGroup *SpawnGroup, lastSpawn bool) {
 	fmt.Println(spawnGroup.SpawnTimeMillis)
 	timer := time.NewTimer(time.Millisecond * time.Duration(spawnGroup.SpawnTimeMillis))
 	<-timer.C
+	if s.Stop {
+		return
+	}
 	fmt.Println("done waiting")
 	for _, spawn := range spawnGroup.Spawns {
 		s.shapeFromSpawn(spawn)
