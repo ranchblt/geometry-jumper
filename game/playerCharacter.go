@@ -23,6 +23,7 @@ type PlayerCharacter struct {
 	jumping          bool
 	maxHeightReached bool
 	originalY        int
+	score            int
 }
 
 func NewPlayerCharacter(name string, image *ebiten.Image, jimage *ebiten.Image, keyboardWrapper *keyboard.KeyboardWrapper) *PlayerCharacter {
@@ -88,6 +89,20 @@ func (pc *PlayerCharacter) Draw(screen *ebiten.Image) {
 		screen.DrawImage(pc.image, &ebiten.DrawImageOptions{
 			ImageParts: pc,
 		})
+	}
+}
+
+func (pc *PlayerCharacter) Score() int {
+	return pc.score
+}
+
+func (pc *PlayerCharacter) CheckScore(sc *ShapeCollection) {
+	for _, s := range sc.shapes {
+		x0, _, _, _ := s.Dst(1)
+		if x0 < pc.Center.X() && !s.Scored() {
+			s.SetScore(true)
+			pc.score++
+		}
 	}
 }
 

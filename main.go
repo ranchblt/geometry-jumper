@@ -16,7 +16,10 @@ import (
 
 	"strings"
 
+	"strconv"
+
 	"github.com/hajimehoshi/ebiten"
+	"github.com/hajimehoshi/ebiten/ebitenutil"
 )
 
 var (
@@ -80,6 +83,7 @@ func gameLoop(screen *ebiten.Image) error {
 		shapeCollection.Stop = true
 		endMenu.Update()
 		endMenu.Draw(screen)
+		ebitenutil.DebugPrint(screen, strconv.Itoa(player.Score()))
 		if keyboardWrapper.IsKeyPressed(ebiten.KeyEnter) {
 			if strings.ToLower(endMenu.Selected()) == "restart" {
 
@@ -93,6 +97,7 @@ func gameLoop(screen *ebiten.Image) error {
 	player.Draw(screen)
 
 	go player.CheckCollision(shapeCollection)
+	go player.CheckScore(shapeCollection)
 
 	//ebitenutil.DebugPrint(screen, "Hello world!")
 

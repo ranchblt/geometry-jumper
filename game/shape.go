@@ -34,6 +34,7 @@ type BaseShape struct {
 	hitboxImage *ebiten.Image
 	expired     bool
 	colorMap    ebiten.ColorM
+	scored      bool
 }
 
 func NewBaseShape(track int, centerX int, baseSpeed int, image *ebiten.Image, colorMap ebiten.ColorM) *BaseShape {
@@ -105,6 +106,14 @@ func (s *BaseShape) CenterCoord() *coord {
 	return s.Center
 }
 
+func (s *BaseShape) Scored() bool {
+	return s.scored
+}
+
+func (s *BaseShape) SetScore(b bool) {
+	s.scored = b
+}
+
 type Drawable interface {
 	Draw(screen *ebiten.Image)
 	Image() *ebiten.Image
@@ -115,4 +124,6 @@ type Drawable interface {
 	Dst(int) (int, int, int, int)
 	Src(int) (int, int, int, int)
 	IsExpired() bool
+	Scored() bool
+	SetScore(bool)
 }
