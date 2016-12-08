@@ -65,6 +65,7 @@ func (s *ShapeCollection) spawnOnDelay(spawnGroup *SpawnGroup, lastSpawn bool) {
 	fmt.Println(spawnGroup.SpawnTimeMillis)
 	timer := time.NewTimer(time.Millisecond * time.Duration(spawnGroup.SpawnTimeMillis))
 	<-timer.C
+	// So shapes down't spawn after
 	if s.Stop {
 		return
 	}
