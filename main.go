@@ -183,7 +183,7 @@ func main() {
 
 	go fmt.Printf("Starting up game. Version %s, Build %s", Version, Build)
 
-	ebiten.Run(gameLoop, game.ScreenWidth, game.ScreenHeight, 2, "Hello world!")
+	ebiten.Run(gameLoop, game.ScreenWidth, game.ScreenHeight, 2, "Geom Jump")
 }
 
 func logoTimer() {
