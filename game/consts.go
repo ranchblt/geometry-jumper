@@ -98,6 +98,10 @@ var (
 	jumpCh    = make(chan []byte)
 	jumpBytes []byte
 
+	Music      *audio.Context
+	musicCh    = make(chan []byte)
+	MusicBytes []byte
+
 	// color mapping constants
 	DefaultSquareColorMap   ebiten.ColorM
 	DefaultCircleColorMap   ebiten.ColorM
