@@ -4,22 +4,23 @@ import (
 	"errors"
 	"flag"
 	"fmt"
+	"image"
 	"os"
 	"runtime/pprof"
+	"strconv"
+	"strings"
+	"time"
+
+	"golang.org/x/image/font"
+	"golang.org/x/image/math/fixed"
 
 	"geometry-jumper/game"
 	"geometry-jumper/keyboard"
 	"geometry-jumper/menu"
 	"geometry-jumper/ranchblt"
 
-	"time"
-
-	"strings"
-
-	"strconv"
-
+	"github.com/golang/freetype/truetype"
 	"github.com/hajimehoshi/ebiten"
-	"github.com/hajimehoshi/ebiten/ebitenutil"
 )
 
 var (
@@ -83,7 +84,7 @@ func gameLoop(screen *ebiten.Image) error {
 		shapeCollection.Stop = true
 		endMenu.Update()
 		endMenu.Draw(screen)
-		ebitenutil.DebugPrint(screen, strconv.Itoa(player.Score()))
+		screen.DrawImage(getScoreImage(player.Score()), &ebiten.DrawImageOptions{})
 		if keyboardWrapper.IsKeyPressed(ebiten.KeyEnter) {
 			if strings.ToLower(endMenu.Selected()) == "restart" {
 
@@ -189,4 +190,31 @@ func logoTimer() {
 	timer := time.NewTimer(time.Second * 2)
 	<-timer.C
 	showLogo = false
+}
+
+func getScoreImage(score int) *ebiten.Image {
+	const size = 24
+	const dpi = 72
+
+	textImage, _ := ebiten.NewImage(game.ScreenWidth, game.ScreenHeight, ebiten.FilterNearest)
+	dst := image.NewRGBA(image.Rect(0, 0, game.ScreenWidth, game.ScreenHeight))
+
+	d := &font.Drawer{
+		Dst: dst,
+		Src: image.White,
+		Face: truetype.NewFace(game.Font, &truetype.Options{
+			Size:    size,
+			DPI:     dpi,
+			Hinting: font.HintingFull,
+		}),
+	}
+
+	st := "Score: " + strconv.Itoa(score)
+
+	s := font.MeasureString(d.Face, st)
+	d.Dot = fixed.P(game.ScreenWidth/2-s.Round()/2, game.ScreenHeight-100)
+	d.DrawString(st)
+
+	textImage.ReplacePixels(dst.Pix)
+	return textImage
 }
