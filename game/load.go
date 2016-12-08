@@ -99,6 +99,12 @@ func initImages() {
 
 	TitleImage, err = ebiten.NewImageFromImage(titleImage, ebiten.FilterNearest)
 	handleErr(err)
+
+	end, err := openImage("end.png")
+	handleErr(err)
+
+	EndImage, err = ebiten.NewImageFromImage(end, ebiten.FilterNearest)
+	handleErr(err)
 }
 
 func initImageMaps() {

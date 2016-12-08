@@ -27,6 +27,7 @@ var (
 	showLogo        = true
 	showMenu        = true
 	mainMenu        menu.Menu
+	endMenu         menu.Menu
 )
 
 // Version is autoset from the build script
@@ -77,6 +78,15 @@ func gameLoop(screen *ebiten.Image) error {
 		player.Update()
 	} else {
 		shapeCollection.Stop = true
+		endMenu.Update()
+		endMenu.Draw(screen)
+		if keyboardWrapper.IsKeyPressed(ebiten.KeyEnter) {
+			if strings.ToLower(endMenu.Selected()) == "restart" {
+
+			} else if strings.ToLower(endMenu.Selected()) == "exit" {
+				return errors.New("User wanted to quit")
+			}
+		}
 	}
 
 	shapeCollection.Draw(screen)
@@ -124,6 +134,23 @@ func main() {
 		Width:           game.ScreenWidth,
 		KeyboardWrapper: keyboardWrapper,
 		Options:         options,
+		Font:            game.Font,
+	}
+
+	options2 := []*menu.Option{}
+	options2 = append(options2, &menu.Option{
+		Text: "Restart",
+	})
+	options2 = append(options2, &menu.Option{
+		Text: "Exit",
+	})
+
+	endMenu = &menu.Regular{
+		BackgroundImage: game.EndImage,
+		Height:          game.ScreenHeight,
+		Width:           game.ScreenWidth,
+		KeyboardWrapper: keyboardWrapper,
+		Options:         options2,
 		Font:            game.Font,
 	}
 

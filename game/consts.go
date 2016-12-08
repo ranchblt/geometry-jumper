@@ -86,6 +86,7 @@ var (
 	UpperTrackLine      *ebiten.Image
 	LowerTrackLine      *ebiten.Image
 	TitleImage          *ebiten.Image
+	EndImage            *ebiten.Image
 
 	UpperTrackOpts *ebiten.DrawImageOptions
 	LowerTrackOpts *ebiten.DrawImageOptions
