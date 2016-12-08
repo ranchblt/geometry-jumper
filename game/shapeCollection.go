@@ -62,14 +62,18 @@ func (s *ShapeCollection) assignPattern() {
 }
 
 func (s *ShapeCollection) spawnOnDelay(spawnGroup *SpawnGroup, lastSpawn bool) {
-	fmt.Println(spawnGroup.SpawnTimeMillis)
+	if Debug {
+		go fmt.Println(spawnGroup.SpawnTimeMillis)
+	}
 	timer := time.NewTimer(time.Millisecond * time.Duration(spawnGroup.SpawnTimeMillis))
 	<-timer.C
 	// So shapes down't spawn after
 	if s.Stop {
 		return
 	}
-	fmt.Println("done waiting")
+	if Debug {
+		go fmt.Println("done waiting")
+	}
 	for _, spawn := range spawnGroup.Spawns {
 		s.shapeFromSpawn(spawn)
 	}
@@ -125,7 +129,9 @@ func (s *ShapeCollection) UnlockNextDifficulty() {
 		nextDifficulty := DifficultyTypes[nextDifficultyIndex]
 		s.unlockedDifficulties = append(s.unlockedDifficulties, nextDifficulty)
 	} else {
-		fmt.Println("no more difficulties to unlock")
+		if Debug {
+			go fmt.Println("no more difficulties to unlock")
+		}
 	}
 }
 
@@ -145,7 +151,9 @@ func (s *ShapeCollection) Update() {
 	}
 
 	if len(s.shapes) == 0 && !s.duringPattern {
-		fmt.Println("assigning new pattern")
+		if Debug {
+			go fmt.Println("assigning new pattern")
+		}
 		go s.assignPatternOnDelay(PatternDelayMillis)
 	}
 
