@@ -4,7 +4,6 @@ import (
 	"image/color"
 	_ "image/png"
 	"io/ioutil"
-	"log"
 	"sync"
 	"time"
 
@@ -125,7 +124,12 @@ func initAudio() {
 	const bytesPerSample = 4
 
 	var wg sync.WaitGroup
-	wg.Add(2)
+	wg.Add(1)
+
+	var err error
+
+	JumpSound, err = audio.NewContext(sampleRate)
+	handleErr(err)
 
 	go func() {
 		defer wg.Done()
@@ -134,48 +138,15 @@ func initAudio() {
 
 		buffer := filebuffer.New(asset)
 
-		JumpSound, err = audio.NewContext(sampleRate)
-		handleErr(err)
-
 		go func() {
 			s, err := wav.Decode(JumpSound, buffer)
-			if err != nil {
-				log.Fatal(err)
-				return
-			}
+			handleErr(err)
+
 			b, err := ioutil.ReadAll(s)
-			if err != nil {
-				log.Fatal(err)
-				return
-			}
-			jumpCh <- b
-			close(jumpCh)
-		}()
-	}()
+			handleErr(err)
 
-	go func() {
-		defer wg.Done()
-
-		asset, err := resource.Asset("Dub_Star.wav")
-		handleErr(err)
-
-		buffer := filebuffer.New(asset)
-		Music, err = audio.NewContext(sampleRate)
-		handleErr(err)
-
-		go func() {
-			s, err := wav.Decode(Music, buffer)
-			if err != nil {
-				log.Fatal(err)
-				return
-			}
-			b, err := ioutil.ReadAll(s)
-			if err != nil {
-				log.Fatal(err)
-				return
-			}
-			musicCh <- b
-			close(musicCh)
+			JumpCh <- b
+			close(JumpCh)
 		}()
 	}()
 

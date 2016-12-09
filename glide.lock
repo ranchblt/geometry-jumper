@@ -1,5 +1,5 @@
-hash: 639a8fee3c5f4cafe1379161e373fb4360028edc8269cc1494253a8c9e0ff4dc
-updated: 2016-12-05T23:37:32.1410788-05:00
+hash: 41c9fba0a6992e136febea77afe513e30a63976a48955587041c81e18397a14d
+updated: 2016-12-09T13:42:47.4901596-05:00
 imports:
 - name: github.com/go-gl/gl
   version: b303bcb3e83b7ef645a5104e1c2db7f8d9e8918a
@@ -8,10 +8,11 @@ imports:
 - name: github.com/go-gl/glfw
   version: 6e7202f2d691ed1d79bcdaed6cce0061006ce565
   subpackages:
-  - v3.1/glfw
+  - v3.2/glfw
 - name: github.com/golang/freetype
   version: 38b4c392adc5eed94207994c4848fff99f4ac234
   subpackages:
+  - raster
   - truetype
 - name: github.com/gopherjs/gopherjs
   version: e34a5cd6a1bc7c4fde759f2d3039852fc68b5fcc
@@ -20,30 +21,33 @@ imports:
 - name: github.com/gopherjs/webgl
   version: a2d36020a9b2af0f7aefb23467ab48f3b501beec
 - name: github.com/hajimehoshi/ebiten
-  version: 021b23a5e773c217db10b91796d87fc544cc06dd
+  version: e47c3bbbfb9d65c251037ccd81932932764f17dc
   subpackages:
   - audio
   - audio/internal/driver
   - audio/wav
   - ebitenutil
-  - ebitenutil/internal/assets
+  - internal/affine
+  - internal/endian
   - internal/graphics
-  - internal/graphics/opengl
   - internal/jni
   - internal/loop
-  - internal/pixels
+  - internal/opengl
+  - internal/restorable
   - internal/ui
-- name: github.com/hajimehoshi/go-openal
-  version: 3acd7913018876a2389304540fdf2cce7ede5f1c
-  subpackages:
-  - openal
 - name: github.com/mattetti/filebuffer
   version: 80f2c1c4dcf558a0cee1e4303225d17c6238e00a
+- name: github.com/timshannon/go-openal
+  version: ed0a8311175d68e8f28c7dcc70bc2303f7cf65da
+  subpackages:
+  - openal
 - name: golang.org/x/image
   version: 5286ed5c2aec7fc7d08323e7e4423b171caf84cb
   subpackages:
   - draw
+  - font
   - math/f64
+  - math/fixed
 - name: golang.org/x/mobile
   version: b8794a2669da6680501f9ebc6c555553dc46b1ee
   subpackages:

@@ -43,15 +43,18 @@ func NewPlayerCharacter(name string, image *ebiten.Image, jimage *ebiten.Image, 
 }
 
 func (pc *PlayerCharacter) Update() error {
-	if jumpBytes == nil {
+	if JumpBytes == nil {
 		select {
-		case jumpBytes = <-jumpCh:
+		case JumpBytes = <-JumpCh:
 		default:
 		}
 	}
 
-	if err := JumpSound.Update(); err != nil {
-		return err
+	if JumpSound != nil {
+		if err := JumpSound.Update(); err != nil {
+			return err
+		}
+
 	}
 
 	if pc.keyboardWrapper.KeyPushed(ebiten.KeySpace) {
@@ -167,6 +170,6 @@ func (pc *PlayerCharacter) Src(i int) (x0, y0, x1, y1 int) {
 
 // made into function so can goroutine
 func playJumpSound() {
-	jumpSoundPlayer, _ := audio.NewPlayerFromBytes(JumpSound, jumpBytes)
+	jumpSoundPlayer, _ := audio.NewPlayerFromBytes(JumpSound, JumpBytes)
 	jumpSoundPlayer.Play()
 }
