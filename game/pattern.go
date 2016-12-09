@@ -1,7 +1,19 @@
 package game
 
+import "encoding/json"
+
 type PatternCollection struct {
-	Patterns map[int][]*Pattern
+	Patterns map[string][]*Pattern
+}
+
+func PatternCollectionFromJSON(data []byte) *PatternCollection {
+	var patternCollection PatternCollection
+	error := json.Unmarshal(data, &patternCollection)
+	if error != nil {
+		panic(error)
+	}
+
+	return &patternCollection
 }
 
 type Pattern struct {

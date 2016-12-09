@@ -18,11 +18,14 @@ type ShapeCollection struct {
 	patternCollection    *PatternCollection
 	currentPattern       *Pattern
 	duringPattern        bool
-	unlockedDifficulties []int
-	Stop                 bool
+	unlockedDifficulties []string
+	// used to lock easier difficulties
+	difficultyOffset        int
+	Stop                    bool
+	difficultyChangesQueued bool
 }
 
-func NewShapeCollection(patternCollection *PatternCollection) *ShapeCollection {
+func NewShapeCollection() *ShapeCollection {
 	shapeSource := rand.NewSource(time.Now().UnixNano())
 	var s = &ShapeCollection{
 		shapeImageMap:        ShapeImageMap,
@@ -31,8 +34,9 @@ func NewShapeCollection(patternCollection *PatternCollection) *ShapeCollection {
 		minimumSpeed:         MinimumSpeed,
 		shapeRandom:          rand.New(shapeSource),
 		allowColorSwap:       false,
-		patternCollection:    patternCollection,
-		unlockedDifficulties: []int{DifficultyTypes[0]},
+		patternCollection:    GamePatternCollection,
+		unlockedDifficulties: []string{DifficultyTypes[0]},
+		difficultyOffset:     0,
 	}
 	return s
 }
@@ -48,8 +52,12 @@ func (s *ShapeCollection) assignPatternOnDelay(delayMillis int64) {
 
 // assigns a pattern randomly using the currently unlocked difficulties
 func (s *ShapeCollection) assignPattern() {
-	difficultyIndex := s.shapeRandom.Intn(len(s.unlockedDifficulties))
+	difficultyIndex := s.shapeRandom.Intn(len(s.unlockedDifficulties)-s.difficultyOffset) + s.difficultyOffset
 	difficulty := DifficultyTypes[difficultyIndex]
+
+	if Debug {
+		go fmt.Println("difficulty for pattern: " + difficulty)
+	}
 
 	patterns := s.patternCollection.Patterns[difficulty]
 	patternIndex := s.shapeRandom.Intn(len(patterns))
@@ -117,20 +125,59 @@ func (s *ShapeCollection) getImageColorMap(shapeType int) ebiten.ColorM {
 	return colorMap
 }
 
-func (s *ShapeCollection) UnlockColorSwap() {
-	s.allowColorSwap = true
+func (s *ShapeCollection) unlockColorSwapOnDelay(delaySeconds int64) {
+	timer := time.NewTimer(time.Second * time.Duration(delaySeconds))
+	<-timer.C
+	s.unlockColorSwap()
 }
 
-func (s *ShapeCollection) UnlockNextDifficulty() {
+func (s *ShapeCollection) unlockColorSwap() {
+	s.allowColorSwap = true
+	if Debug {
+		go fmt.Println("unlocked color swap")
+	}
+}
+
+func (s *ShapeCollection) unlockDifficultyOnDelay(delaySeconds int64) {
+	timer := time.NewTimer(time.Second * time.Duration(delaySeconds))
+	<-timer.C
+	s.unlockNextDifficulty()
+}
+
+func (s *ShapeCollection) unlockNextDifficulty() {
 	// difficulties are added sequentially, so just use our length as an index
 	// into the difficulty type slice
 	if len(s.unlockedDifficulties) < len(DifficultyTypes) {
 		nextDifficultyIndex := len(s.unlockedDifficulties)
 		nextDifficulty := DifficultyTypes[nextDifficultyIndex]
 		s.unlockedDifficulties = append(s.unlockedDifficulties, nextDifficulty)
+		if Debug {
+			go fmt.Println("unlocked: " + nextDifficulty)
+		}
 	} else {
 		if Debug {
-			go fmt.Println("no more difficulties to unlock")
+			fmt.Println("no more difficulties to unlock")
+		}
+	}
+}
+
+func (s *ShapeCollection) lockDifficultyOnDelay(delaySeconds int64) {
+	timer := time.NewTimer(time.Second * time.Duration(delaySeconds))
+	<-timer.C
+	s.lockDifficulty()
+}
+
+func (s *ShapeCollection) lockDifficulty() {
+	// difficulties are added sequentially, so just use our length as an index
+	// into the difficulty type slice
+	if s.difficultyOffset < len(DifficultyTypes)-1 {
+		s.difficultyOffset++
+		if Debug {
+			go fmt.Println("locked: " + s.unlockedDifficulties[s.difficultyOffset-1])
+		}
+	} else {
+		if Debug {
+			go fmt.Println("no more difficulties to lock")
 		}
 	}
 }
@@ -155,6 +202,15 @@ func (s *ShapeCollection) Update() {
 			go fmt.Println("assigning new pattern")
 		}
 		go s.assignPatternOnDelay(PatternDelayMillis)
+	}
+
+	if !s.difficultyChangesQueued {
+		go s.unlockDifficultyOnDelay(MediumDifficultyUnlockSeconds)
+		go s.unlockDifficultyOnDelay(HighDifficultyUnlockSeconds)
+		go s.unlockColorSwapOnDelay(ColorSwapUnlockSeconds)
+		go s.lockDifficultyOnDelay(LowDifficultyLockSeconds)
+		go s.lockDifficultyOnDelay(MediumDifficultyLockSeconds)
+		s.difficultyChangesQueued = true
 	}
 
 	// boy I hope this doesn't cause a leak somehow

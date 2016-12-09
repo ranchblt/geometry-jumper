@@ -16,9 +16,9 @@ const (
 	PatternDelayMillis = 2500
 
 	// 'difficulty' constants for patterns?
-	LowDifficulty    = 1
-	MediumDifficulty = 2
-	HighDifficulty   = 3
+	LowDifficulty    = "LOW"
+	MediumDifficulty = "MEDIUM"
+	HighDifficulty   = "HIGH"
 
 	// Track constants
 	UpperTrack = 1
@@ -58,6 +58,15 @@ const (
 
 	ScreenWidth  = 400
 	ScreenHeight = 400
+
+	// difficulty unlock points
+	MediumDifficultyUnlockSeconds = 60
+	HighDifficultyUnlockSeconds   = 120
+	ColorSwapUnlockSeconds        = 240
+
+	// difficulty lock points
+	LowDifficultyLockSeconds    = 150
+	MediumDifficultyLockSeconds = 180
 )
 
 var (
@@ -65,7 +74,7 @@ var (
 	ShapeTypes = [...]int{TriangleType, CircleType, SquareType}
 
 	// slice of all difficulties
-	DifficultyTypes = [...]int{LowDifficulty, MediumDifficulty, HighDifficulty}
+	DifficultyTypes = [...]string{LowDifficulty, MediumDifficulty, HighDifficulty}
 
 	// track mappings so you can use the track ID to get the track's position on the y axis
 	TrackMappings = map[int]int{
@@ -110,4 +119,7 @@ var (
 	// shape to default color map
 	ColorMappings map[int]ebiten.ColorM
 	Font          *truetype.Font
+
+	// pattern collection
+	GamePatternCollection *PatternCollection
 )

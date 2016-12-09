@@ -21,7 +21,7 @@ func Load() {
 	defer timeTrack(time.Now(), "Game.Load")
 	var wg sync.WaitGroup
 
-	wg.Add(4)
+	wg.Add(5)
 
 	go func() {
 		defer wg.Done()
@@ -44,6 +44,11 @@ func Load() {
 	go func() {
 		defer wg.Done()
 		initFont()
+	}()
+
+	go func() {
+		defer wg.Done()
+		initPatternCollection()
 	}()
 
 	wg.Wait()
@@ -201,4 +206,11 @@ func initFont() {
 
 	Font, err = truetype.Parse(fontAsset)
 	handleErr(err)
+}
+
+func initPatternCollection() {
+	data, err := resource.Asset("patterns.json")
+	handleErr(err)
+
+	GamePatternCollection = PatternCollectionFromJSON(data)
 }
