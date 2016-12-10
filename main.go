@@ -52,8 +52,6 @@ func gameLoop(screen *ebiten.Image) error {
 
 	keyboardWrapper.Update()
 
-	go logoTimer()
-
 	if showLogo && !game.Debug {
 		logoScreen.Draw(screen)
 		return nil
@@ -97,8 +95,8 @@ func gameLoop(screen *ebiten.Image) error {
 	shapeCollection.Draw(screen)
 	player.Draw(screen)
 
-	go player.CheckCollision(shapeCollection)
-	go player.CheckScore(shapeCollection)
+	player.CheckCollision(shapeCollection)
+	player.CheckScore(shapeCollection)
 
 	//ebitenutil.DebugPrint(screen, "Hello world!")
 
@@ -168,6 +166,7 @@ func main() {
 
 	go fmt.Printf("Starting up game. Version %s, Build %s", Version, Build)
 
+	go logoTimer()
 	ebiten.Run(gameLoop, game.ScreenWidth, game.ScreenHeight, 2, "Geom Jump")
 }
 

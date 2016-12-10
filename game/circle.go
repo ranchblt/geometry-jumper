@@ -46,5 +46,5 @@ func (c *Circle) Update() {
 		c.DestinationTrack = SubsequentTracks[c.Track]
 	}
 
-	go c.crossedLeftEdge()
+	c.crossedLeftEdge()
 }

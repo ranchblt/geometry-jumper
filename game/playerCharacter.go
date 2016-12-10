@@ -60,7 +60,7 @@ func (pc *PlayerCharacter) Update() error {
 	if pc.keyboardWrapper.KeyPushed(ebiten.KeySpace) {
 		if !pc.jumping {
 			pc.jumping = true
-			go playJumpSound()
+			playJumpSound()
 			pc.maxHeightReached = false
 			pc.originalY = pc.Center.y
 		}

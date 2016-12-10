@@ -14,5 +14,5 @@ func NewSquare(base *BaseShape) *Square {
 func (s *Square) Update() {
 	// squares dont move vertically, only horizontally.
 	s.Center.x = s.Center.x - (s.BaseSpeed)
-	go s.crossedLeftEdge()
+	s.crossedLeftEdge()
 }

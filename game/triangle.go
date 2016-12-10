@@ -43,7 +43,7 @@ func (t *Triangle) Update() {
 		t.updateWithTrackSwitchingMovement()
 	}
 
-	go t.crossedLeftEdge()
+	t.crossedLeftEdge()
 }
 
 // this is the circle's up / down logic! wooo!
