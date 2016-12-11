@@ -4,6 +4,7 @@ import (
 	"github.com/golang/freetype/truetype"
 	"github.com/hajimehoshi/ebiten"
 	"github.com/hajimehoshi/ebiten/audio"
+	"github.com/uber-go/zap"
 )
 
 const (
@@ -122,4 +123,5 @@ var (
 
 	// pattern collection
 	GamePatternCollection *PatternCollection
+	logger                zap.Logger
 )

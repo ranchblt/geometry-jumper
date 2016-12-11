@@ -3,7 +3,6 @@ package main
 import (
 	"errors"
 	"flag"
-	"fmt"
 	"image"
 	"os"
 	"runtime/pprof"
@@ -21,6 +20,7 @@ import (
 
 	"github.com/golang/freetype/truetype"
 	"github.com/hajimehoshi/ebiten"
+	"github.com/uber-go/zap"
 )
 
 var (
@@ -32,6 +32,8 @@ var (
 	showMenu        = true
 	mainMenu        menu.Menu
 	endMenu         menu.Menu
+	slowDownCount   int64
+	logger          zap.Logger
 )
 
 // Version is autoset from the build script
@@ -44,9 +46,10 @@ var cpuprofile = flag.String("cpuprofile", "", "write cpu profile to file")
 
 func gameLoop(screen *ebiten.Image) error {
 	if ebiten.IsRunningSlowly() {
-		if game.Debug {
-			go fmt.Println("slow")
-		}
+		slowDownCount++
+		logger.Debug("Running slow",
+			zap.Int64("Amount", slowDownCount),
+		)
 		return nil
 	}
 
@@ -122,7 +125,9 @@ func main() {
 		defer pprof.StopCPUProfile()
 	}
 
-	game.Load()
+	logger = zap.New(zap.NewTextEncoder(zap.TextNoTime()), zap.DebugLevel)
+
+	game.Load(logger)
 
 	options := []*menu.Option{}
 	options = append(options, &menu.Option{
@@ -164,7 +169,10 @@ func main() {
 
 	logoScreen = ranchblt.NewLogoScreen(game.ScreenWidth, game.ScreenHeight)
 
-	go fmt.Printf("Starting up game. Version %s, Build %s", Version, Build)
+	logger.Info("Starting up game",
+		zap.String("Version", Version),
+		zap.String("Build", Build),
+	)
 
 	go logoTimer()
 	ebiten.Run(gameLoop, game.ScreenWidth, game.ScreenHeight, 2, "Geom Jump")

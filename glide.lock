@@ -1,5 +1,5 @@
-hash: 41c9fba0a6992e136febea77afe513e30a63976a48955587041c81e18397a14d
-updated: 2016-12-09T13:42:47.4901596-05:00
+hash: 45327ca5745f6c411159a97d1f4f72fa082f40a2591be740605381540d851322
+updated: 2016-12-11T12:37:22.6334581-05:00
 imports:
 - name: github.com/go-gl/gl
   version: b303bcb3e83b7ef645a5104e1c2db7f8d9e8918a
@@ -21,7 +21,7 @@ imports:
 - name: github.com/gopherjs/webgl
   version: a2d36020a9b2af0f7aefb23467ab48f3b501beec
 - name: github.com/hajimehoshi/ebiten
-  version: e47c3bbbfb9d65c251037ccd81932932764f17dc
+  version: 52f57c4a6aa698d814f4a5d54729ac938446d7e8
   subpackages:
   - audio
   - audio/internal/driver
@@ -41,6 +41,10 @@ imports:
   version: ed0a8311175d68e8f28c7dcc70bc2303f7cf65da
   subpackages:
   - openal
+- name: github.com/uber-go/atomic
+  version: 0c9e689d64f004564b79d9a663634756df322902
+- name: github.com/uber-go/zap
+  version: 35cd7966cc81adc0449c91b3f6b1939812be73aa
 - name: golang.org/x/image
   version: 5286ed5c2aec7fc7d08323e7e4423b171caf84cb
   subpackages:

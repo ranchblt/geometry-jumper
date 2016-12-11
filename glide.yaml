@@ -8,3 +8,6 @@ import:
 - package: github.com/golang/freetype
   subpackages:
   - truetype
+- package: github.com/uber-go/zap
+- package: github.com/uber-go/atomic
+  version: ^1.0.0

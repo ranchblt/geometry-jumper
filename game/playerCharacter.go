@@ -1,7 +1,6 @@
 package game
 
 import (
-	"fmt"
 	"geometry-jumper/keyboard"
 	"image"
 
@@ -12,7 +11,6 @@ import (
 )
 
 type PlayerCharacter struct {
-	name             string
 	image            *ebiten.Image
 	imageJumping     *ebiten.Image
 	rgbaImage        *image.RGBA
@@ -28,7 +26,6 @@ type PlayerCharacter struct {
 
 func NewPlayerCharacter(name string, image *ebiten.Image, jimage *ebiten.Image, keyboardWrapper *keyboard.KeyboardWrapper) *PlayerCharacter {
 	var player = &PlayerCharacter{
-		name:            "Test",
 		image:           image,
 		imageJumping:    jimage,
 		keyboardWrapper: keyboardWrapper,
@@ -121,9 +118,7 @@ func (pc *PlayerCharacter) CheckCollision(sc *ShapeCollection) {
 			Center: s.CenterCoord(),
 		}
 		if collision.IsColliding(&pcHitbox, &sHitBox) {
-			if Debug {
-				go fmt.Println("collision")
-			}
+			logger.Debug("Collision")
 			pc.Collided = true
 		}
 	}

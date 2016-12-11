@@ -14,9 +14,11 @@ import (
 	"github.com/hajimehoshi/ebiten/audio"
 	"github.com/hajimehoshi/ebiten/audio/wav"
 	"github.com/mattetti/filebuffer"
+	"github.com/uber-go/zap"
 )
 
-func Load() {
+func Load(lg zap.Logger) {
+	logger = lg
 	defer timeTrack(time.Now(), "Game.Load")
 	var wg sync.WaitGroup
 
@@ -123,34 +125,26 @@ func initAudio() {
 	const sampleRate = 44100
 	const bytesPerSample = 4
 
-	var wg sync.WaitGroup
-	wg.Add(1)
-
 	var err error
 
 	JumpSound, err = audio.NewContext(sampleRate)
 	handleErr(err)
 
+	asset, err := resource.Asset("jump.wav")
+	handleErr(err)
+
+	buffer := filebuffer.New(asset)
+
 	go func() {
-		defer wg.Done()
-		asset, err := resource.Asset("jump.wav")
+		s, err := wav.Decode(JumpSound, buffer)
 		handleErr(err)
 
-		buffer := filebuffer.New(asset)
+		b, err := ioutil.ReadAll(s)
+		handleErr(err)
 
-		go func() {
-			s, err := wav.Decode(JumpSound, buffer)
-			handleErr(err)
-
-			b, err := ioutil.ReadAll(s)
-			handleErr(err)
-
-			JumpCh <- b
-			close(JumpCh)
-		}()
+		JumpCh <- b
+		close(JumpCh)
 	}()
-
-	wg.Wait()
 
 }
 

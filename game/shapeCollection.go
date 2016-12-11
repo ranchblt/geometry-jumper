@@ -1,11 +1,11 @@
 package game
 
 import (
-	"fmt"
 	"math/rand"
 	"time"
 
 	"github.com/hajimehoshi/ebiten"
+	"github.com/uber-go/zap"
 )
 
 type ShapeCollection struct {
@@ -55,9 +55,9 @@ func (s *ShapeCollection) assignPattern() {
 	difficultyIndex := s.shapeRandom.Intn(len(s.unlockedDifficulties)-s.difficultyOffset) + s.difficultyOffset
 	difficulty := DifficultyTypes[difficultyIndex]
 
-	if Debug {
-		go fmt.Println("difficulty for pattern: " + difficulty)
-	}
+	logger.Debug("Difficulty for pattern",
+		zap.String("difficulty", difficulty),
+	)
 
 	patterns := s.patternCollection.Patterns[difficulty]
 	patternIndex := s.shapeRandom.Intn(len(patterns))
@@ -70,18 +70,17 @@ func (s *ShapeCollection) assignPattern() {
 }
 
 func (s *ShapeCollection) spawnOnDelay(spawnGroup *SpawnGroup, lastSpawn bool) {
-	if Debug {
-		go fmt.Println(spawnGroup.SpawnTimeMillis)
-	}
+	logger.Debug("spawnOnDelay",
+		zap.Int("spawn time miliseconds", spawnGroup.SpawnTimeMillis),
+	)
+
 	timer := time.NewTimer(time.Millisecond * time.Duration(spawnGroup.SpawnTimeMillis))
 	<-timer.C
 	// So shapes down't spawn after
 	if s.Stop {
 		return
 	}
-	if Debug {
-		go fmt.Println("done waiting")
-	}
+	logger.Debug("Done Waiting")
 	for _, spawn := range spawnGroup.Spawns {
 		s.shapeFromSpawn(spawn)
 	}
@@ -133,9 +132,7 @@ func (s *ShapeCollection) unlockColorSwapOnDelay(delaySeconds int64) {
 
 func (s *ShapeCollection) unlockColorSwap() {
 	s.allowColorSwap = true
-	if Debug {
-		go fmt.Println("unlocked color swap")
-	}
+	logger.Debug("Unlocked color swap")
 }
 
 func (s *ShapeCollection) unlockDifficultyOnDelay(delaySeconds int64) {
@@ -151,13 +148,11 @@ func (s *ShapeCollection) unlockNextDifficulty() {
 		nextDifficultyIndex := len(s.unlockedDifficulties)
 		nextDifficulty := DifficultyTypes[nextDifficultyIndex]
 		s.unlockedDifficulties = append(s.unlockedDifficulties, nextDifficulty)
-		if Debug {
-			go fmt.Println("unlocked: " + nextDifficulty)
-		}
+		logger.Debug("Unlocked",
+			zap.String("Difficulty", nextDifficulty),
+		)
 	} else {
-		if Debug {
-			fmt.Println("no more difficulties to unlock")
-		}
+		logger.Debug("No more difficulties to unlock")
 	}
 }
 
@@ -172,13 +167,11 @@ func (s *ShapeCollection) lockDifficulty() {
 	// into the difficulty type slice
 	if s.difficultyOffset < len(DifficultyTypes)-1 {
 		s.difficultyOffset++
-		if Debug {
-			go fmt.Println("locked: " + s.unlockedDifficulties[s.difficultyOffset-1])
-		}
+		logger.Debug("Locked",
+			zap.String("Difficulty", s.unlockedDifficulties[s.difficultyOffset-1]),
+		)
 	} else {
-		if Debug {
-			go fmt.Println("no more difficulties to lock")
-		}
+		logger.Debug("no more difficulties to lock")
 	}
 }
 
@@ -198,9 +191,7 @@ func (s *ShapeCollection) Update() {
 	}
 
 	if len(s.shapes) == 0 && !s.duringPattern {
-		if Debug {
-			go fmt.Println("assigning new pattern")
-		}
+		logger.Debug("Assigning new pattern")
 		go s.assignPatternOnDelay(PatternDelayMillis)
 	}
 
