@@ -31,40 +31,6 @@
                   "Spawns":[
                      {
                         "ShapeType":3,
-                        "Track":1,
-                        "Speed":4
-                     }
-                  ],
-                  "SpawnTimeMillis":0
-               },
-               {
-                  "Spawns":[
-                     {
-                        "ShapeType":3,
-                        "Track":2,
-                        "Speed":4
-                     }
-                  ],
-                  "SpawnTimeMillis":400
-               },
-               {
-                  "Spawns":[
-                     {
-                        "ShapeType":3,
-                        "Track":1,
-                        "Speed":4
-                     }
-                  ],
-                  "SpawnTimeMillis":800
-               }
-            ]
-         },
-         {
-            "SpawnGroups":[
-               {
-                  "Spawns":[
-                     {
-                        "ShapeType":3,
                         "Track":2,
                         "Speed":3
                      }
@@ -288,6 +254,40 @@
                      }
                   ],
                   "SpawnTimeMillis":700
+               }
+            ]
+         },
+         {
+            "SpawnGroups":[
+               {
+                  "Spawns":[
+                     {
+                        "ShapeType":3,
+                        "Track":1,
+                        "Speed":4
+                     }
+                  ],
+                  "SpawnTimeMillis":0
+               },
+               {
+                  "Spawns":[
+                     {
+                        "ShapeType":3,
+                        "Track":2,
+                        "Speed":4
+                     }
+                  ],
+                  "SpawnTimeMillis":400
+               },
+               {
+                  "Spawns":[
+                     {
+                        "ShapeType":3,
+                        "Track":1,
+                        "Speed":4
+                     }
+                  ],
+                  "SpawnTimeMillis":800
                }
             ]
          }
