@@ -3,8 +3,9 @@ package game
 import (
 	"bytes"
 	"image"
-	"log"
 	"time"
+
+	"github.com/uber-go/zap"
 
 	"geometry-jumper/resource"
 
@@ -34,7 +35,10 @@ func handleErr(err error) {
 
 func timeTrack(start time.Time, name string) {
 	elapsed := time.Since(start)
-	log.Printf("%s took %s", name, elapsed)
+	logger.Info("Time Track",
+		zap.String("Name", name),
+		zap.Duration("Elapsed", elapsed),
+	)
 }
 
 func toRGBA(img image.Image) *image.RGBA {

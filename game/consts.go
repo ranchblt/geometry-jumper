@@ -8,7 +8,7 @@ import (
 
 const (
 	// can we specify this via a property? mike pls.
-	Debug = true
+	Debug = false
 
 	DefaultSpeed = 4
 

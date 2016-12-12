@@ -109,8 +109,6 @@ func gameLoop(screen *ebiten.Image) error {
 	player.CheckCollision(shapeCollection)
 	player.CheckScore(shapeCollection)
 
-	//ebitenutil.DebugPrint(screen, "Hello world!")
-
 	if keyboardWrapper.KeyPushed(ebiten.KeyEscape) {
 		return errors.New("User wanted to quit") //Best way to do this?
 	}
@@ -133,7 +131,7 @@ func main() {
 		defer pprof.StopCPUProfile()
 	}
 
-	logger = zap.New(zap.NewTextEncoder(zap.TextNoTime()), zap.DebugLevel)
+	logger = zap.New(zap.NewTextEncoder(zap.TextNoTime()), zap.ErrorLevel)
 
 	game.Load(logger)
 
