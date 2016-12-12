@@ -63,7 +63,7 @@ func gameLoop(screen *ebiten.Image) error {
 	if showMenu {
 		mainMenu.Update()
 		mainMenu.Draw(screen)
-		if keyboardWrapper.IsKeyPressed(ebiten.KeyEnter) {
+		if keyboardWrapper.KeyPushed(ebiten.KeyEnter) {
 			if strings.ToLower(mainMenu.Selected()) == "start" {
 				showMenu = false
 			} else if strings.ToLower(mainMenu.Selected()) == "exit" {
@@ -86,9 +86,10 @@ func gameLoop(screen *ebiten.Image) error {
 		endMenu.Update()
 		endMenu.Draw(screen)
 		screen.DrawImage(getScoreImage(player.Score()), &ebiten.DrawImageOptions{})
-		if keyboardWrapper.IsKeyPressed(ebiten.KeyEnter) {
+		if keyboardWrapper.KeyPushed(ebiten.KeyEnter) {
 			if strings.ToLower(endMenu.Selected()) == "restart" {
-
+				shapeCollection = game.NewShapeCollection()
+				player = game.NewPlayerCharacter("Test", game.PersonStandingImage, game.PersonJumpingImage, keyboardWrapper)
 			} else if strings.ToLower(endMenu.Selected()) == "exit" {
 				return errors.New("User wanted to quit")
 			}
