@@ -6,7 +6,7 @@ VERSION=`git describe --tags`
 BUILD=`date +%FT%T%z`
 
 # Setup the -ldflags option for go build here, interpolate the variable values
-LDFLAGS=-ldflags "-w -s -X main.Version=${VERSION} -X main.Build=${BUILD}"
+LDFLAGS=-ldflags "-w -s -X main.Version=${VERSION} -X main.Build=${BUILD} -H windowsgui"
 
 # https://gist.github.com/Stratus3D/a5be23866810735d7413
 
