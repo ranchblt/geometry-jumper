@@ -1,6 +1,30 @@
 {
    "Patterns":{
       "LOW":[
+        {
+            "SpawnGroups":[
+               {
+                  "Spawns":[
+                     {
+                        "ShapeType":3,
+                        "Track":2,
+                        "Speed":6
+                     }
+                  ],
+                  "SpawnTimeMillis":0
+               },
+               {
+                  "Spawns":[
+                     {
+                        "ShapeType":1,
+                        "Track":1,
+                        "Speed":4
+                     }
+                  ],
+                  "SpawnTimeMillis":250
+               }
+            ]
+         },
          {
             "SpawnGroups":[
                {
@@ -12,7 +36,7 @@
                      }
                   ],
                   "SpawnTimeMillis":0
-               },               
+               },
                {
                   "Spawns":[
                      {
@@ -42,63 +66,11 @@
                      {
                         "ShapeType":3,
                         "Track":2,
-                        "Speed":6
+                        "Speed":3
                      }
                   ],
                   "SpawnTimeMillis":0
                },
-               {
-                  "Spawns":[
-                     {
-                        "ShapeType":1,
-                        "Track":1,
-                        "Speed":4
-                     }
-                  ],
-                  "SpawnTimeMillis":250
-               }
-            ]
-         }         
-      ],
-      "MEDIUM":[
-         {
-            "SpawnGroups":[
-               {
-                  "Spawns":[
-                     {
-                        "ShapeType":3,
-                        "Track":1,
-                        "Speed":4
-                     }
-                  ],
-                  "SpawnTimeMillis":2500
-               },
-               {
-                  "Spawns":[
-                     {
-                        "ShapeType":1,
-                        "Track":1,
-                        "Speed":4
-                     }
-                  ],
-                  "SpawnTimeMillis":5000
-               },
-               {
-                  "Spawns":[
-                     {
-                        "ShapeType":2,
-                        "Track":1,
-                        "Speed":4
-                     }
-                  ],
-                  "SpawnTimeMillis":7500
-               }
-            ]
-         }
-      ],             
-      "HIGH":[
-         {
-            "SpawnGroups":[
                {
                   "Spawns":[
                      {
@@ -107,27 +79,215 @@
                         "Speed":4
                      }
                   ],
-                  "SpawnTimeMillis":1000
+                  "SpawnTimeMillis":300
+               },
+               {
+                  "Spawns":[
+                     {
+                        "ShapeType":3,
+                        "Track":2,
+                        "Speed":5
+                     }
+                  ],
+                  "SpawnTimeMillis":400
+               }
+            ]
+         },
+         {
+            "SpawnGroups":[
+               {
+                  "Spawns":[
+                     {
+                        "ShapeType":1,
+                        "Track":2,
+                        "Speed":3
+                     }
+                  ],
+                  "SpawnTimeMillis":0
                },
                {
                   "Spawns":[
                      {
                         "ShapeType":1,
-                        "Track":1,
+                        "Track":2,
                         "Speed":4
                      }
                   ],
-                  "SpawnTimeMillis":2000
+                  "SpawnTimeMillis":300
+               },
+               {
+                  "Spawns":[
+                     {
+                        "ShapeType":3,
+                        "Track":2,
+                        "Speed":5
+                     }
+                  ],
+                  "SpawnTimeMillis":400
+               }
+            ]
+         }
+      ],
+      "MEDIUM":[
+         {
+            "SpawnGroups":[
+               {
+                  "Spawns":[
+                     {
+                        "ShapeType":1,
+                        "Track":1,
+                        "Speed":3
+                     }
+                  ],
+                  "SpawnTimeMillis":200
+               },
+               {
+                  "Spawns":[
+                     {
+                        "ShapeType":1,
+                        "Track":2,
+                        "Speed":5
+                     }
+                  ],
+                  "SpawnTimeMillis":400
+               }
+            ]
+         },
+         {
+            "SpawnGroups":[
+               {
+                  "Spawns":[
+                     {
+                        "ShapeType":2,
+                        "Track":1,
+                        "Speed":7
+                     }
+                  ],
+                  "SpawnTimeMillis":100
+               },
+               {
+                  "Spawns":[
+                     {
+                        "ShapeType":2,
+                        "Track":2,
+                        "Speed":4
+                     }
+                  ],
+                  "SpawnTimeMillis":400
+               }
+            ]
+         },
+         {
+            "SpawnGroups":[
+               {
+                  "Spawns":[
+                     {
+                        "ShapeType":3,
+                        "Track":1,
+                        "Speed":7
+                     }
+                  ],
+                  "SpawnTimeMillis":0
+               },
+               {
+                  "Spawns":[
+                     {
+                        "ShapeType":3,
+                        "Track":2,
+                        "Speed":4
+                     }
+                  ],
+                  "SpawnTimeMillis":300
+               },
+               {
+                  "Spawns":[
+                     {
+                        "ShapeType":1,
+                        "Track":2,
+                        "Speed":5
+                     }
+                  ],
+                  "SpawnTimeMillis":600
                },
                {
                   "Spawns":[
                      {
                         "ShapeType":2,
                         "Track":1,
+                        "Speed":5
+                     }
+                  ],
+                  "SpawnTimeMillis":800
+               }
+            ]
+         }
+      ],
+      "HIGH":[
+         {
+            "SpawnGroups":[
+               {
+                  "Spawns":[
+                     {
+                        "ShapeType":1,
+                        "Track":1,
+                        "Speed":7
+                     }
+                  ],
+                  "SpawnTimeMillis":200
+               },
+               {
+                  "Spawns":[
+                     {
+                        "ShapeType":2,
+                        "Track":2,
                         "Speed":4
                      }
                   ],
-                  "SpawnTimeMillis":3000
+                  "SpawnTimeMillis":400
+               }
+            ]
+         },
+         {
+            "SpawnGroups":[
+               {
+                  "Spawns":[
+                     {
+                        "ShapeType":3,
+                        "Track":1,
+                        "Speed":6
+                     }
+                  ],
+                  "SpawnTimeMillis":0
+               },
+               {
+                  "Spawns":[
+                     {
+                        "ShapeType":3,
+                        "Track":2,
+                        "Speed":6
+                     }
+                  ],
+                  "SpawnTimeMillis":300
+               },
+               {
+                  "Spawns":[
+                     {
+                        "ShapeType":3,
+                        "Track":1,
+                        "Speed":6
+                     }
+                  ],
+                  "SpawnTimeMillis":600
+               },
+               {
+                  "Spawns":[
+                     {
+                        "ShapeType":1,
+                        "Track":2,
+                        "Speed":6
+                     }
+                  ],
+                  "SpawnTimeMillis":700
                }
             ]
          }
