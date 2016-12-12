@@ -44,6 +44,7 @@ var Version string
 var Build string
 
 var cpuprofile = flag.String("cpuprofile", "", "write cpu profile to file")
+var debug = flag.Bool("debug", false, "Turns on debug lines and debug messaging")
 
 func gameLoop(screen *ebiten.Image) error {
 	if ebiten.IsRunningSlowly() {
@@ -131,9 +132,16 @@ func main() {
 		defer pprof.StopCPUProfile()
 	}
 
-	logger = zap.New(zap.NewTextEncoder(zap.TextNoTime()), zap.ErrorLevel)
+	lvl := zap.ErrorLevel
+	if *debug {
+		lvl = zap.DebugLevel
+	}
+
+	logger = zap.New(zap.NewTextEncoder(zap.TextNoTime()), lvl)
 
 	game.Load(logger)
+
+	game.Debug = *debug
 
 	options := []*menu.Option{}
 	options = append(options, &menu.Option{

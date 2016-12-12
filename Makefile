@@ -40,7 +40,7 @@ clean:
 	go clean
 
 run: clean build
-	./geometry-jumper
+	./geometry-jumper -debug
 
 cpuprof: clean build
 	./geometry-jumper -cpuprofile=cpu.prof

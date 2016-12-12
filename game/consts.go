@@ -7,9 +7,6 @@ import (
 )
 
 const (
-	// can we specify this via a property? mike pls.
-	Debug = false
-
 	DefaultSpeed = 4
 
 	// delay between pattern spawning (milliseconds)
@@ -70,6 +67,7 @@ const (
 )
 
 var (
+	Debug = false
 	// slice of all shape types
 	ShapeTypes = [...]int{TriangleType, CircleType, SquareType}
 
