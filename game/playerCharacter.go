@@ -47,8 +47,8 @@ func (pc *PlayerCharacter) Update() error {
 		}
 	}
 
-	if JumpSound != nil {
-		if err := JumpSound.Update(); err != nil {
+	if audioContext != nil {
+		if err := audioContext.Update(); err != nil {
 			return err
 		}
 
@@ -165,6 +165,6 @@ func (pc *PlayerCharacter) Src(i int) (x0, y0, x1, y1 int) {
 
 // made into function so can goroutine
 func playJumpSound() {
-	jumpSoundPlayer, _ := audio.NewPlayerFromBytes(JumpSound, JumpBytes)
+	jumpSoundPlayer, _ := audio.NewPlayerFromBytes(audioContext, JumpBytes)
 	jumpSoundPlayer.Play()
 }

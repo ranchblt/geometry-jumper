@@ -106,11 +106,10 @@ var (
 	ShapeImageMap  map[int][]*ebiten.Image
 	HitboxImageMap map[int]*ebiten.Image
 
-	JumpSound *audio.Context
-	JumpCh    = make(chan []byte)
-	JumpBytes []byte
+	audioContext *audio.Context
+	JumpCh       = make(chan []byte)
+	JumpBytes    []byte
 
-	Music      *audio.Context
 	musicCh    = make(chan []byte)
 	MusicBytes []byte
 

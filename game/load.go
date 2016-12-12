@@ -133,7 +133,7 @@ func initAudio() {
 
 	var err error
 
-	JumpSound, err = audio.NewContext(sampleRate)
+	audioContext, err = audio.NewContext(sampleRate)
 	handleErr(err)
 
 	asset, err := resource.Asset("jump.wav")
@@ -142,7 +142,7 @@ func initAudio() {
 	buffer := filebuffer.New(asset)
 
 	go func() {
-		s, err := wav.Decode(JumpSound, buffer)
+		s, err := wav.Decode(audioContext, buffer)
 		handleErr(err)
 
 		b, err := ioutil.ReadAll(s)
