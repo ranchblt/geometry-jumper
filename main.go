@@ -54,6 +54,11 @@ func gameLoop(screen *ebiten.Image) error {
 		return nil
 	}
 
+	if err := game.AudioContext.Update(); err != nil {
+		logger.Error("Failed to play audio",
+			zap.Error(err),
+		)
+	}
 	keyboardWrapper.Update()
 
 	if showLogo && !game.Debug {
@@ -182,6 +187,8 @@ func main() {
 		zap.String("Build", Build),
 	)
 
+	game.PlayBGM(game.BGM0)
+	game.SetBGMVolume(.1)
 	go logoTimer()
 	ebiten.Run(gameLoop, game.ScreenWidth, game.ScreenHeight, 2, "Geom Jump")
 }

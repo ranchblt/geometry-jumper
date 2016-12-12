@@ -3,7 +3,6 @@ package game
 import (
 	"image/color"
 	_ "image/png"
-	"io/ioutil"
 	"sync"
 	"time"
 
@@ -11,9 +10,6 @@ import (
 
 	"github.com/golang/freetype/truetype"
 	"github.com/hajimehoshi/ebiten"
-	"github.com/hajimehoshi/ebiten/audio"
-	"github.com/hajimehoshi/ebiten/audio/wav"
-	"github.com/mattetti/filebuffer"
 	"github.com/uber-go/zap"
 )
 
@@ -34,7 +30,9 @@ func Load(lg zap.Logger) {
 
 	go func() {
 		defer wg.Done()
-		initAudio()
+
+		err := loadAudio()
+		handleErr(err)
 	}()
 
 	go func() {
@@ -125,33 +123,6 @@ func initImageMaps() {
 		SquareType:   []*ebiten.Image{SquareImage},
 		CircleType:   []*ebiten.Image{CircleImage},
 	}
-}
-
-func initAudio() {
-	const sampleRate = 44100
-	const bytesPerSample = 4
-
-	var err error
-
-	audioContext, err = audio.NewContext(sampleRate)
-	handleErr(err)
-
-	asset, err := resource.Asset("jump.wav")
-	handleErr(err)
-
-	buffer := filebuffer.New(asset)
-
-	go func() {
-		s, err := wav.Decode(audioContext, buffer)
-		handleErr(err)
-
-		b, err := ioutil.ReadAll(s)
-		handleErr(err)
-
-		JumpCh <- b
-		close(JumpCh)
-	}()
-
 }
 
 func initColorMaps() {

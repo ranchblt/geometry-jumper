@@ -3,7 +3,6 @@ package game
 import (
 	"github.com/golang/freetype/truetype"
 	"github.com/hajimehoshi/ebiten"
-	"github.com/hajimehoshi/ebiten/audio"
 	"github.com/uber-go/zap"
 )
 
@@ -105,13 +104,6 @@ var (
 
 	ShapeImageMap  map[int][]*ebiten.Image
 	HitboxImageMap map[int]*ebiten.Image
-
-	audioContext *audio.Context
-	JumpCh       = make(chan []byte)
-	JumpBytes    []byte
-
-	musicCh    = make(chan []byte)
-	MusicBytes []byte
 
 	// color mapping constants
 	DefaultSquareColorMap   ebiten.ColorM

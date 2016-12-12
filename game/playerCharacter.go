@@ -7,7 +7,7 @@ import (
 	"geometry-jumper/collision"
 
 	"github.com/hajimehoshi/ebiten"
-	"github.com/hajimehoshi/ebiten/audio"
+	"github.com/uber-go/zap"
 )
 
 type PlayerCharacter struct {
@@ -40,24 +40,15 @@ func NewPlayerCharacter(name string, image *ebiten.Image, jimage *ebiten.Image, 
 }
 
 func (pc *PlayerCharacter) Update() error {
-	if JumpBytes == nil {
-		select {
-		case JumpBytes = <-JumpCh:
-		default:
-		}
-	}
-
-	if audioContext != nil {
-		if err := audioContext.Update(); err != nil {
-			return err
-		}
-
-	}
-
 	if pc.keyboardWrapper.KeyPushed(ebiten.KeySpace) {
 		if !pc.jumping {
 			pc.jumping = true
-			playJumpSound()
+			err := PlaySE(SE_JUMP)
+			if err != nil {
+				logger.Error("Failed playing SE",
+					zap.Error(err),
+				)
+			}
 			pc.maxHeightReached = false
 			pc.originalY = pc.Center.y
 		}
@@ -161,10 +152,4 @@ func (pc *PlayerCharacter) Dst(i int) (x0, y0, x1, y1 int) {
 func (pc *PlayerCharacter) Src(i int) (x0, y0, x1, y1 int) {
 	w, h := pc.image.Size()
 	return 0, 0, w, h
-}
-
-// made into function so can goroutine
-func playJumpSound() {
-	jumpSoundPlayer, _ := audio.NewPlayerFromBytes(audioContext, JumpBytes)
-	jumpSoundPlayer.Play()
 }
