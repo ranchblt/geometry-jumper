@@ -14,7 +14,7 @@ const (
 	DefaultSpeed = 4
 
 	// delay between pattern spawning (milliseconds)
-	PatternDelayMillis = 2500
+	PatternDelayMillis = 1000
 
 	// 'difficulty' constants for patterns?
 	LowDifficulty    = "LOW"
