@@ -25,6 +25,7 @@ import (
 
 var (
 	player          *game.PlayerCharacter
+	platform        *game.Stationary
 	keyboardWrapper = keyboard.NewKeyboardWrapper()
 	shapeCollection *game.ShapeCollection
 	logoScreen      *ranchblt.Logo
@@ -96,6 +97,7 @@ func gameLoop(screen *ebiten.Image) error {
 		}
 	}
 
+	platform.Draw(screen)
 	shapeCollection.Draw(screen)
 	player.Draw(screen)
 
@@ -167,6 +169,11 @@ func main() {
 	shapeCollection = game.NewShapeCollection()
 
 	player = game.NewPlayerCharacter("Test", game.PersonStandingImage, game.PersonJumpingImage, keyboardWrapper)
+	platform = &game.Stationary{
+		Image: game.PlatformImage,
+		X:     0,
+		Y:     200,
+	}
 
 	logoScreen = ranchblt.NewLogoScreen(game.ScreenWidth, game.ScreenHeight)
 

@@ -68,6 +68,12 @@ func initImages() {
 	PersonJumpingImage, err = ebiten.NewImageFromImage(pImage2, ebiten.FilterNearest)
 	handleErr(err)
 
+	platImage, err := openImage("platform.png")
+	handleErr(err)
+
+	PlatformImage, err = ebiten.NewImageFromImage(platImage, ebiten.FilterNearest)
+	handleErr(err)
+
 	sImage, err := openImage("square.png")
 	handleErr(err)
 

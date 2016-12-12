@@ -88,8 +88,10 @@ var (
 		UpperTrack: LowerTrack,
 		LowerTrack: UpperTrack,
 	}
+
 	PersonStandingImage *ebiten.Image
 	PersonJumpingImage  *ebiten.Image
+	PlatformImage       *ebiten.Image
 	SquareImage         *ebiten.Image
 	TriangleImage       *ebiten.Image
 	CircleImage         *ebiten.Image
