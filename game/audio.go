@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"github.com/hajimehoshi/ebiten/audio"
+	"github.com/hajimehoshi/ebiten/audio/vorbis"
 	"github.com/hajimehoshi/ebiten/audio/wav"
 )
 
@@ -15,7 +16,7 @@ var (
 	AudioContext   *audio.Context
 	soundFilenames = []string{
 		"jump.wav",
-		"Dub_Star.wav",
+		"Dub_Star.ogg",
 	}
 	soundPlayers = map[string]*audio.Player{}
 )
@@ -70,6 +71,13 @@ func loadAudio() error {
 		f := &bytesReadSeekCloser{bytes.NewReader(b)}
 		var s audio.ReadSeekCloser
 		switch {
+		case strings.HasSuffix(n, ".ogg"):
+			stream, err := vorbis.Decode(AudioContext, f)
+			if err != nil {
+				s = &emptyAudio{}
+			} else {
+				s = NewLoop(stream, stream.Size())
+			}
 		case strings.HasSuffix(n, ".wav"):
 			stream, err := wav.Decode(AudioContext, f)
 			if err != nil {
@@ -100,7 +108,7 @@ func finalizeAudio() error {
 type BGM string
 
 const (
-	BGM0 BGM = "Dub_Star.wav"
+	BGM0 BGM = "Dub_Star.ogg"
 )
 
 func SetBGMVolume(volume float64) {

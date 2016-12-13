@@ -1,5 +1,5 @@
-hash: 45327ca5745f6c411159a97d1f4f72fa082f40a2591be740605381540d851322
-updated: 2016-12-11T12:37:22.6334581-05:00
+hash: 4fa6f9c659c7d4aae62c3a2b0eceafc8369de23b6734ea85a069ee85dc90aafc
+updated: 2016-12-12T21:10:02.3904006-05:00
 imports:
 - name: github.com/go-gl/gl
   version: b303bcb3e83b7ef645a5104e1c2db7f8d9e8918a
@@ -25,6 +25,7 @@ imports:
   subpackages:
   - audio
   - audio/internal/driver
+  - audio/vorbis
   - audio/wav
   - ebitenutil
   - internal/affine
@@ -35,6 +36,10 @@ imports:
   - internal/opengl
   - internal/restorable
   - internal/ui
+- name: github.com/jfreymuth/oggvorbis
+  version: b87e13662b6a817ccce95d8f8322e12be4a0f1f6
+- name: github.com/jfreymuth/vorbis
+  version: 9581977ccb17fb56daf09c4ff11699ce7f18712c
 - name: github.com/mattetti/filebuffer
   version: 80f2c1c4dcf558a0cee1e4303225d17c6238e00a
 - name: github.com/timshannon/go-openal
