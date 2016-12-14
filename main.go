@@ -13,10 +13,10 @@ import (
 	"golang.org/x/image/font"
 	"golang.org/x/image/math/fixed"
 
-	"geometry-jumper/game"
-	"geometry-jumper/keyboard"
-	"geometry-jumper/menu"
-	"geometry-jumper/ranchblt"
+	"github.com/ranchblt/geometry-jumper/game"
+	"github.com/ranchblt/geometry-jumper/keyboard"
+	"github.com/ranchblt/geometry-jumper/menu"
+	"github.com/ranchblt/geometry-jumper/ranchblt"
 
 	"github.com/golang/freetype/truetype"
 	"github.com/hajimehoshi/ebiten"

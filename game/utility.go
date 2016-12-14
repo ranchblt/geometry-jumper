@@ -7,7 +7,7 @@ import (
 
 	"github.com/uber-go/zap"
 
-	"geometry-jumper/resource"
+	"github.com/ranchblt/geometry-jumper/resource"
 
 	"golang.org/x/image/draw"
 )

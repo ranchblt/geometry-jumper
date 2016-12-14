@@ -4,7 +4,7 @@ package game
 
 import (
 	"bytes"
-	"geometry-jumper/resource"
+	"github.com/ranchblt/geometry-jumper/resource"
 	"strings"
 
 	"github.com/hajimehoshi/ebiten/audio"

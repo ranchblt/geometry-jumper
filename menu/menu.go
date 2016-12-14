@@ -1,7 +1,7 @@
 package menu
 
 import (
-	"geometry-jumper/keyboard"
+	"github.com/ranchblt/geometry-jumper/keyboard"
 	"image"
 
 	"golang.org/x/image/font"

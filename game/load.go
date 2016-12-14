@@ -6,7 +6,7 @@ import (
 	"sync"
 	"time"
 
-	"geometry-jumper/resource"
+	"github.com/ranchblt/geometry-jumper/resource"
 
 	"github.com/golang/freetype/truetype"
 	"github.com/hajimehoshi/ebiten"

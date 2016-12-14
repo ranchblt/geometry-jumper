@@ -2,7 +2,7 @@ package ranchblt
 
 import (
 	"bytes"
-	"geometry-jumper/resource"
+	"github.com/ranchblt/geometry-jumper/resource"
 	"image"
 
 	"github.com/hajimehoshi/ebiten"
