@@ -1,10 +1,10 @@
 package game
 
 import (
-	"geometry-jumper/keyboard"
+	"github.com/ranchblt/geometry-jumper/keyboard"
 	"image"
 
-	"geometry-jumper/collision"
+	"github.com/ranchblt/geometry-jumper/collision"
 
 	"github.com/hajimehoshi/ebiten"
 	"github.com/uber-go/zap"
