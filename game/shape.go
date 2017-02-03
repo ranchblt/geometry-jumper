@@ -87,10 +87,10 @@ func (s *BaseShape) Dst(i int) (x0, y0, x1, y1 int) {
 	w, h := s.image.Size()
 	halfHeight := h / 2
 	halfWidth := w / 2
-	return s.Center.x - halfHeight,
-		s.Center.y - halfWidth,
-		s.Center.x + halfHeight,
-		s.Center.y + halfWidth
+	return s.Center.x - halfWidth,
+		s.Center.y - halfHeight,
+		s.Center.x + halfWidth,
+		s.Center.y + halfHeight
 }
 
 func (s *BaseShape) Src(i int) (x0, y0, x1, y1 int) {

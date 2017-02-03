@@ -1,8 +1,9 @@
 package game
 
 import (
-	"github.com/ranchblt/geometry-jumper/keyboard"
 	"image"
+
+	"github.com/ranchblt/geometry-jumper/keyboard"
 
 	"github.com/ranchblt/geometry-jumper/collision"
 
@@ -143,10 +144,10 @@ func (pc *PlayerCharacter) Dst(i int) (x0, y0, x1, y1 int) {
 	w, h := pc.image.Size()
 	h = h / 2
 	w = w / 2
-	return pc.Center.x - h,
-		pc.Center.y - w,
-		pc.Center.x + h,
-		pc.Center.y + w
+	return pc.Center.x - w,
+		pc.Center.y - h,
+		pc.Center.x + w,
+		pc.Center.y + h
 }
 
 func (pc *PlayerCharacter) Src(i int) (x0, y0, x1, y1 int) {
